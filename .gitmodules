@@ -13,3 +13,6 @@
 [submodule "bundle/bufexplorer"]
 	path = bundle/bufexplorer
 	url = git://github.com/markabe/bufexplorer.git
+[submodule "git/git-flow-completion"]
+	path = git/git-flow-completion
+	url = git://github.com/bobthecow/git-flow-completion.git
