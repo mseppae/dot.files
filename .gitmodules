@@ -1,0 +1,15 @@
+[submodule "bundle/vim-endwise"]
+	path = bundle/vim-endwise
+	url = git://github.com/tpope/vim-endwise.git
+[submodule "bundle/L9"]
+	path = bundle/L9
+	url = git://github.com/vim-scripts/L9.git
+[submodule "bundle/FuzzyFinder"]
+	path = bundle/FuzzyFinder
+	url = https://github.com/vim-scripts/FuzzyFinder.git
+[submodule "bundle/LustyExplorer"]
+	path = bundle/LustyExplorer
+	url = git://github.com/vim-scripts/LustyExplorer.git
+[submodule "bundle/bufexplorer"]
+	path = bundle/bufexplorer
+	url = git://github.com/markabe/bufexplorer.git
