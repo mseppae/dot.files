@@ -93,6 +93,9 @@ set number
 " Encoding
 set encoding=UTF-8
 
+" Press Space to turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
 " Pathogen
 silent! call pathogen#helptags()
 silent! call pathogen#runtime_append_all_bundles()
