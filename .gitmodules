@@ -16,3 +16,6 @@
 [submodule "git/git-flow-completion"]
 	path = git/git-flow-completion
 	url = git://github.com/bobthecow/git-flow-completion.git
+[submodule "bundle/vim-rails"]
+	path = bundle/vim-rails
+	url = git://github.com/tpope/vim-rails.git
