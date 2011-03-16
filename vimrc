@@ -111,6 +111,9 @@ nmap ,f :FufCoverageFile<CR>
 " Highlight unwanted whitespace
 highlight RedundantSpaces ctermbg=red guibg=red
 match     RedundantSpaces "\s\+$\| \+\ze\t"
-        
+
 " Remove whitespace
 map ,r :%s/\s\+$\\| \+\ze\t//g<CR>
+
+" Search and replace with confirmation
+map ,s :%s/<C-r><C-w>//gc<Left><Left><Left>
