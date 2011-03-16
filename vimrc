@@ -94,7 +94,7 @@ set number
 set encoding=UTF-8
 
 " Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 " Pathogen
 silent! call pathogen#helptags()
@@ -107,3 +107,10 @@ set hidden
 " FuzzyFinder
 let mapleader = ","
 nmap ,f :FufCoverageFile<CR>
+
+" Highlight unwanted whitespace
+highlight RedundantSpaces ctermbg=red guibg=red
+match     RedundantSpaces "\s\+$\| \+\ze\t"
+        
+" Remove whitespace
+map ,r :%s/\s\+$\\| \+\ze\t//g<CR>
