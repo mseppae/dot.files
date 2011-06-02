@@ -25,14 +25,14 @@
 
 # Basic configuration
 ## Paths
-	export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH" # /opt/local/lib/postgresql84/bin:$PATH"
-        export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+	export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+        export NODE_PATH="/usr/local/lib/node_modules"
+
 ## RVM - This loads RVM into a shell session.
 	[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 ## Aliases
 	alias l="ls -l"
 	alias la="ls -la"
-        alias sc="script/console"
 ### SSH
 	alias ssh.reaper="ssh bsd.reaper.fi -p 28281"
 	alias ssh.dev="cd $HOME/Development/Cognita/cloud/ && rake ssh\[dev\]"
@@ -46,13 +46,29 @@
 ### Redis
 	alias redis.start="sudo redis-server /usr/local/etc/redis.conf"
 ### BlueReport project specific
-#### Spec
-        alias spec.run="bundle exec spec -O spec/spec.opts"
-#### Logs
-	alias bluereport.logs="/var/log/bluereport/"
+        alias cd.bluereport="cd ~/Development/Cognita/bluereport && rvm use 1.8.7@bluereport"
+        alias spec.blue="bundle exec spec -O spec/spec.opts"
+        alias sc="script/console"
+
+### Comet project specific
+        alias cd.comet="cd ~/Development/Cognita/comet && rvm use 1.9.2@comet"
+        alias spec.comet="bundle exec rspec"
+        alias rco="rails console"
+        alias rdbco="rails dbconsole -p"
 
 # Enable UTF-8 support on iTerm2
 export LC_ALL="en_US.UTF-8"
 
 # Git flow completion
 source ~/.git-flow-completion.zsh
+
+# Vi shell & start in Vi command mode
+bindkey -v
+zle-line-init() { zle -K vicmd; }
+zle -N zle-line-init
+
+# Functions
+rake-ssh()
+{
+ BUNDLE_GEMFILE="/Users/mseppae/Development/Cognita/cloud/Gemfile" rake -f /Users/mseppae/Development/Cognita/cloud/Rakefile ssh\[$1\]
+}
