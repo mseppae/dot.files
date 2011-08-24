@@ -39,6 +39,10 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endif
 
+" Pathogen
+silent! call pathogen#helptags()
+silent! call pathogen#infect()
+
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
 
@@ -96,10 +100,6 @@ set encoding=UTF-8
 " Press Space to turn off highlighting and clear any message already displayed.
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-" Pathogen
-silent! call pathogen#helptags()
-silent! call pathogen#runtime_append_all_bundles()
-
 colorscheme vividchalk
 
 set hidden
@@ -113,7 +113,10 @@ highlight RedundantSpaces ctermbg=red guibg=red
 match     RedundantSpaces "\s\+$\| \+\ze\t"
 
 " Remove whitespace
-map ,r :%s/\s\+$\\| \+\ze\t//g<CR>
+" map ,r :%s/\s\+$\\| \+\ze\t//g<CR>
 
 " Search and replace with confirmation
 map ,s :%s/<C-r><C-w>//gc<Left><Left><Left>
+
+" Coffee script compiling
+map ,cc :CoffeeCompile<CR>

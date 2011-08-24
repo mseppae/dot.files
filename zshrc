@@ -47,12 +47,12 @@
 	alias redis.start="sudo redis-server /usr/local/etc/redis.conf"
 ### BlueReport project specific
         alias cd.bluereport="cd ~/Development/Cognita/bluereport && rvm use 1.8.7@bluereport"
-        alias spec.blue="bundle exec spec -O spec/spec.opts"
+        alias spec.blue="bundle exec spec --drb -O spec/spec.opts"
         alias sc="script/console"
 
 ### Comet project specific
         alias cd.comet="cd ~/Development/Cognita/comet && rvm use 1.9.2@comet"
-        alias spec.comet="bundle exec rspec"
+        alias spec.comet="bundle exec rspec --drb"
         alias rco="rails console"
         alias rdbco="rails dbconsole -p"
 
@@ -63,9 +63,9 @@ export LC_ALL="en_US.UTF-8"
 source ~/.git-flow-completion.zsh
 
 # Vi shell & start in Vi command mode
-bindkey -v
-zle-line-init() { zle -K vicmd; }
-zle -N zle-line-init
+# bindkey -v
+# zle-line-init() { zle -K vicmd; }
+# zle -N zle-line-init
 
 # Functions
 rake-ssh()
