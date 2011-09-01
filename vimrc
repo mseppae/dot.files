@@ -120,3 +120,6 @@ map ,s :%s/<C-r><C-w>//gc<Left><Left><Left>
 
 " Coffee script compiling
 map ,cc :CoffeeCompile<CR>
+
+" Rabl syntax
+au BufRead,BufNewFile *.rabl setf ruby
