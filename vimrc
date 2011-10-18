@@ -123,3 +123,6 @@ map ,cc :CoffeeCompile<CR>
 
 " Rabl syntax
 au BufRead,BufNewFile *.rabl setf ruby
+
+" Enable matchit (RubyBlock needs this)
+runtime macros/matchit.vim
