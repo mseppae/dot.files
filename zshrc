@@ -47,8 +47,9 @@
 	alias redis.start="sudo redis-server /usr/local/etc/redis.conf"
 ### BlueReport project specific
         alias cd.bluereport="cd ~/Development/Cognita/bluereport && rvm use 1.8.7@bluereport"
-        alias spec.blue="bundle exec spec --drb -O spec/spec.opts"
+        alias spec.blue="DEFER_GC_ENABLED= DB_SEED_ALREADY_DONE=1 bundle exec spec --drb -O spec/spec.opts"
         alias sc="script/console"
+        alias devploy="bundle exec cap devserver deploy"
 
 ### Comet project specific
         alias cd.comet="cd ~/Development/Cognita/comet && rvm use 1.9.2@comet"
