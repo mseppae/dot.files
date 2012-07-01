@@ -113,7 +113,7 @@ highlight RedundantSpaces ctermbg=red guibg=red
 match     RedundantSpaces "\s\+$\| \+\ze\t"
 
 " Remove whitespace
-" map ,r :%s/\s\+$\\| \+\ze\t//g<CR>
+map ,w :%s/\s\+$\\| \+\ze\t//g<CR>
 
 " Search and replace with confirmation
 map ,s :%s/<C-r><C-w>//gc<Left><Left><Left>
@@ -126,3 +126,12 @@ au BufRead,BufNewFile *.rabl setf ruby
 
 " Enable matchit (RubyBlock needs this)
 runtime macros/matchit.vim
+
+" Highlight lines over 80 chars
+augroup vimrc_autocmds
+ autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
+ autocmd BufEnter * match OverLength /\%80v.*/
+augroup END
+
+" remove stupid warning when doing git commit
+let g:LustyExplorerSuppressRubyWarning = 1

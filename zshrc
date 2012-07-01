@@ -1,75 +1,72 @@
 # Zsh configuration http://www.gentoo.org/doc/en/zsh.xml
 ## History
-	HISTFILE=~/.histfile
-	HISTSIZE=1000
-	SAVEHIST=1000
+  HISTFILE=~/.histfile
+  HISTSIZE=1000
+  SAVEHIST=1000
+
 ## Options
-	setopt notify
-	setopt hist_ignore_all_dups
-	unsetopt beep
+  setopt notify
+  setopt hist_ignore_all_dups
+  unsetopt beep
+
 ## Binds
-	bindkey -e
+  bindkey -e
+
 ## Autocompletion
-	autoload -Uz compinit
-	compinit
-## Autocorrection
-#	setopt correctall
+  autoload -Uz compinit
+  compinit
+
 ## Command prompt
-	autoload -U promptinit
-	promptinit
-	export PS1="%n@%m %% "
+  autoload -U promptinit
+  promptinit
+  export PS1="%n@%m %% "
+
 ## Styles
-	zstyle :compinstall filename "$HOME/.zshrc"
-	zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
-	zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+  zstyle :compinstall filename "$HOME/.zshrc"
+  zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+  zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
 # Basic configuration
 ## Paths
-	export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
-        export NODE_PATH="/usr/local/lib/node_modules"
+  export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+  export NODE_PATH="/usr/local/lib/node_modules"
 
 ## RVM - This loads RVM into a shell session.
-	[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-## Aliases
-	alias l="ls -l"
-	alias la="ls -la"
-### SSH
-	alias ssh.reaper="ssh bsd.reaper.fi -p 28281"
-	alias ssh.dev="cd $HOME/Development/Cognita/cloud/ && rake ssh\[dev\]"
-### Apache2
-	alias apache.start="sudo apachectl start"
-	alias apache.stop="sudo apachectl stop"
-	alias apache.restart="sudo apachectl restart"
-### Postgresql
-        alias psql.start="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
-        alias psql.stop="pg_ctl -D /usr/local/var/postgres stop -s -m fast"
-### Redis
-	alias redis.start="sudo redis-server /usr/local/etc/redis.conf"
-### BlueReport project specific
-        alias cd.bluereport="cd ~/Development/Cognita/bluereport && rvm use 1.8.7@bluereport"
-        alias spec.blue="DEFER_GC_ENABLED= DB_SEED_ALREADY_DONE=1 bundle exec spec --drb -O spec/spec.opts"
-        alias sc="script/console"
-        alias devploy="bundle exec cap devserver deploy"
+  [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
-### Comet project specific
-        alias cd.comet="cd ~/Development/Cognita/comet && rvm use 1.9.2@comet"
-        alias spec.comet="bundle exec rspec --drb"
-        alias rco="rails console"
-        alias rdbco="rails dbconsole -p"
+## Aliases
+  alias l="ls -l"
+  alias la="ls -la"
+
+### SSH
+  alias ssh.reaper="ssh bsd.reaper.fi -p 28281"
+
+### BlueReport project specific
+  alias spec.blue="DEFER_GC_ENABLED= DB_SEED_ALREADY_DONE=1 bundle exec spec --drb -O spec/spec.opts"
+  alias devploy="bundle exec cap devserver deploy"
+
+##
+  alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit"
 
 # Enable UTF-8 support on iTerm2
-export LC_ALL="en_US.UTF-8"
+  export LC_ALL="en_US.UTF-8"
 
 # Git flow completion
-source ~/.git-flow-completion.zsh
-
-# Vi shell & start in Vi command mode
-# bindkey -v
-# zle-line-init() { zle -K vicmd; }
-# zle -N zle-line-init
+  source ~/.git-flow-completion.zsh
 
 # Functions
-rake-ssh()
+s()
 {
- BUNDLE_GEMFILE="/Users/mseppae/Development/Cognita/cloud/Gemfile" rake -f /Users/mseppae/Development/Cognita/cloud/Rakefile ssh\[$1\]
+ BUNDLE_GEMFILE="/Users/mseppae/Development/Cognita/cloud/Gemfile" bundle exec rake -f /Users/mseppae/Development/Cognita/cloud/Rakefile ssh\[$1\]
 }
+
+setopt prompt_subst
+autoload -Uz vcs_info
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+  fi
+}
+RPROMPT=$'$(vcs_info_wrapper)'
+
