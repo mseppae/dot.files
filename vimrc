@@ -106,7 +106,8 @@ set hidden
 
 " FuzzyFinder
 let mapleader = ","
-nmap ,f :FufCoverageFile<CR>
+nmap ,f :FufFile **/<CR>
+nmap ,b :FufBuffer<CR>
 
 " Highlight unwanted whitespace
 highlight RedundantSpaces ctermbg=red guibg=red
@@ -132,6 +133,3 @@ augroup vimrc_autocmds
  autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
  autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
-
-" remove stupid warning when doing git commit
-let g:LustyExplorerSuppressRubyWarning = 1
