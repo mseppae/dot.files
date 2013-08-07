@@ -70,3 +70,10 @@ vcs_info_wrapper() {
 }
 RPROMPT=$'$(vcs_info_wrapper)'
 
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+alias tmux="TERM=screen-256color-bce tmux"

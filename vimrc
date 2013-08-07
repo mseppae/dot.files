@@ -128,8 +128,13 @@ au BufRead,BufNewFile *.rabl setf ruby
 " Enable matchit (RubyBlock needs this)
 runtime macros/matchit.vim
 
+" Speed up syntax highlighting in big files
+syntax sync minlines=200
+
 " Highlight lines over 80 chars
 augroup vimrc_autocmds
  autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
  autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
+
+set clipboard=unnamed
