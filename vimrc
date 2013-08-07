@@ -100,7 +100,10 @@ set encoding=UTF-8
 " Press Space to turn off highlighting and clear any message already displayed.
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-colorscheme vividchalk
+syntax on
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
 
 set hidden
 
