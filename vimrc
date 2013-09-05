@@ -101,7 +101,7 @@ set encoding=UTF-8
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 syntax on
-set background=dark
+set background=light
 let g:solarized_termcolors=256
 colorscheme solarized
 
@@ -111,6 +111,9 @@ set hidden
 let mapleader = ","
 nmap ,f :FufFile **/<CR>
 nmap ,b :FufBuffer<CR>
+
+" JSHint
+nmap ,j :JSHint<CR>
 
 " Highlight unwanted whitespace
 highlight RedundantSpaces ctermbg=red guibg=red
