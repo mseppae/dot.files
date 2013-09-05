@@ -1,1 +1,1 @@
-/Users/mseppae/.vim/pathogen/autoload/pathogen.vim
+/home/vagrant/.vim/pathogen/autoload/pathogen.vim
