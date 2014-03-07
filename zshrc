@@ -28,7 +28,7 @@
 
 # Basic configuration
 ## Paths
-  export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+  export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/opt/curl/bin:$PATH"
   export NODE_PATH="/usr/local/lib/node_modules"
 
 ## RVM - This loads RVM into a shell session.
@@ -77,3 +77,5 @@ PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 export PATH="/usr/local/heroku/bin:$PATH"
 
 alias tmux="TERM=screen-256color-bce tmux"
+
+alias vb-restart="sudo /Library/StartupItems/VirtualBox/VirtualBox restart"

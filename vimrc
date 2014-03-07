@@ -1,11 +1,11 @@
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
   finish
 endif
-
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -38,10 +38,6 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
 endif
-
-" Pathogen
-silent! call pathogen#helptags()
-silent! call pathogen#infect()
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -86,16 +82,11 @@ if !exists(":DiffOrig")
 endif
 
 " Indententation with 2 spaces
-set sw=2 sts=2 et
-
-" No beeping.
-set visualbell
-
-" Line numbering
-set number
-
-" Encoding
-set encoding=UTF-8
+set sw=2 sts=2 et                         " Ruby intendation
+set visualbell                            " No stupid beeping
+set number                                " Set line numbers
+set encoding=UTF-8                        " Set encoding
+set autoread                              " Reload files when changed on disk
 
 " Press Space to turn off highlighting and clear any message already displayed.
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
@@ -107,10 +98,37 @@ colorscheme solarized
 
 set hidden
 
-" FuzzyFinder
+" Vundle
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'ggreer/the_silver_searcher'
+Bundle 'kien/ctrlp.vim'
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_user_command = 'find %s -type f'
+
+Bundle 'L9'
+Bundle 'FuzzyFinder'
 let mapleader = ","
 nmap ,f :FufFile **/<CR>
 nmap ,b :FufBuffer<CR>
+
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-endwise'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'jalm/jshint.vim'
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install (update) bundles
+" :BundleSearch(!) foo - search (or refresh cache first) for foo
+" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
 
 " JSHint
 nmap ,j :JSHint<CR>
@@ -124,9 +142,6 @@ map ,w :%s/\s\+$\\| \+\ze\t//g<CR>
 
 " Search and replace with confirmation
 map ,s :%s/<C-r><C-w>//gc<Left><Left><Left>
-
-" Coffee script compiling
-map ,cc :CoffeeCompile<CR>
 
 " Rabl syntax
 au BufRead,BufNewFile *.rabl setf ruby
