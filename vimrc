@@ -93,6 +93,7 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 syntax on
 set background=light
+set t_Co=16
 let g:solarized_termcolors=256
 colorscheme solarized
 
