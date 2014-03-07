@@ -104,20 +104,11 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
-Bundle 'ggreer/the_silver_searcher'
 Bundle 'kien/ctrlp.vim'
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = 'r'
+let g:ctrlp_regexp = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_user_command = 'find %s -type f'
-
-Bundle 'L9'
-Bundle 'FuzzyFinder'
-let mapleader = ","
-nmap ,f :FufFile **/<CR>
-nmap ,b :FufBuffer<CR>
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
@@ -129,9 +120,6 @@ Bundle 'altercation/vim-colors-solarized'
 " :BundleInstall(!)    - install (update) bundles
 " :BundleSearch(!) foo - search (or refresh cache first) for foo
 " :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
-
-" JSHint
-nmap ,j :JSHint<CR>
 
 " Highlight unwanted whitespace
 highlight RedundantSpaces ctermbg=red guibg=red
