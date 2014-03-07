@@ -108,7 +108,6 @@ Bundle 'kien/ctrlp.vim'
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_regexp = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
