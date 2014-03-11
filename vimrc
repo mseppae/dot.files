@@ -150,3 +150,5 @@ augroup vimrc_autocmds
 augroup END
 
 set clipboard=unnamed
+
+set colorcolumn=80
