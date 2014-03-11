@@ -145,7 +145,7 @@ syntax sync minlines=200
 
 " Highlight lines over 80 chars
 augroup vimrc_autocmds
- autocmd BufEnter * highlight OverLength ctermbg=darkgrey guibg=#592929
+ autocmd BufEnter * highlight OverLength ctermbg=black guibg=#592929
  autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
 
