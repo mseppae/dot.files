@@ -107,6 +107,8 @@ Bundle 'gmarik/vundle'
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_regexp = 1
+let g:ctrlp_max_files = 0
+map <c-b> :CtrlPBuffer<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 Bundle 'tpope/vim-surround'
