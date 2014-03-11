@@ -81,8 +81,9 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-" Indententation with 2 spaces
-set sw=2 sts=2 et                         " Ruby intendation
+" Indententation
+autocmd FileType ruby setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd FileType javascript setlocal expandtab shiftwidth=4 softtabstop=4
 set visualbell                            " No stupid beeping
 set number                                " Set line numbers
 set encoding=UTF-8                        " Set encoding
