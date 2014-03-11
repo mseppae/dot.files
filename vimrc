@@ -107,7 +107,9 @@ Bundle 'gmarik/vundle'
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_regexp = 1
-let g:ctrlp_max_files = 0
+let g:ctrlp_max_files = 0           " Scan all files for search
+let g:ctrlp_clear_cache_on_exit = 0 " Cross-session caching
+let g:ctrlp_show_hidden = 1         " Include hidden files & folders
 map <c-b> :CtrlPBuffer<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
