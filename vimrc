@@ -82,6 +82,7 @@ if !exists(":DiffOrig")
 endif
 
 " Indententation
+set tabstop=4 shiftwidth=4 expandtab
 autocmd FileType ruby setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd FileType javascript setlocal expandtab shiftwidth=4 softtabstop=4
 set visualbell                            " No stupid beeping
