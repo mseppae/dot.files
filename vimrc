@@ -82,9 +82,11 @@ if !exists(":DiffOrig")
 endif
 
 " Indententation
-set tabstop=4 shiftwidth=4 expandtab
+set sw=2 sts=2 et                         " Default intendation
 autocmd FileType ruby setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd FileType javascript setlocal expandtab shiftwidth=4 softtabstop=4
+autocmd FileType typescript setlocal expandtab shiftwidth=4 softtabstop=4
+
 set visualbell                            " No stupid beeping
 set number                                " Set line numbers
 set encoding=UTF-8                        " Set encoding
@@ -120,6 +122,7 @@ Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-endwise'
 Bundle 'altercation/vim-colors-solarized'
+au BufRead,BufNewFile *.ts setlocal filetype=typescript
 Bundle 'leafgarland/typescript-vim'
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
