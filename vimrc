@@ -1,149 +1,146 @@
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
+" Standard settings
 set nocompatible
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set nobackup		       " do not keep a backup file, use versions instead
+set noswapfile
+set history=1000	       " keep 1000 lines of command line history
+set ruler		       " show the cursor position all the time
+set showcmd		       " display incomplete commands
+set incsearch		       " do incremental searching
+set autoindent		       " always set autoindenting on
+set visualbell                 " No stupid beeping
+set number                     " Set line numbers
+set encoding=UTF-8             " Set encoding
+set autoread                   " Reload files when changed on disk
+set clipboard=unnamed
+set colorcolumn=80
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set hidden
+set background=light
+set t_Co=16
+set laststatus=2                " Statusline visible all the time
+let g:solarized_termcolors=256
+colorscheme solarized
+syntax on
+let mapleader="\<Space>"
 
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-  finish
-endif
+" Highlight unwanted whitespace
+highlight RedundantSpaces ctermbg=red guibg=red
+match     RedundantSpaces "\s\+$\| \+\ze\t"
 
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-endif
-set history=1000	" keep 1000 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
-
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
-endif
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
-
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
-
-  augroup END
-
-else
-
-  set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
-
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
-endif
-
-" Indententation
-set sw=2 sts=2 et                         " Default intendation
-autocmd FileType ruby setlocal expandtab shiftwidth=2 softtabstop=2
-autocmd FileType javascript setlocal expandtab shiftwidth=4 softtabstop=4
-autocmd FileType typescript setlocal expandtab shiftwidth=4 softtabstop=4
-
-set visualbell                            " No stupid beeping
-set number                                " Set line numbers
-set encoding=UTF-8                        " Set encoding
-set autoread                              " Reload files when changed on disk
-
+" Mappings - Normal mode
 " Press Space to turn off highlighting and clear any message already displayed.
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-syntax on
-set background=light
-set t_Co=16
-let g:solarized_termcolors=256
-colorscheme solarized
+" Quick way for editing and reloading vim configuration
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
 
-set hidden
+" Remove whitespace
+nnoremap <leader>w :%s/\s\+$\\| \+\ze\t//g<CR>
+
+" Search and replace with confirmation
+nnoremap <leader>sr :%s/<C-r><C-w>//gc<Left><Left><Left>
+
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit<CR>
+
+vmap v <Plug>(expand_region_expand)
+vmap <c-v> <Plug>(expand_region_shrink)
+
+" Quicker way of doing mundane tasks
+nnoremap <leader>p :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+
+" Mappings - Insert mode
+" Quick escape from insert and visual mode...
+inoremap jk <esc>
+vnoremap df <esc>
+" ... and enforce using it
+inoremap <esc> <nop>
+
+" Filetypes
+" Ruby
+au BufNewFile,BufRead *.rb        set filetype=ruby
+au BufNewFile,BufRead *.ru        set filetype=ruby
+au BufNewFile,BufRead *.rabl      set filetype=ruby
+au BufNewFile,BufRead *.gemspec   set filetype=ruby
+au BufNewFile,BufRead Rakefile    set filetype=ruby
+au BufNewFile,BufRead Gemfile     set filetype=ruby
+au BufNewFile,BufRead Vagrantfile set filetype=ruby
+au Filetype ruby call RubySettings()
+au Filetype ruby call RubySpecificMappings()
+function! RubySettings()
+  setlocal expandtab
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+endfunction
+
+function! RubySpecificMappings()
+    nnoremap <leader>c I# <esc>
+endfunction
+
+" C, C++
+au BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
+
+function! CSpecificMappings()
+    set expandtab
+    set tabstop=4
+    set shiftwidth=4
+    set softtabstop=4
+endfunction
+
+" Javascript & Typescript
+au BufNewFile,BufRead *.js        set filetype=javascript
+au BufNewFile,BufRead *.ts        set filetype=typescript
+
+" HTML
+au Filetype eruby call RubySettings()
+au Filetype html call RubySettings()
 
 " Vundle
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-fugitive'
 Bundle 'kien/ctrlp.vim'
+" Ctrlp config
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_regexp = 1
 let g:ctrlp_max_files = 0           " Scan all files for search
 let g:ctrlp_show_hidden = 1         " Include hidden files & folders
-map <c-b> :CtrlPBuffer<CR>
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.xml
 
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-endwise'
 Bundle 'altercation/vim-colors-solarized'
-au BufRead,BufNewFile *.ts setlocal filetype=typescript
 Bundle 'leafgarland/typescript-vim'
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install (update) bundles
-" :BundleSearch(!) foo - search (or refresh cache first) for foo
-" :BundleClean(!)      - confirm (or auto-approve) removal of unused bundles
+Bundle 'scrooloose/syntastic'
+let g:syntastic_ruby_checkers = ['rubocop']
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'terryma/vim-expand-region'
+Bundle 'skalnik/vim-vroom'
+Bundle 'bling/vim-airline'
+let g:airline_theme='solarized'
+let g:airline_solarized_bg='light'
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline_section_z=''
 
-" Highlight unwanted whitespace
-highlight RedundantSpaces ctermbg=red guibg=red
-match     RedundantSpaces "\s\+$\| \+\ze\t"
-
-" Remove whitespace
-map ,w :%s/\s\+$\\| \+\ze\t//g<CR>
-
-" Search and replace with confirmation
-map ,s :%s/<C-r><C-w>//gc<Left><Left><Left>
-
-" Rabl syntax
-au BufRead,BufNewFile *.rabl setf ruby
-
+" Tweaks
 " Enable matchit (RubyBlock needs this)
 runtime macros/matchit.vim
 
@@ -155,7 +152,3 @@ augroup vimrc_autocmds
  autocmd BufEnter * highlight OverLength ctermbg=black guibg=#592929
  autocmd BufEnter * match OverLength /\%80v.*/
 augroup END
-
-set clipboard=unnamed
-
-set colorcolumn=80

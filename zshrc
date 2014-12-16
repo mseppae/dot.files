@@ -71,7 +71,7 @@ vcs_info_wrapper() {
 RPROMPT=$'$(vcs_info_wrapper)'
 
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -79,3 +79,7 @@ export PATH="/usr/local/heroku/bin:$PATH"
 alias tmux="TERM=screen-256color-bce tmux"
 
 alias vb-restart="sudo /Library/StartupItems/VirtualBox/VirtualBox restart"
+
+# Rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
