@@ -1,5 +1,6 @@
 #!/bin/sh
 
+(cd ~/.vim && git submodule init && git submodule update)
 ln -nfs ~/.vim/zshrc ~/.zshrc
 ln -nfs ~/.vim/vimrc ~/.vimrc
 ln -nfs ~/.vim/gvimrc ~/.gvimrc
