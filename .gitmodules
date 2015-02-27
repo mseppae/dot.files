@@ -1,3 +1,6 @@
+[submodule "git/git-flow-completion"]
+	path = git/git-flow-completion
+	url = https://github.com/bobthecow/git-flow-completion
 [submodule "bundle/vundle"]
 	path = bundle/vundle
-	url = https://github.com/gmarik/vundle.git
+	url = https://github.com/gmarik/Vundle.vim
