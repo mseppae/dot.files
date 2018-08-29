@@ -98,15 +98,14 @@ Plugin 'Raimondi/delimitMate'
 "" provides commenting via gc
 Plugin 'tpope/vim-commentary'
 "" Languages
-Plugin 'leafgarland/typescript-vim'
-autocmd QuickFixCmdPost [^l]* nested cwindow
-autocmd QuickFixCmdPost    l* nested lwindow
-Plugin 'rust-lang/rust.vim'
+Plugin 'sheerun/vim-polyglot'
+let g:polyglot_disabled = ['graphql']
+"" Code completion
+""" provides code completion for Rust
 Plugin 'phildawes/racer'
 let g:racer_cmd = "/Users/mseppae/Development/target/release/racer"
 let $RUST_SRC_PATH="/Users/mseppae/Development/rust/rust/src"
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'rhysd/vim-crystal'
+" The end
 call vundle#end()
 
 " Other configurations
@@ -115,6 +114,11 @@ let g:solarized_termcolors=256
 colorscheme solarized
 let mapleader="\<Space>"
 let maplocalleader="\<Space>"
+
+" Automatically open, but do not go to (if there are errors) the quickfix /
+" location list window, or close it when is has become empty.
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
 
 " Mappings
 "" Press Space to turn off highlighting and clear any message already displayed.
