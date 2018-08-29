@@ -97,8 +97,6 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'Raimondi/delimitMate'
 "" provides commenting via gc
 Plugin 'tpope/vim-commentary'
-"" provides multiple cursors
-Plugin 'terryma/vim-multiple-cursors'
 "" Languages
 Plugin 'leafgarland/typescript-vim'
 autocmd QuickFixCmdPost [^l]* nested cwindow
