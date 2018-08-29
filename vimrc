@@ -105,6 +105,13 @@ let g:polyglot_disabled = ['graphql']
 Plugin 'phildawes/racer'
 let g:racer_cmd = "/Users/mseppae/Development/target/release/racer"
 let $RUST_SRC_PATH="/Users/mseppae/Development/rust/rust/src"
+"" Logbook
+Plugin 'jamesroutley/vim-logbook'
+"" open the logbook
+nnoremap <leader>ll :Lb<CR>
+"" add a line below cursor, exit insert mode, add timestamp and enter
+"" insert mode for adding text
+nnoremap <leader>lt @='o<C-V><Esc>'<CR>:Ts<CR>a
 " The end
 call vundle#end()
 
