@@ -35,25 +35,11 @@
 ## RVM - This loads RVM into a shell session.
   [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
-## Aliases
-  alias l="ls -l"
-  alias la="ls -la"
-
-### SSH
-  alias ssh.reaper="ssh bsd.reaper.fi -p 28281"
-
-### BlueReport project specific
-  alias spec.blue="DEFER_GC_ENABLED= DB_SEED_ALREADY_DONE=1 bundle exec spec --drb -O spec/spec.opts"
-  alias devploy="bundle exec cap devserver deploy"
-
 ##
   alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit"
 
 # Enable UTF-8 support on iTerm2
   export LC_ALL="en_US.UTF-8"
-
-# Git flow completion
-  source ~/.git-flow-completion.zsh
 
 # Functions
 s()
@@ -70,9 +56,6 @@ vcs_info_wrapper() {
   fi
 }
 RPROMPT=$'$(vcs_info_wrapper)'
-
-
-# PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"

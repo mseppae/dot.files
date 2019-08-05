@@ -1,6 +1,3 @@
-[submodule "git/git-flow-completion"]
-	path = git/git-flow-completion
-	url = https://github.com/bobthecow/git-flow-completion
 [submodule "pack/mseppae/start/fzf.vim"]
 	path = pack/mseppae/start/fzf.vim
 	url = https://github.com/junegunn/fzf.vim
