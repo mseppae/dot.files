@@ -6,8 +6,9 @@
 
 ## Options
   setopt notify
-  setopt hist_ignore_all_dups
   unsetopt beep
+  # Show no duplicates on history searc
+  setopt HIST_FIND_NO_DUPS
 
 ## Binds
   bindkey -e
@@ -83,6 +84,20 @@ alias vb-restart="sudo /Library/StartupItems/VirtualBox/VirtualBox restart"
 # Rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+# Android SDK
+export PATH="$HOME/Development/android-sdk-macosx/platform-tools:$HOME/Development/android-sdk-macosx/tools:$PATH"
+
+# iOS development
+alias clear-cordova="rm -rf $HOME/Development/Cognita/reader-cordova/www; rm -rf $HOME/Development/Cognita/reader-cordova/platforms; rm -rf $HOME/Development/Cognita/reader-cordova/plugins"
+
+# Lua game dev
+alias love="/Applications/love.app/Contents/MacOS/love"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# https://github.com/wting/autojump
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
