@@ -1,6 +1,9 @@
 " Standard settings
 set nocompatible
+" Needed for omni-completion
 filetype plugin indent on
+set omnifunc=syntaxcomplete#Complete
+
 set autoread            " Reload files when changed on disk
 set clipboard=unnamed
 set visualbell          " No stupid beeping
@@ -14,8 +17,8 @@ set nobackup		   " do not keep a backup file, use versions instead
 set noswapfile
 
 "" Searching
-set hlsearch
-set incsearch          " do incremental searching
+set hlsearch           " highlight search
+set incsearch          " do incremental searching (search while typing)
 set ignorecase
 set smartcase
 
@@ -25,16 +28,16 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 
 " Tabs
-set tabstop=4
+set tabstop=4          " Number of visual spaces in tab
 set shiftwidth=4
-set softtabstop=4
-set expandtab
+set softtabstop=4      " Number of spaces in tab when editing
+set expandtab          " Tabs are spaces
 
 " Buffers
 set hidden              " Enable hidden buffers
 
 " Visual
-syntax on
+syntax enable            " Enable syntax processing
 set number               " Set line numbers
 set ruler		         " show the cursor position all the time
 set t_Co=16
@@ -84,7 +87,6 @@ let g:racer_cmd = "/Users/mseppae/Development/target/release/racer"
 let $RUST_SRC_PATH="/Users/mseppae/Development/rust/rust/src"
 
 " Other configurations
-set omnifunc=syntaxcomplete#Complete
 let g:solarized_termcolors=256
 colorscheme solarized
 let mapleader="\<Space>"
@@ -109,10 +111,21 @@ nnoremap <leader>gb :Gblame<CR>
 vmap v <Plug>(expand_region_expand)
 vmap <c-v> <Plug>(expand_region_shrink)
 "" Quicker way of doing mundane tasks
-nnoremap <leader>p :CtrlP<CR>
-nnoremap <leader>B :CtrlPBuffer<CR>
+nnoremap <C-f> :Files<Cr>
+nnoremap <C-b> :Buffers<Cr>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
+map $ <Nop>
+map ^ <Nop>
+map { <Nop>
+map } <Nop>
+noremap K     {
+noremap J     }
+noremap H     ^
+noremap L     $
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
 "" Quick escape from insert and visual mode...
 inoremap jk <esc>
 vnoremap fd <esc>
@@ -126,6 +139,14 @@ nnoremap <leader>v :vsplit<CR>
 """ Split horizontally
 nnoremap <leader>h :split<CR>
 
+inoremap <> <><Left>
+inoremap () ()<Left>
+inoremap {} {}<Left>
+inoremap [] []<Left>
+inoremap "" ""<Left>
+inoremap '' ''<Left>
+inoremap `` ``<Left>
+
 " Filetypes
 "" Ruby
 au BufNewFile,BufRead *.rb        set filetype=ruby
@@ -135,18 +156,6 @@ au BufNewFile,BufRead *.gemspec   set filetype=ruby
 au BufNewFile,BufRead Rakefile    set filetype=ruby
 au BufNewFile,BufRead Gemfile     set filetype=ruby
 au BufNewFile,BufRead Vagrantfile set filetype=ruby
-au Filetype ruby call RubySettings()
-au Filetype ruby call RubySpecificMappings()
-function! RubySettings()
-  setlocal expandtab
-  setlocal tabstop=2
-  setlocal shiftwidth=2
-  setlocal softtabstop=2
-endfunction
-
-function! RubySpecificMappings()
-    nnoremap <leader>c I# <esc>
-endfunction
 
 "" Rust
 au BufNewFile,BufRead *.rs        set filetype=rust
@@ -156,13 +165,9 @@ au BufRead,BufNewFile *.h,*.c     set filetype=c.doxygen
 
 "" Javascript & Typescript
 au BufNewFile,BufRead *.js        set filetype=javascript
+au BufNewFile,BufRead *.jsx       set filetype=javascript
 au BufNewFile,BufRead *.ts        set filetype=typescript
 au BufNewFile,BufRead *.tsx       set filetype=typescript
-
-"" HTML
-au Filetype eruby call RubySettings()
-au Filetype html call RubySettings()
-au Filetype typescript call RubySettings()
 
 " Tweaks
 "" Enable matchit (RubyBlock needs this)
