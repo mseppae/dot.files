@@ -43,31 +43,15 @@ set background=light
 set colorcolumn=80
 set showcmd		         " display incomplete commands
 
-" Vundle
-set rtp+=~/.vim/bundle/vundle/
-call vundle#begin()
-Plugin 'gmarik/vundle'
-"" provides git blame
-Plugin 'tpope/vim-fugitive'
-"" provides fast file search
-Plugin 'kien/ctrlp.vim'
-let g:ctrlp_custom_ignore = '\.git$\|log$\|build$\|node_modules$\|\.tscache$'
-let g:ctrlp_working_path_mode = 'r'
-let g:ctrlp_regexp = 1
-let g:ctrlp_max_files = 0           " Scan all files for search
-let g:ctrlp_show_hidden = 1         " Include hidden files & folders
-set wildignore+=*/.git/*,*/tmp/*,*.so,*.swp,*.zip,*.xml
-"" Use ripgrep for blazing fast search
-if executable('rg')
-  set grepprg=rg\ --color=never
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  let g:ctrlp_use_caching = 0
-endif
-"" provides adding an end after keyword
-Plugin 'tpope/vim-endwise'
-Plugin 'altercation/vim-colors-solarized'
-"" provides linting and code quality services
-Plugin 'w0rp/ale'
+" Fuzzy searching
+"" fzf integration
+set rtp+=/usr/local/opt/fzf
+
+" Gundo - Graphical undo tree
+let g:gundo_prefer_python3 = 1
+
+" Linting
+"" w0rp/ale provides linting and code quality services
 let g:ale_linters = {
 \   'javascript': ['eslint', 'jslint'],
 \   'typescript': ['eslint', 'tslint'],
@@ -78,11 +62,9 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 let g:airline#extensions#ale#enabled = 1
-"" provides code completion
-Plugin 'Valloric/YouCompleteMe'
+
+" Vim Airline
 "" provides status line
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='light'
@@ -91,29 +73,15 @@ let g:airline_left_sep          = '▶'
 let g:airline_left_alt_sep      = '»'
 let g:airline_right_sep         = '◀'
 let g:airline_right_alt_sep     = '«'
-"" provides signs for file changes
-Plugin 'airblade/vim-gitgutter'
-"" provides automatic closing of quotes, parenthesis, brackets, etc.
-Plugin 'Raimondi/delimitMate'
-"" provides commenting via gc
-Plugin 'tpope/vim-commentary'
-"" Languages
-Plugin 'sheerun/vim-polyglot'
+
+" Language packs
 let g:polyglot_disabled = ['graphql']
+
+" Rust
 "" Code completion
 """ provides code completion for Rust
-Plugin 'phildawes/racer'
 let g:racer_cmd = "/Users/mseppae/Development/target/release/racer"
 let $RUST_SRC_PATH="/Users/mseppae/Development/rust/rust/src"
-"" Logbook
-Plugin 'jamesroutley/vim-logbook'
-"" open the logbook
-nnoremap <leader>ll :Lb<CR>
-"" add a line below cursor, exit insert mode, add timestamp and enter
-"" insert mode for adding text
-nnoremap <leader>lt @='o<C-V><Esc>'<CR>:Ts<CR>a
-" The end
-call vundle#end()
 
 " Other configurations
 set omnifunc=syntaxcomplete#Complete
@@ -128,6 +96,8 @@ autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
 
 " Mappings
+"" Open undotree
+nnoremap <leader>u :GundoToggle<CR>
 "" Press Space to turn off highlighting and clear any message already displayed.
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 "" Quick way for editing and reloading vim configuration

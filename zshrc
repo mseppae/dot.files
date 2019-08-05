@@ -83,3 +83,8 @@ alias vb-restart="sudo /Library/StartupItems/VirtualBox/VirtualBox restart"
 # Rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
