@@ -16,6 +16,10 @@ set updatetime=100
 set nobackup		   " do not keep a backup file, use versions instead
 set noswapfile
 
+" Undo
+set undofile           " Maintain undo history between sessions
+set undodir=~/.vim/undodir
+
 "" Searching
 set hlsearch           " highlight search
 set incsearch          " do incremental searching (search while typing)
@@ -56,8 +60,8 @@ let g:gundo_prefer_python3 = 1
 " Linting
 "" w0rp/ale provides linting and code quality services
 let g:ale_linters = {
-\   'javascript': ['eslint', 'jslint'],
-\   'typescript': ['eslint', 'tslint'],
+\   'javascript': ['eslint'],
+\   'typescript': ['eslint'],
 \   'ruby': ['rubocop']
 \}
 let g:ale_fixers = {
@@ -79,6 +83,9 @@ let g:airline_right_alt_sep     = '«'
 
 " Language packs
 let g:polyglot_disabled = ['graphql']
+
+" Vim Wiki
+let g:vimwiki_list = [{'path': '~/Development/notes/'}]
 
 " Rust
 "" Code completion
@@ -130,7 +137,7 @@ nnoremap k gk
 inoremap jk <esc>
 vnoremap fd <esc>
 "" Unmap esc (too far to reach)
-inoremap <esc> <nop>
+"" inoremap <esc> <nop>
 "" Split screen handling
 """ Close all the other splits
 nnoremap <leader>c :on<CR>
@@ -156,6 +163,7 @@ au BufNewFile,BufRead *.gemspec   set filetype=ruby
 au BufNewFile,BufRead Rakefile    set filetype=ruby
 au BufNewFile,BufRead Gemfile     set filetype=ruby
 au BufNewFile,BufRead Vagrantfile set filetype=ruby
+au BufNewFile,BufRead Dockerfile* set syntax=dockerfile
 
 "" Rust
 au BufNewFile,BufRead *.rs        set filetype=rust
