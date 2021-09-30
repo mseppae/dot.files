@@ -52,7 +52,7 @@ set showcmd		         " display incomplete commands
 
 " Fuzzy searching
 "" fzf integration
-set rtp+=/usr/local/opt/fzf
+set rtp+=/opt/homebrew/opt/fzf
 
 " Gundo - Graphical undo tree
 let g:gundo_prefer_python3 = 1

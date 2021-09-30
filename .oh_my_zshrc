@@ -131,14 +131,6 @@ export NVM_DIR="$HOME/.nvm"
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Functions
-s()
-{
- asdf shell ruby 2.3.0
- BUNDLE_GEMFILE="/Users/mseppae/Development/Cognita/cloud/Gemfile" aws-vault exec seppae-cognita -- bundle exec rake -f /Users/mseppae/Development/Cognita/cloud/Rakefile ssh\[$1\]
- asdf shell ruby --unset
-}
-
 ## History
   HISTFILE=~/.histfile
 

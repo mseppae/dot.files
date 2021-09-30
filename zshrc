@@ -1,92 +1,147 @@
-# Zsh configuration http://www.gentoo.org/doc/en/zsh.xml
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/mseppae/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="honukai"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  asdf
+  bundler
+  colored-man-pages
+  docker
+  docker-compose
+  # dotenv
+  fzf
+  gem
+  git
+  npm
+  # npx
+  nvm
+  osx
+  # rails
+  # rake
+  ripgrep
+  # ruby
+  rust
+  vagrant
+  web-search
+  yarn
+  z
+  # zsh-autosuggestions
+  zsh-interactive-cd
+  # zsh-history-substring-search
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/opt/homebrew/share/zsh-syntax-highlighting/highlighters
+
 ## History
   HISTFILE=~/.histfile
-  HISTSIZE=1000
-  SAVEHIST=1000
 
-## Options
-  setopt notify
-  unsetopt beep
-  # Show no duplicates on history searc
-  setopt HIST_FIND_NO_DUPS
+## Lib PQ
+export LDFLAGS="-L/usr/local/opt/libpq/lib $LDFLAGS"
+export CPPFLAGS="-I/usr/local/opt/libpq/include $CPPFLAGS"
+export PATH="/usr/local/opt/libpq/bin:$PATH"
 
-## Binds
-  bindkey -e
-
-## Autocompletion
-  autoload -Uz compinit
-  compinit
-
-## Command prompt
-  autoload -U promptinit
-  promptinit
-  export PS1="%n@%m %% "
-
-## Styles
-  zstyle :compinstall filename "$HOME/.zshrc"
-  zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
-  zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
-
-# Basic configuration
-## Paths
-  export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/opt/curl/bin:$PATH"
-  export NODE_PATH="/usr/local/lib/node_modules"
-
-## RVM - This loads RVM into a shell session.
-  [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
-
-##
-  alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit"
-
-# Enable UTF-8 support on iTerm2
-  export LC_ALL="en_US.UTF-8"
-
-# Functions
-s()
-{
- BUNDLE_GEMFILE="/Users/mseppae/Development/Cognita/cloud/Gemfile" bundle exec rake -f /Users/mseppae/Development/Cognita/cloud/Rakefile ssh\[$1\]
-}
-
-setopt prompt_subst
-autoload -Uz vcs_info
-vcs_info_wrapper() {
-  vcs_info
-  if [ -n "$vcs_info_msg_0_" ]; then
-    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
-  fi
-}
-RPROMPT=$'$(vcs_info_wrapper)'
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-alias tmux="TERM=screen-256color-bce tmux"
-
-alias vb-restart="sudo /Library/StartupItems/VirtualBox/VirtualBox restart"
-
-# Rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# Android SDK
-export PATH="$HOME/Development/android-sdk-macosx/platform-tools:$HOME/Development/android-sdk-macosx/tools:$PATH"
-
-# iOS development
-alias clear-cordova="rm -rf $HOME/Development/Cognita/reader-cordova/www; rm -rf $HOME/Development/Cognita/reader-cordova/platforms; rm -rf $HOME/Development/Cognita/reader-cordova/plugins"
-
-# Lua game dev
-alias love="/Applications/love.app/Contents/MacOS/love"
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-# https://github.com/wting/autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# V8@3.15 homebrew
-export LDFLAGS="-L/usr/local/opt/v8@3.15/lib"
-export CPPFLAGS="-I/usr/local/opt/v8@3.15/include"
