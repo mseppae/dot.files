@@ -1,3 +1,45 @@
+" Setting up plugins
+"   Prerequisite: mkdir -p ~/.vim/pack/plugins/start/
+"
+"   fzf
+"   git clone --depth 1 https://github.com/junegunn/fzf.vim ~/.vim/pack/plugins/start/fzf
+"   Prerequisities: brew install fzf
+"                   $(brew --prefix)/opt/fzf/install
+"
+"   ale (asynchronous lint engine)
+"   git clone --depth 1 https://github.com/dense-analysis/ale ~/.vim/pack/plugins/start/ale
+"
+"   vim-airline
+"   git clone --depth 1 https://github.com/vim-airline/vim-airline ~/.vim/pack/plugins/start/vim-airline
+"   fonts: https://github.com/runsisi/consolas-font-for-powerline
+"
+"   vim-airline-themse
+"   git clone --depth 1 https://github.com/vim-airline/vim-airline-themes ~/.vim/pack/plugins/start/vim-airline-themes
+"   Run: :helptags ~/.vim/pack/plugins/start/vim-airline-themes/doc
+"
+"   vim-colors-solarized
+"   git clone --depth 1 https://github.com/altercation/vim-colors-solarized ~/.vim/pack/plugins/start/vim-colors-solarized
+"
+"   nerdTREE
+"   git clone --depth 1 https://github.com/scrooloose/nerdtree.git ~/.vim/pack/plugins/start/nerdtree
+"
+"   vim-fugitive
+"   git clone --depth 1 https://github.com/tpope/vim-fugitive.git ~/.vim/pack/plugins/start/vim-fugitive
+"
+"   vim-wiki
+"   git clone --depth 1 https://github.com/vimwiki/vimwiki ~/.vim/pack/plugins/start/vimwiki
+"
+"   vim-go
+"   git clone --depth 1 https://github.com/fatih/vim-go.git ~/.vim/pack/plugins/start/vim-go
+"   Run: :GoInstallBinaries
+"   cheatsheet: https://tpaschalis.github.io/vim-go-setup/#cheatsheet
+"
+"   Gundo
+"   git clone --depth 1 https://github.com/sjl/gundo.vim ~/.vim/pack/plugins/start/gundo
+"
+"   vim-prettier
+"   git clone --depth 1 https://github.com/vim-airline/vim-airline ~/.vim/pack/plugins/start/vim-prettier
+
 " Standard settings
 set nocompatible
 " Needed for omni-completion
@@ -27,7 +69,7 @@ set ignorecase
 set smartcase
 
 " Encoding
-set encoding=UTF-8     " Set encoding
+set encoding=utf-8     " Set encoding
 set fileencoding=utf-8
 set fileencodings=utf-8
 
@@ -46,9 +88,14 @@ set number               " Set line numbers
 set ruler		         " show the cursor position all the time
 set t_Co=16
 set laststatus=2         " Statusline visible all the time
-set background=light
-set colorcolumn=80
+set background=dark
+" set colorcolumn=80
 set showcmd		         " display incomplete commands
+
+" vim-go - Go development
+" let g:go_fmt_command = "goimports"  " Run go imports along go fmt on each save
+let g:go_auto_type_info = 1         " Automatically get signature/type info for object under curso" Automatically open autocomplete on .
+au filetype go inoremap <buffer> . .<C-x><C-o>
 
 " Fuzzy searching
 "" fzf integration
@@ -61,10 +108,12 @@ let g:gundo_prefer_python3 = 1
 "" w0rp/ale provides linting and code quality services
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'typescript': ['eslint'],
+\   'typescript': ['eslint', 'tslint'],
 \   'ruby': ['rubocop']
 \}
 let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'typescript': ['prettier'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace']
 \}
 let g:ale_fix_on_save = 1
@@ -74,12 +123,8 @@ let g:airline#extensions#ale#enabled = 1
 "" provides status line
 let g:airline_powerline_fonts = 1
 let g:airline_theme='solarized'
-let g:airline_solarized_bg='light'
+let g:airline_solarized_bg='dark'
 let g:airline_section_b = '%{strftime("%a %d.%m.%Y %H:%M")}'
-let g:airline_left_sep          = '▶'
-let g:airline_left_alt_sep      = '»'
-let g:airline_right_sep         = '◀'
-let g:airline_right_alt_sep     = '«'
 
 " Language packs
 let g:polyglot_disabled = ['graphql']
@@ -92,6 +137,12 @@ let g:vimwiki_list = [{'path': '~/Development/notes/'}]
 """ provides code completion for Rust
 let g:racer_cmd = "/Users/mseppae/Development/target/release/racer"
 let $RUST_SRC_PATH="/Users/mseppae/Development/rust/rust/src"
+
+" Vim-prettier
+packloadall
+
+" NERDTree plugin specific commands
+:nnoremap <C-g> :NERDTreeToggle<CR>
 
 " Other configurations
 let g:solarized_termcolors=256
@@ -114,7 +165,7 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 "" Search and replace with confirmation
 nnoremap <leader>r :%s/<C-r><C-w>//gc<Left><Left><Left>
-nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gb :Git blame<CR>
 vmap v <Plug>(expand_region_expand)
 vmap <c-v> <Plug>(expand_region_shrink)
 "" Quicker way of doing mundane tasks
@@ -177,13 +228,20 @@ au BufNewFile,BufRead *.jsx       set filetype=javascript
 au BufNewFile,BufRead *.ts        set filetype=typescript
 au BufNewFile,BufRead *.tsx       set filetype=typescript
 
+" Tabs
+autocmd Filetype html setlocal ts=2 sw=2 sts=2 expandtab
+autocmd Filetype ruby setlocal ts=2 sw=2 sts=2 expandtab
+autocmd Filetype javascript setlocal ts=2 sw=2 sts=2 expandtab
+autocmd Filetype typescript setlocal ts=2 sw=2 sts=2 expandtab
+autocmd Filetype html setlocal ts=2 sw=2 sts=2 expandtab
+
 " Tweaks
 "" Enable matchit (RubyBlock needs this)
 runtime macros/matchit.vim
 "" Speed up syntax highlighting in big files
 syntax sync minlines=200
 "" Highlight lines over 80 chars
-augroup vimrc_autocmds
- autocmd BufEnter * highlight OverLength ctermbg=black guibg=#592929
- autocmd BufEnter * match OverLength /\%80v.*/
-augroup END
+"augroup vimrc_autocmds
+" autocmd BufEnter * highlight OverLength ctermbg=black guibg=#592929
+" autocmd BufEnter * match OverLength /\%80v.*/
+"augroup END
