@@ -3,6 +3,8 @@ if not gitsigns_status_ok then
 	return
 end
 
+local nnoremap = require("mseppae.keymap").nnoremap
+
 gitsigns.setup({
 	signs = {
 		add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
@@ -44,3 +46,5 @@ gitsigns.setup({
 		enable = false,
 	},
 })
+
+nnoremap('<leader>hb', function() gitsigns.blame_line{full=true} end)
