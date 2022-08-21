@@ -36,7 +36,7 @@ local function config(_config)
 			vim.cmd([[ command! Format execute 'lua vim.lsp.buf.formatting()' ]])
 			nnoremap("<leader>f", ":Format<cr>")
 			-- Use null-ls formatter for given language servers
-			if client.name == "tsserver" or client.name == "sumneko_lua" then
+			if client.name == "tsserver" or client.name == "sumneko_lua" or "goimports" then
 				client.resolved_capabilities.document_formatting = false
 			end
 

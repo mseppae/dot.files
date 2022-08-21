@@ -12,6 +12,7 @@ null_ls.setup({
 		formatting.prettier,
 		formatting.eslint_d,
 		formatting.stylua,
+		formatting.goimports,
 
 		diagnostics.rubocop,
 	},
