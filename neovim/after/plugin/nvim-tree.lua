@@ -11,3 +11,4 @@ nvim_tree.setup({
 })
 
 nnoremap("<leader>e", ":NvimTreeToggle<cr>")
+nnoremap("<leader>F", ":NvimTreeFindFile<cr>")

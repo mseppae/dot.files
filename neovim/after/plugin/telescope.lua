@@ -5,6 +5,17 @@ end
 
 local nnoremap = require("mseppae.keymap").nnoremap
 
+telescope.setup(
+  {
+    pickers = {
+      buffers = {
+        ignore_current_buffer = true,
+        sort_mru = true,
+      }
+    }
+  }
+)
+
 nnoremap("<C-f>f", "<cmd>Telescope find_files<cr>")
 nnoremap("<C-f>g", "<cmd>Telescope live_grep<cr>")
 nnoremap("<C-f>b", "<cmd>Telescope buffers<cr>")
