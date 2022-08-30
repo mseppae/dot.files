@@ -59,6 +59,9 @@ return packer.startup(function(use)
 	-- Quick commenting
 	use({ "numToStr/Comment.nvim", commit = "ba5903b88c0a43fdc94abe79ade2b8291ff661ed" })
 	use({ "JoosepAlviste/nvim-ts-context-commentstring", commit = "a0fdebebb1f72492948292398558d5713b54e9f1" })
-  -- Vimwiki
-  use({ "vimwiki/vimwiki", commit = "63af6e72dd3fa840bffb3ebcb8c96970c02e0913" })
+
+	-- Vimwiki
+	use({ "vimwiki/vimwiki", commit = "63af6e72dd3fa840bffb3ebcb8c96970c02e0913" })
+
+	use({ "folke/trouble", commit = "da61737d860ddc12f78e638152834487eabf0ee5" })
 end)
