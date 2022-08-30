@@ -81,7 +81,7 @@ plugins=(
   npm
   # npx
   nvm
-  osx
+  macos
   # rails
   # rake
   ripgrep
