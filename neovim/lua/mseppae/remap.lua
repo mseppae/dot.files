@@ -1,10 +1,6 @@
 local nnoremap = require("mseppae.keymap").nnoremap
 local vnoremap = require("mseppae.keymap").vnoremap
 local inoremap = require("mseppae.keymap").inoremap
-local nmap = require("mseppae.keymap").nmap
-
-nmap("$", "<Nop>")
-nmap("^", "<Nop>")
 
 nnoremap("<Space>", ":nohlsearch<Bar>:echo<CR>")
 nnoremap("<leader>r", ":%s/<C-r><C-w>//gc<Left><Left><Left>")

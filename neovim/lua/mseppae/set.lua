@@ -15,7 +15,7 @@ local options = {
 	numberwidth = 4, -- set number column width {default 4}
 	signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
 	number = true, -- set numbered lines
-	relativenumber = false, -- set relative numbered lines
+	relativenumber = true, -- set relative numbered lines
 
 	autoindent = true,
 	hlsearch = true, -- highlight all matches on previous search pattern

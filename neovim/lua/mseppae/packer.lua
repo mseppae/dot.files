@@ -63,5 +63,5 @@ return packer.startup(function(use)
 	-- Vimwiki
 	use({ "vimwiki/vimwiki", commit = "63af6e72dd3fa840bffb3ebcb8c96970c02e0913" })
 
-	use({ "folke/trouble", commit = "da61737d860ddc12f78e638152834487eabf0ee5" })
+	use({ "folke/trouble.nvim", commit = "da61737d860ddc12f78e638152834487eabf0ee5" })
 end)
