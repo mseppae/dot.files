@@ -5,18 +5,18 @@ end
 
 local conf = {
 	window = {
-		border = "single",    -- none, single, double, shadow
-		position = "bottom",  -- bottom, top
+		border = "single", -- none, single, double, shadow
+		position = "bottom", -- bottom, top
 	},
 }
 
 local opts = {
-	mode = "n",             -- Normal mode
-	prefix = "",
-	buffer = nil,           -- Global mappings. Specify a buffer number for buffer local mappings
-	silent = true,          -- use `silent` when creating keymaps
-	noremap = true,         -- use `noremap` when creating keymaps
-	nowait = false,         -- use `nowait` when creating keymaps
+	mode = "n", -- Normal mode
+	prefix = "<leader>",
+	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+	silent = true, -- use `silent` when creating keymaps
+	noremap = true, -- use `noremap` when creating keymaps
+	nowait = false, -- use `nowait` when creating keymaps
 }
 
 local mappings = {
