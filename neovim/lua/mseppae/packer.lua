@@ -67,4 +67,18 @@ return packer.startup(function(use)
 
 	-- WhichKey
 	use({ "folke/which-key.nvim", tag = "v1.1.0" })
+
+	-- Database explorer
+	use({
+		"tpope/vim-dadbod",
+		opt = true,
+		requires = {
+			"kristijanhusak/vim-dadbod-ui",
+			"kristijanhusak/vim-dadbod-completion",
+		},
+		config = function()
+			require("mseppae.dadbod").setup()
+		end,
+		cmd = { "DBUIToggle", "DBUI", "DBUIAddConnection", "DBUIFindBuffer", "DBUIRenameBuffer", "DBUILastQueryInfo" },
+	})
 end)
