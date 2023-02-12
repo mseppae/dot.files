@@ -26,6 +26,8 @@ return packer.startup(function(use)
 	use({ "folke/tokyonight.nvim", commit = "8223c970677e4d88c9b6b6d81bda23daf11062bb" })
 	use({ "kyazdani42/nvim-web-devicons", commit = "2d02a56189e2bde11edd4712fea16f08a6656944" })
 	use({ "nvim-lualine/lualine.nvim", commit = "7b4b864af7e3f528f3bfdb4ab0512d2fcff3c39d" })
+
+  -- Git
 	use({ "lewis6991/gitsigns.nvim", tag = "release" })
 
 	-- Completion
