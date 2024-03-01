@@ -1,0 +1,34 @@
+# https://github.com/marlonrichert/zsh-autocomplete
+if [[ -f $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
+  . $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+fi
+
+# emacs keybindings
+bindkey -e
+
+# https://github.com/zsh-users/zsh-syntax-highlighting
+if [[ -f $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh ]]; then
+  . $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+fi
+
+alias ls="ls --color=always"
+alias vim="nvim"
+alias vi="nvim"
+
+# Taken from https://github.com/Phantas0s/.dotfiles/blob/master/zsh/zshrc
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
+setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+
+# https://github.com/joshjon/bliss-dircolors
+eval "$(dircolors $XDG_CONFIG_HOME/dircolors/bliss-dircolors/bliss.dircolors)"
+
+# https://asdf-vm.com/guide/getting-started.html
+. "$HOME/.asdf/asdf.sh"
+
+eval "$(starship init zsh)"
