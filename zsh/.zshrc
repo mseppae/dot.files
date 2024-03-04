@@ -11,10 +11,6 @@ if [[ -f $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin
   . $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 fi
 
-alias ls="ls --color=always"
-alias vim="nvim"
-alias vi="nvim"
-
 # Taken from https://github.com/Phantas0s/.dotfiles/blob/master/zsh/zshrc
 setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
@@ -25,10 +21,37 @@ setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 
-# https://github.com/joshjon/bliss-dircolors
-eval "$(dircolors $XDG_CONFIG_HOME/dircolors/bliss-dircolors/bliss.dircolors)"
+# Homebrew for OSX
 
-# https://asdf-vm.com/guide/getting-started.html
-. "$HOME/.asdf/asdf.sh"
+if [[ -f /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+if [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]]; then
+  PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+  MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
+
+# LSCOLORS
+# https://github.com/joshjon/bliss-dircolors
+if whence dircolors >/dev/null; then
+  eval "$(dircolors $XDG_CONFIG_HOME/dircolors/bliss-dircolors/bliss.dircolors)"
+fi
+
+# Load ASDF if not installed  via homebrew
+if [[ -f $HOME/.asdf/asdf.sh ]]; then
+  # https://asdf-vm.com/guide/getting-started.html
+  . "$HOME/.asdf/asdf.sh"
+fi
+
+if [[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]]; then
+  . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
+fi
+
+# Aliases
+
+alias ls="ls --color=always"
+alias vim="nvim"
+alias vi="nvim"
 
 eval "$(starship init zsh)"

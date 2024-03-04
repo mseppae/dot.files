@@ -2,6 +2,15 @@
 
 All the dot.files, forever work in progress.
 
+## Prerequisities
+
+OSX with homebrew
+
+```
+brew install coreutils starship git curl
+
+```
+
 ## ZSH
 
 ZSH is loading the environment and setting global variables in the .dotenv file, structure:
