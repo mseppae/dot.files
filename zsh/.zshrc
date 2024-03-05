@@ -47,9 +47,12 @@ if [[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]]; then
 fi
 
 # Aliases
-
 alias ls="ls --color=always"
 alias vim="nvim"
 alias vi="nvim"
 
+# https://github.com/ajeetdsouza/zoxide
+eval "$(zoxide init zsh)"
+
+# https://starship.rs/
 eval "$(starship init zsh)"

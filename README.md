@@ -7,7 +7,7 @@ All the dot.files, forever work in progress.
 OSX with homebrew
 
 ```
-brew install coreutils starship git curl vivid
+brew install coreutils starship git curl vivid zoxide
 ```
 
 ## ZSH
