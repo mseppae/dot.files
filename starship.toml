@@ -1,15 +1,15 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](blue_1)\
+[](polar-night-nord0)\
 $os\
 $username\
-[](bg:blue_2 fg:blue_1)\
+[](bg:polar-night-nord1 fg:polar-night-nord0)\
 $directory\
-[](fg:blue_2 bg:blue_3)\
+[](fg:polar-night-nord1 bg:polar-night-nord2)\
 $git_branch\
 $git_status\
-[](fg:blue_3 bg:blue_4)\
+[](fg:polar-night-nord2 bg:polar-night-nord3)\
 $c\
 $rust\
 $ruby\
@@ -20,30 +20,41 @@ $java\
 $kotlin\
 $haskell\
 $python\
-[](fg:blue_4 bg:blue_5)\
+[](fg:polar-night-nord3 bg:snow-storm-nord4)\
 $docker_context\
-[](fg:blue_5 bg:blue_6)\
+[](fg:snow-storm-nord4 bg:snow-storm-nord5)\
 $time\
-[ ](fg:blue_6)\
+[ ](fg:snow-storm-nord5)\
 $line_break$character"""
 
-palette = 'winter'
+palette = 'nord'
 
-[palettes.winter]
-blue_1 = "#03045e"
-blue_2 = "#0077b6"
-blue_3 = "#00b4d8"
-blue_4 = "#00b4d8"
-blue_5 = "#90e0ef"
-blue_6 = "#caf0f8"
-white  = "#ffffff"
-black  = "#000000"
-color_red = '#cc241d'
-color_green = '#98971a'
+# Taken from https://github.com/sharkdp/vivid/blob/master/themes/nord.yml
+[palettes.nord]
+# Polar night
+polar-night-nord0 = "#2e3440"
+polar-night-nord1 = "#3b4252"
+polar-night-nord2 = "#434c5e"
+polar-night-nord3 = "#4c566a"
+# Snow storm
+snow-storm-nord4 = "#d8dee9"
+snow-storm-nord5 = "#e5e9f0"
+snow-storm-nord6 = "#eceff4"
+# Frost
+frost-nord7 = "#8fbcbb"
+frost-nord8 = "#88c0d0"
+frost-nord9 = "#81a1c1"
+frost-nord10 = "#5e81ac"
+# Aurora
+aurora-nord11 = "#bf616a"
+aurora-nord12 = "#d08770"
+aurora-nord13 = "#ebcb8b"
+aurora-nord14 = "#a3be8c"
+aurora-nord15 = "#b48ead"
 
 [os]
 disabled = false
-style = "bg:blue_1 fg:white"
+style = "bg:polar-night-nord0 fg:frost-nord7"
 
 [os.symbols]
 Windows = "󰍲"
@@ -68,12 +79,12 @@ RedHatEnterprise = "󱄛"
 
 [username]
 show_always = true
-style_user = "bg:blue_1 fg:white"
-style_root = "bg:blue_1 fg:white"
+style_user = "bg:polar-night-nord0 fg:frost-nord7"
+style_root = "bg:polar-night-nord0 fg:frost-nord7"
 format = '[ $user ]($style)'
 
 [directory]
-style = "fg:white bg:blue_2"
+style = "fg:frost-nord7 bg:polar-night-nord1"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
@@ -87,77 +98,77 @@ truncation_symbol = "…/"
 
 [git_branch]
 symbol = ""
-style = "bg:blue_3"
-format = '[[ $symbol $branch ](fg:white bg:blue_3)]($style)'
+style = "bg:polar-night-nord2"
+format = '[[ $symbol $branch ](fg:frost-nord7 bg:polar-night-nord2)]($style)'
 
 [git_status]
-style = "bg:blue_3"
-format = '[[($all_status$ahead_behind )](fg:white bg:blue_3)]($style)'
+style = "bg:polar-night-nord2"
+format = '[[($all_status$ahead_behind )](fg:frost-nord7 bg:polar-night-nord2)]($style)'
 
 [nodejs]
 symbol = ""
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [c]
 symbol = " "
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [rust]
 symbol = ""
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [ruby]
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [golang]
 symbol = ""
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [php]
 symbol = ""
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [java]
 symbol = " "
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [kotlin]
 symbol = ""
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [haskell]
 symbol = ""
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [python]
 symbol = ""
-style = "bg:blue_4"
-format = '[[ $symbol( $version) ](fg:white bg:blue_4)]($style)'
+style = "bg:polar-night-nord3"
+format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
 
 [docker_context]
 symbol = ""
-style = "bg:blue_5"
-format = '[[ $symbol( $context) ](fg:black bg:blue_5)]($style)'
+style = "bg:snow-storm-nord4"
+format = '[[ $symbol( $context) ](fg:frost-nord10 bg:snow-storm-nord4)]($style)'
 
 [time]
 disabled = false
 time_format = "%R"
-style = "bg:color_bg1"
-format = '[[  $time ](fg:black bg:blue_6)]($style)'
+style = "bg:frost-nord10"
+format = '[[  $time ](fg:frost-nord10 bg:snow-storm-nord5)]($style)'
 
 [line_break]
 disabled = false
 
 [character]
 disabled = false
-success_symbol = '[](bold fg:color_green)'
-error_symbol = '[](bold fg:color_red)'
+success_symbol = '[](bold fg:aurora-nord14)'
+error_symbol = '[](bold fg:aurora-nord11)'

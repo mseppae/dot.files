@@ -32,11 +32,9 @@ if [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]]; then
   MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
-# LSCOLORS
-# https://github.com/joshjon/bliss-dircolors
-if whence dircolors >/dev/null; then
-  eval "$(dircolors $XDG_CONFIG_HOME/dircolors/bliss-dircolors/bliss.dircolors)"
-fi
+# LS_COLORS themes with vivid
+# https://github.com/sharkdp/vivid
+export LS_COLORS="$(vivid generate nord)"
 
 # Load ASDF if not installed  via homebrew
 if [[ -f $HOME/.asdf/asdf.sh ]]; then
