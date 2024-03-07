@@ -2,32 +2,15 @@
 
 command_timeout = 1500
 
-format = """
-[](polar-night-nord0)\
-$os\
-$username\
-[](bg:polar-night-nord1 fg:polar-night-nord0)\
+format = "$character"
+
+right_format = """
 $directory\
-[](fg:polar-night-nord1 bg:polar-night-nord2)\
 $git_branch\
+$git_state\
 $git_status\
-[](fg:polar-night-nord2 bg:polar-night-nord3)\
-$c\
-$rust\
-$ruby\
-$golang\
-$nodejs\
-$php\
-$java\
-$kotlin\
-$haskell\
-$python\
-[](fg:polar-night-nord3 bg:snow-storm-nord4)\
-$docker_context\
-[](fg:snow-storm-nord4 bg:snow-storm-nord5)\
-$time\
-[ ](fg:snow-storm-nord5)\
-$line_break$character"""
+$git_metrics\
+"""
 
 palette = 'nord'
 
@@ -54,118 +37,23 @@ aurora-nord13 = "#ebcb8b"
 aurora-nord14 = "#a3be8c"
 aurora-nord15 = "#b48ead"
 
-[os]
-disabled = false
-style = "bg:polar-night-nord0 fg:frost-nord7"
-
-[os.symbols]
-Windows = "󰍲"
-Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
-Macos = "󰀵"
-Manjaro = ""
-Linux = "󰌽"
-Gentoo = "󰣨"
-Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-Arch = "󰣇"
-Artix = "󰣇"
-CentOS = ""
-Debian = "󰣚"
-Redhat = "󱄛"
-RedHatEnterprise = "󱄛"
-
-[username]
-show_always = true
-style_user = "bg:polar-night-nord0 fg:frost-nord7"
-style_root = "bg:polar-night-nord0 fg:frost-nord7"
-format = '[ $user ]($style)'
-
 [directory]
-style = "fg:frost-nord7 bg:polar-night-nord1"
+style = "fg:frost-nord7"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
 
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Developer" = "󰲋 "
-
 [git_branch]
 symbol = ""
-style = "bg:polar-night-nord2"
-format = '[[ $symbol $branch ](fg:frost-nord7 bg:polar-night-nord2)]($style)'
+format = '[[ $symbol $branch ](fg:frost-nord7)]($style)'
 
 [git_status]
-style = "bg:polar-night-nord2"
-format = '[[($all_status$ahead_behind )](fg:frost-nord7 bg:polar-night-nord2)]($style)'
+style = "fg:aurora-nord11"
 
-[nodejs]
-symbol = ""
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[c]
-symbol = " "
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[rust]
-symbol = ""
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[ruby]
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[golang]
-symbol = ""
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[php]
-symbol = ""
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[java]
-symbol = " "
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[kotlin]
-symbol = ""
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[haskell]
-symbol = ""
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[python]
-symbol = ""
-style = "bg:polar-night-nord3"
-format = '[[ $symbol( $version) ](fg:frost-nord7 bg:polar-night-nord3)]($style)'
-
-[docker_context]
-symbol = ""
-style = "bg:snow-storm-nord4"
-format = '[[ $symbol( $context) ](fg:frost-nord10 bg:snow-storm-nord4)]($style)'
-
-[time]
+[git_metrics]
 disabled = false
-time_format = "%R"
-style = "bg:frost-nord10"
-format = '[[  $time ](fg:frost-nord10 bg:snow-storm-nord5)]($style)'
+deleted_style = "fg:aurora-nord11"
+added_style = "fg:aurora-nord14"
 
 [line_break]
 disabled = false
