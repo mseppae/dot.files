@@ -23,3 +23,21 @@ Currently used plugins (clone inside plugins/):
 ~/.config/zsh/plugins/
 ~/.config/zsh/.zshrc
 ```
+
+## i3wm
+
+Arch linux setup, heavily based on [EndeavorOS](https://github.com/endeavouros-team/endeavouros-i3wm-setup) setup with i3wm, with some modifications.
+
+```
+yay -S rofi-greenclip
+```
+
+Clone [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) into ~/.config/i3/
+
+Expected layout:
+
+```
+~/.config/i3/bumblebee-status
+~/.config/i3/scripts/
+~/.config/i3/config
+```
