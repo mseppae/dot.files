@@ -32,6 +32,10 @@ Arch linux setup, heavily based on [EndeavorOS](https://github.com/endeavouros-t
 yay -S rofi-greenclip
 ```
 
+```
+sudo pacman -S xclip
+```
+
 Clone [bumblebee-status](https://github.com/tobi-wan-kenobi/bumblebee-status) into ~/.config/i3/
 
 Expected layout:
