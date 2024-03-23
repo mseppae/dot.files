@@ -93,6 +93,8 @@ else
   echo "bumblebee-status already cloned..."
 fi
 
+safe_symbolic_link $project_root/i3/config ${i3_config_dir}/config
+
 symlink_pattern "$project_root/i3/scripts/*" $i3_config_scripts_dir
 
 # neovim for editing any kind of text
