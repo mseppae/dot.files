@@ -8,6 +8,9 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
+export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 export HISTFILE="$ZDOTDIR/zhistory"     # History filepath
 export HISTSIZE=10000                   # Maximum events for internal history
 export SAVEHIST=10000                   # Maximum events in history fle
