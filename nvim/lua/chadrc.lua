@@ -9,12 +9,14 @@ M.ui = {
 	-- 	Comment = { italic = true },
 	-- 	["@comment"] = { italic = true },
 	-- },
-  -- term = {
-  --   float = {
-  --     width = 0.8,
-  --     height = 0.7,
-  --   },
-  -- },
+  term = {
+    float = {
+      row = 0.01,
+      col = 0.04,
+      width = 0.9,
+      height = 0.9,
+    },
+  },
 }
 
 return M
