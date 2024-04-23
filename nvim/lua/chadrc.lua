@@ -3,12 +3,12 @@
 local M = {}
 
 M.ui = {
-	theme = "doomchad",
+  theme = "doomchad",
 
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+  tabufline = {
+    enabled = false,
+  },
+
   term = {
     float = {
       row = 0.01,

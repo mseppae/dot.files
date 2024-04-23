@@ -49,4 +49,15 @@ return {
       },
     },
   },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      pickers = {
+        oldfiles = {
+          cwd_only = true,
+        },
+      },
+    },
+  },
 }

@@ -1,10 +1,10 @@
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    ruby = { "rubocop" },
+    ruby = { "solargraph" },
     go = { "goimports", "gofmt" },
-    css = { "prettier", "prettierd" },
-    html = { "prettier", "prettierd" },
+    css = { { "prettierd", "prettier" } },
+    html = { { "prettierd", "prettier" } },
   },
 
   -- format_on_save = {
