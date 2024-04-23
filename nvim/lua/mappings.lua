@@ -15,3 +15,20 @@ map("n", '<leader>fs', '<cmd>Telescope grep_string<CR>', { desc = 'Find string u
 map("n", '<leader>f<CR>', '<cmd>Telescope resume<CR>', { desc = 'Resume last search' })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+local harpoon = require("harpoon")
+harpoon:setup()
+
+map("n", "<leader>ha", function() harpoon:list():add() end, { desc = "Add to harpoon list" })
+map("n", "<leader>hd", function() harpoon:list():remove() end, { desc = "Remove from harpoon list" })
+map("n", "<leader>hc", function() harpoon:list():clear() end, { desc = "Clear the harpoon list" })
+map("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+map("n", "<C-1>", function() harpoon:list():select(1) end)
+map("n", "<C-2>", function() harpoon:list():select(2) end)
+map("n", "<C-3>", function() harpoon:list():select(3) end)
+map("n", "<C-4>", function() harpoon:list():select(4) end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+map("n", "<C-a>", function() harpoon:list():prev() end)
+map("n", "<C-s>", function() harpoon:list():next() end)
