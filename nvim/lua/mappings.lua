@@ -16,7 +16,27 @@ map("n", '<leader>f<CR>', '<cmd>Telescope resume<CR>', { desc = 'Resume last sea
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
-local harpoon = require("harpoon")
+require("cloak").setup {
+  cloak_length = 12,
+  patterns = {
+    {
+      -- Match any file starting with '.env'.
+      -- This can be a table to match multiple file patterns.
+      file_pattern = { ".env*", "passwd", "*.toml" },
+      -- Match an equals sign and any character after it.
+      -- This can also be a table of patterns to cloak,
+      -- example: cloak_pattern = { ':.+', '-.+' } for yaml files.
+      cloak_pattern = "=.+",
+      -- A function, table or string to generate the replacement.
+      -- The actual replacement will contain the 'cloak_character'
+      -- where it doesn't cover the original text.
+      -- If left empty the legacy behavior of keeping the first character is retained.
+      replace = nil,
+    },
+  },
+}
+
+local harpoon = require "harpoon"
 harpoon:setup()
 
 map("n", "<leader>ha", function() harpoon:list():add() end, { desc = "Add to harpoon list" })
