@@ -53,6 +53,13 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     opts = {
+      defaults = {
+        layout_config = {
+          horizontal = {
+            prompt_position = "bottom",
+          },
+        },
+      },
       pickers = {
         oldfiles = {
           cwd_only = true,

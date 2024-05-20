@@ -9,6 +9,8 @@ M.ui = {
     enabled = false,
   },
 
+  telescope = { style = "bordered" },
+
   term = {
     float = {
       row = 0.01,
