@@ -72,6 +72,7 @@ vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iag
 vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 vim.keymap.set("n", "<leader>st", "<cmd>Telescope themes<CR>", { desc = "[S]earch [T]hemes" })
+vim.keymap.set("n", "<leader>sn", "<cmd>TodoTelescope<CR>", { desc = "[S]earch [N]otes" })
 vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 -- Slightly advanced example of overriding default behavior and theme
