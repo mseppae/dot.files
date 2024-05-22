@@ -1,4 +1,4 @@
--- Imported from nvchad since I only want subset of them
+-- NOTE: Imported from nvchad since I only want subset of them
 -- and rest by if I seem to use them
 local map = vim.keymap.set
 
@@ -56,7 +56,7 @@ map("n", "<leader>wk", function()
   vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
 end, { desc = "Whichkey query lookup" })
 
--- end of NvChad keybinds
+-- NOTE: Start of own keymaps
 
 -- Inspired by kickstarter.nvim
 -- Transition to [S]earch from [F]ind
