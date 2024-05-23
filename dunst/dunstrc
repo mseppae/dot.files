@@ -68,12 +68,12 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
     # present (e.g. xcompmgr, compiz, etc.). (X11 only)
-    transparency = 16
+    transparency = 25
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
     # Set to 0 to disable.
-    separator_height = 2
+    separator_height = 8
 
     # Padding between text and separator.
     padding = 8
@@ -89,7 +89,9 @@
     frame_width = 1
 
     # Defines color of the frame around the notification window.
-    frame_color = "#7f3fbf"
+    # frame_color = "#7f3fbf"
+    # frame_color = "#2b2b2b"
+    frame_color = "#000000"
 
     # Define a color for the separator.
     # possible values are:
@@ -274,9 +276,9 @@
     # * context_all: Open context menu for all notifications.
     # These values can be strung together for each mouse event, and
     # will be executed in sequence.
-    mouse_left_click = close_current
-    mouse_middle_click = do_action, close_current
-    mouse_right_click = close_all
+    mouse_left_click = do_action, close_current
+    # mouse_middle_click = do_action, close_current
+    mouse_right_click = close_current
 
 # Experimental features that may or may not work correctly. Do not expect them
 # to have a consistent behaviour across releases.
@@ -292,21 +294,27 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#28143c"
+    # background = "#28143c"
+    # background = "#000000"
+    background = "#2b2b2b"
     foreground = "#ffffff"
     timeout = 5
     # Icon for notifications with low urgency, uncomment to enable
     icon = /usr/share/icons/Arc-X-D/status/16/dialog-information.png
 
 [urgency_normal]
-    background = "#28143c"
+    # background = "#28143c"
+    # background = "#000000"
+    background = "#2b2b2b"
     foreground = "#ffffff"
     timeout = 5
     # Icon for notifications with normal urgency, uncomment to enable
     icon = /usr/share/icons/Arc-X-D/status/16/dialog-question.png
 
 [urgency_critical]
-    background = "#28143c"
+    # background = "#28143c"
+    # background = "#000000"
+    background = "#2b2b2b"
     foreground = "#ffffff"
     frame_color = "#ff7f7f"
     timeout = 120
