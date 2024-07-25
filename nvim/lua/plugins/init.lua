@@ -27,7 +27,7 @@ return {
       formatters_by_ft = {
         lua = { "stylua" },
         ruby = { "solargraph" },
-        go = { "goimports", "gofmt" },
+        go = { "goimports-reviser", "gofumpt", "golines" },
         css = { { "prettierd", "prettier" } },
         html = { { "prettierd", "prettier" } },
         -- Conform can also run multiple formatters sequentially

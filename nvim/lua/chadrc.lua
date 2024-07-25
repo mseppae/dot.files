@@ -10,7 +10,7 @@ local stbufnr = function()
 end
 
 M.ui = {
-  theme = "ayu_dark",
+  theme = "catppuccin",
 
   tabufline = {
     enabled = false,
