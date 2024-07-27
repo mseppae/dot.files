@@ -62,12 +62,14 @@ return {
         "tailwindcss-language-server",
         "typescript-language-server",
 
+        -- Go lang
         "gopls",
         "gofumpt",
         "goimports-reviser",
         "golines",
         "gomodifytags",
         "gotests",
+        "iferr",
       },
     },
   },
