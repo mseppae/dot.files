@@ -53,7 +53,6 @@ return {
     opts = {
       ensure_installed = {
         "stylua",
-        "gopls",
         "solargraph",
         "sorbet",
         "html-lsp",
@@ -62,6 +61,13 @@ return {
         "eslint_d",
         "tailwindcss-language-server",
         "typescript-language-server",
+
+        "gopls",
+        "gofumpt",
+        "goimports-reviser",
+        "golines",
+        "gomodifytags",
+        "gotests",
       },
     },
   },
@@ -81,6 +87,16 @@ return {
         "go",
       },
     },
+  },
+
+  {
+    "olexsmir/gopher.nvim",
+    ft = "go",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {},
   },
 
   {
