@@ -26,7 +26,7 @@ return {
       end,
       formatters_by_ft = {
         lua = { "stylua" },
-        ruby = { "solargraph" },
+        ruby = { "ruby_lsp" },
         go = { "goimports-reviser", "gofumpt", "golines" },
         css = { { "prettierd", "prettier" } },
         html = { { "prettierd", "prettier" } },
@@ -53,8 +53,6 @@ return {
     opts = {
       ensure_installed = {
         "stylua",
-        "solargraph",
-        "sorbet",
         "html-lsp",
         "css-lsp",
         "prettierd",
@@ -70,6 +68,11 @@ return {
         "gomodifytags",
         "gotests",
         "iferr",
+
+        -- Ruby
+        --"solargraph",
+        "ruby-lsp",
+        "sorbet",
       },
     },
   },

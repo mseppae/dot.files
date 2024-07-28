@@ -8,7 +8,8 @@ local util = require "lspconfig/util"
 local servers = {
   html = {},
   cssls = {},
-  solargraph = {},
+  --solargraph = {},
+  ruby_lsp = {},
   sorbet = {
     cmd = {
       "bundle",
