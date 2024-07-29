@@ -8,8 +8,11 @@ local util = require "lspconfig/util"
 local servers = {
   html = {},
   cssls = {},
-  --solargraph = {},
-  ruby_lsp = {},
+  ruby_lsp = {
+    cmd = {
+      vim.fn.expandcmd "~/.asdf/shims/ruby-lsp",
+    },
+  },
   sorbet = {
     cmd = {
       "bundle",
