@@ -147,3 +147,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank()
   end,
 })
+
+-- TODO: should only be enabled for .http filetype
+map("n", "<leader>rr", "<cmd>Rest run<CR>", { desc = "REST run" })
