@@ -23,7 +23,7 @@ local servers = {
     },
     root_dir = util.root_pattern "sorbet/",
   },
-  tsserver = {},
+  ts_ls = {},
   -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls
   gopls = {
     -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
