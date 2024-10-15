@@ -36,14 +36,41 @@ M.ui = {
   },
 
   telescope = { style = "bordered" },
+}
 
-  term = {
-    float = {
-      row = 0.01,
-      col = 0.04,
-      width = 0.9,
-      height = 0.9,
-    },
+M.term = {
+  float = {
+    relative = "editor",
+    row = 0.1,
+    col = 0.16,
+    width = 0.7,
+    height = 0.7,
+    border = "single",
+  },
+}
+
+M.mason = {
+  pkgs = {
+    "stylua",
+    "html-lsp",
+    "css-lsp",
+    "prettierd",
+    "eslint_d",
+    "tailwindcss-language-server",
+    "typescript-language-server",
+
+    -- Go lang
+    "gopls",
+    "gofumpt",
+    "goimports-reviser",
+    "golines",
+    "gomodifytags",
+    "gotests",
+    "iferr",
+
+    -- Ruby
+    "ruby-lsp",
+    "sorbet",
   },
 }
 

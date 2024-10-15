@@ -50,30 +50,6 @@ return {
 
   {
     "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "stylua",
-        "html-lsp",
-        "css-lsp",
-        "prettierd",
-        "eslint_d",
-        "tailwindcss-language-server",
-        "typescript-language-server",
-
-        -- Go lang
-        "gopls",
-        "gofumpt",
-        "goimports-reviser",
-        "golines",
-        "gomodifytags",
-        "gotests",
-        "iferr",
-
-        -- Ruby
-        "ruby-lsp",
-        "sorbet",
-      },
-    },
   },
 
   {
