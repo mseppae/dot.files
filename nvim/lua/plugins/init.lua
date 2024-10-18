@@ -184,4 +184,48 @@ return {
     opts = {},
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
   },
+
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup {}
+    end,
+  },
+
+  {
+    "zbirenbaum/copilot-cmp",
+    opts = {
+      -- https://github.com/zbirenbaum/copilot.lua#setup-and-configuration
+      suggestion = {
+        enable = false,
+      },
+      panel = {
+        enable = false,
+      },
+    },
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
+    },
+    opts = {
+      sources = {
+        { name = "copilot", group_index = 2 },
+        { name = "nvim_lsp", group_index = 2 },
+        { name = "luasnip", group_index = 2 },
+        { name = "buffer", group_index = 2 },
+        { name = "nvim_lua", group_index = 2 },
+        { name = "path", group_index = 2 },
+      },
+    },
+  },
 }
