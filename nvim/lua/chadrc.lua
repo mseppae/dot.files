@@ -50,6 +50,7 @@ M.term = {
 }
 
 M.mason = {
+  cmd = true,
   pkgs = {
     "stylua",
     "html-lsp",
