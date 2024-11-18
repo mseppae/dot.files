@@ -168,3 +168,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- TODO: should only be enabled for .http filetype
 map("n", "<leader>rr", "<cmd>Rest run<CR>", { desc = "REST run" })
+
+map("n", "<leader>ccp", function()
+  local actions = require "CopilotChat.actions"
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end, { desc = "CopilotChat - Prompt actions" })
+
+map("v", "<leader>ccp", function()
+  local actions = require "CopilotChat.actions"
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end, { desc = "CopilotChat - Prompt actions" })

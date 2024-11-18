@@ -238,6 +238,39 @@ return {
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
     },
     build = "make tiktoken",
-    opts = {},
+    opts = {
+      window = {
+        layout = "float",
+        width = 0.8,
+        height = 0.8,
+        border = "double",
+      },
+      prompts = {
+        Explain = {
+          mapping = "<leader>cce",
+          description = "AI Explain",
+        },
+        Review = {
+          mapping = "<leader>ccr",
+          description = "AI Review",
+        },
+        Tests = {
+          mapping = "<leader>cct",
+          description = "AI Tests",
+        },
+        Fix = {
+          mapping = "<leader>ccf",
+          description = "AI Fix",
+        },
+        Optimize = {
+          mapping = "<leader>cco",
+          description = "AI Optimize",
+        },
+        Docs = {
+          mapping = "<leader>ccd",
+          description = "AI Documentation",
+        },
+      },
+    },
   },
 }
