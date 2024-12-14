@@ -1,0 +1,131 @@
+@import "./mocha.css";
+
+* {
+  font-family: FantasqueSansMono Nerd Font;
+  font-size: 17px;
+  min-height: 0;
+}
+
+window#waybar {
+  opacity: 0.8;
+  margin: 5px 5px;
+  border-radius: 1rem;
+  background: transparent;
+  color: @text;
+}
+
+.modules-right {
+  margin: 5px 1rem 5px 1rem;
+  border-radius: 1rem 1rem 1rem 1rem;
+  background-color: @surface0;
+}
+
+#workspaces {
+  border-radius: 1rem;
+  margin: 5px;
+  background-color: @surface0;
+  margin-left: 1rem;
+}
+
+#workspaces button {
+  color: @lavender;
+  border-radius: 1rem;
+  padding: 0.4rem;
+  border: none;
+}
+
+#workspaces button.active {
+  color: @sky;
+  border-radius: 1rem;
+}
+
+#workspaces button:hover {
+  box-shadow: none; /* Remove predefined box-shadow */
+  text-shadow: none; /* Remove predefined text-shadow */
+  background: none; /* Remove predefined background color (white) */
+  transition: none; /* Disable predefined animations */
+  border-color: transparent;
+  background-color: @surface2;
+  color: @sapphire;
+}
+
+#custom-music,
+#tray,
+#backlight,
+#clock,
+#battery,
+#pulseaudio,
+#custom-lock,
+#idle_inhibitor,
+#network,
+#power-profiles-daemon,
+#cpu,
+#memory,
+#temperature,
+#privacy,
+#bluetooth,
+#custom-weather,
+#custom-power {
+  padding: 0.5rem 1rem;
+  margin: 5px 0;
+}
+
+#custom-music:hover,
+#tray:hover,
+#backlight:hover,
+#clock:hover,
+#battery:hover,
+#pulseaudio:hover,
+#custom-lock:hover,
+#idle_inhibitor:hover,
+#network:hover,
+#power-profiles-daemon:hover,
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#privacy:hover,
+#bluetooth:hover,
+#custom-weather:hover,
+#custom-power:hover {
+  margin: 0;
+  border-radius: 1rem 1rem 1rem 1rem;
+  background-color: @surface2;
+}
+
+#clock {
+  color: @blue;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging {
+  color: @green;
+}
+
+#battery.warning:not(.charging) {
+  color: @red;
+}
+
+#backlight {
+  color: @yellow;
+}
+
+#pulseaudio {
+  color: @maroon;
+}
+
+#custom-music {
+  color: @mauve;
+  border-radius: 1rem;
+}
+
+#custom-power {
+  color: @red;
+}
+
+#tray {
+  margin-right: 1rem;
+  border-radius: 1rem;
+}

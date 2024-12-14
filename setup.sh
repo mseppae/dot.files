@@ -101,7 +101,7 @@ symlink_pattern "$project_root/i3/scripts/*" $i3_config_scripts_dir
 neovim_dir=${target_root}/nvim
 neovim_lua_dir=${neovim_dir}/lua
 neovim_plugins_dir=${neovim_lua_dir}/plugins
-neovim_configs_dir=${neovim_lua_dir}/configs
+neovim_configs_dir=${neovim_lua_dir}/config
 
 create_directory $neovim_plugins_dir
 create_directory $neovim_configs_dir
@@ -109,7 +109,7 @@ create_directory $neovim_configs_dir
 symlink_pattern "$project_root/nvim/*.lua" $neovim_dir
 symlink_pattern "$project_root/nvim/lua/*.lua" $neovim_lua_dir
 symlink_pattern "$project_root/nvim/lua/plugins/*.lua" $neovim_plugins_dir
-symlink_pattern "$project_root/nvim/lua/configs/*.lua" $neovim_configs_dir
+symlink_pattern "$project_root/nvim/lua/config/*.lua" $neovim_configs_dir
 
 # rofi as an application launcher
 rofi_config_dir=${target_root}/rofi

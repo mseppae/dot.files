@@ -42,6 +42,11 @@ if [[ -f $HOME/.asdf/asdf.sh ]]; then
   . "$HOME/.asdf/asdf.sh"
 fi
 
+# Load when installed via ARCH aur package
+if [[ -f /opt/asdf-vm/asdf.sh ]]; then
+  . "/opt/asdf-vm/asdf.sh"
+fi
+
 if [[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]]; then
   . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
 fi
@@ -56,3 +61,7 @@ eval "$(zoxide init zsh)"
 
 # https://starship.rs/
 eval "$(starship init zsh)"
+
+if command -v fastfetch 2>&1 >/dev/null; then
+  fastfetch
+fi

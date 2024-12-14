@@ -4,13 +4,13 @@ User setup for ArchLinux and OSX.
 
 ## Prerequisities
 
-OSX with [homebrew](https://brew.sh/)
+### OSX with [homebrew](https://brew.sh/)
 
 ```
 brew install coreutils starship git curl vivid zoxide wezterm fzf diff-so-fancy
 ```
 
-ArchLinux with pacman and yay on EndeavorOS with i3
+### Deprecated: ArchLinux with pacman and yay on EndeavorOS with i3
 
 ```
 sudo pacman -S starship vivid zoxide wezterm xclip fzf diff-so-fancy
@@ -26,6 +26,10 @@ Run the setup script, which creates the directories and links the files.
 ```
 ./setup.sh
 ```
+
+### ArchLinux with Hyprland
+
+Coming soon.
 
 ### Post setup
 
