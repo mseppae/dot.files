@@ -28,5 +28,6 @@ return {
 	},
 	init = function()
 		require("telescope").load_extension("fzf")
+		require("config.telescope.multigrep").setup()
 	end,
 }
