@@ -1,6 +1,7 @@
 return {
 	{
 		"zbirenbaum/copilot.lua",
+		enable = false,
 		cmd = "Copilot",
 		event = "InsertEnter",
 		config = function()
@@ -10,6 +11,7 @@ return {
 
 	{
 		"zbirenbaum/copilot-cmp",
+		enable = false,
 		opts = {
 			-- https://github.com/zbirenbaum/copilot.lua#setup-and-configuration
 			suggestion = {
@@ -23,7 +25,9 @@ return {
 
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
+		enable = false,
 		lazy = false,
+		branch = "main",
 		dependencies = {
 			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
 			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
