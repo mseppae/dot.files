@@ -63,10 +63,14 @@ symlink_pattern "$project_root/nvim/lua/config/telescope/*.lua" $neovim_custom_t
 
 # rofi application launcher
 rofi_config_dir=${target_root}/rofi
+rofi_theme_dir=$rofi_config_dir/themes
 
 create_directory $rofi_config_dir
 
 symlink_pattern "$project_root/rofi/*.rasi" $rofi_config_dir
+
+create_directory $rofi_theme_dir
+symlink_pattern "$project_root/rofi/themes/*.rasi" $rofi_theme_dir
 
 # zsh shell
 zsh_config_dir=${target_root}/zsh
@@ -121,6 +125,14 @@ hyprland_config_dir=${target_root}/hypr
 create_directory $hyprland_config_dir
 
 safe_symbolic_link "$project_root/hypr/*.conf" $hyprland_config_dir
+
+# waybar
+waybar_config_dir=${target_root}/waybar
+
+create_directory $waybar_config_dir
+
+safe_symbolic_link "${project_root}/waybar/*.jsonc" $waybar_config_dir
+safe_symbolic_link "${project_root}/waybar/*.css" $waybar_config_dir
  
 # Wallpapers for the eye candy
 wallpapers_dir=${target_root}/Wallpapers
