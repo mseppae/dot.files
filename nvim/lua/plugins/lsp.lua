@@ -12,17 +12,16 @@ return {
 	{ "Bilal2453/luvit-meta", lazy = true },
 
 	{
-		"neovim/nvim-lspconfig",
+		"williamboman/mason.nvim",
+		lazy = false,
 		dependencies = {
-			{ "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
-			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-
-			-- Useful status updates for LSP.
 			{ "j-hui/fidget.nvim", opts = {} },
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
+			require("mason").setup()
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
@@ -99,79 +98,10 @@ return {
 				vim.diagnostic.config({ signs = { text = diagnostic_signs } })
 			end
 
-			-- LSP servers and clients are able to communicate to each other what features they support.
-			--  By default, Neovim doesn't support everything that is in the LSP specification.
-			--  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-			--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
-			--  Add any additional override configuration in the following tables. Available keys are:
-			--  - cmd (table): Override the default command used to start the server
-			--  - filetypes (table): Override the default list of associated filetypes for the server
-			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-			--  - settings (table): Override the default settings passed when initializing the server.
-			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-			--
-			local util = require("lspconfig/util")
-			local servers = {
-				lua_ls = {
-					-- cmd = {...},
-					-- filetypes = { ...},
-					-- capabilities = {},
-					settings = {
-						Lua = {
-							completion = {
-								callSnippet = "Replace",
-							},
-							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-							-- diagnostics = { disable = { 'missing-fields' } },
-						},
-					},
-				},
-				html = {},
-				cssls = {},
-				ruby_lsp = {
-					cmd = {
-						vim.fn.expandcmd("~/.asdf/shims/ruby-lsp"),
-					},
-				},
-				sorbet = {
-					cmd = {
-						"bundle",
-						"exec",
-						"srb",
-						"tc",
-						"--lsp",
-					},
-					root_dir = util.root_pattern("sorbet/"),
-				},
-				ts_ls = {},
-				-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls
-				gopls = {
-					-- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-					settings = {
-						gopls = {
-							-- Just as fast debugging thing that the settings structure is correct
-							analyses = {
-								appends = true,
-							},
-							gofumpt = true,
-						},
-					},
-				},
-			}
-
-			require("mason").setup()
-
-			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
-				"html-lsp",
-				"css-lsp",
+			local ensure_installed = {
+				"stylua",
 				"prettierd",
 				"eslint_d",
-				"tailwindcss-language-server",
 				"typescript-language-server",
 
 				-- Go lang
@@ -186,16 +116,13 @@ return {
 				-- Ruby
 				"ruby-lsp",
 				"sorbet",
-			})
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
-			require("mason-lspconfig").setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
-					end,
+			}
+			require("mason-tool-installer").setup({
+				ensure_installed = ensure_installed,
+				integrations = {
+					["mason-lspconfig"] = false,
+					["mason-null-ls"] = false,
+					["mason-nvim-dap"] = false,
 				},
 			})
 		end,

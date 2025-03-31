@@ -23,5 +23,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- https://github.com/neovim/nvim-lspconfig/tree/master/lua/lspconfig/configs
+vim.lsp.enable({
+	"lua_ls",
+	"gopls",
+	"ruby_lsp",
+	"sorbet",
+})
+
 -- Use lazy.nvim as package manager
 require("config.lazy")
