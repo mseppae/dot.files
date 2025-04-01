@@ -31,5 +31,7 @@ vim.lsp.enable({
 	"sorbet",
 })
 
+vim.diagnostic.config({ virtual_lines = true })
+
 -- Use lazy.nvim as package manager
 require("config.lazy")
