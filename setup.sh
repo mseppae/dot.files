@@ -46,15 +46,18 @@ symlink_pattern "$project_root/i3/scripts/*" $i3_config_scripts_dir
 
 # neovim
 neovim_dir=${target_root}/nvim
+neovim_lsp_dir=${neovim_dir}/lsp
 neovim_lua_dir=${neovim_dir}/lua
 neovim_plugins_dir=${neovim_lua_dir}/plugins
 neovim_configs_dir=${neovim_lua_dir}/config
 neovim_custom_telescope_dir=${neovim_configs_dir}/telescope
 
+create_directory $neovim_lsp_dir
 create_directory $neovim_plugins_dir
 create_directory $neovim_configs_dir
 create_directory $neovim_custom_telescope_dir
 
+symlink_pattern "$project_root/nvim/lsp/*.lua" $neovim_lsp_dir
 symlink_pattern "$project_root/nvim/*.lua" $neovim_dir
 symlink_pattern "$project_root/nvim/lua/*.lua" $neovim_lua_dir
 symlink_pattern "$project_root/nvim/lua/plugins/*.lua" $neovim_plugins_dir
