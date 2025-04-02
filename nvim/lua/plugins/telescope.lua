@@ -16,19 +16,19 @@ return {
 		{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Search help" },
 		{ "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Existing buffers" },
 	},
-	opts = {
-		pickers = {
-			oldfiles = {
-				cwd_only = true,
-			},
-		},
-		extensions = {
-			fzf = {},
-		},
-	},
 	init = function()
 		require("telescope").load_extension("fzf")
 		require("config.telescope.multigrep").setup()
+		require("telescope").setup({
+			pickers = {
+				oldfiles = {
+					cwd_only = true,
+				},
+			},
+			extensions = {
+				fzf = {},
+			},
+		})
 	end,
 	config = function()
 		vim.api.nvim_create_autocmd("LspAttach", {
