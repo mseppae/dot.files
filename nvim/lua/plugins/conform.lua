@@ -32,7 +32,11 @@ return {
 				lua = { "stylua" },
 				json = { "prettierd" },
 				ruby = { "rubocop" },
-				go = { "goimports-reviser", "gofumpt", "golines" },
+				go = {
+					"goimports-reviser",
+					"gofumpt",
+					-- "golines",
+				},
 				css = { "prettierd" },
 				html = { "prettierd" },
 				javascript = { "prettierd" },
