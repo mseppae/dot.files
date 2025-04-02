@@ -36,6 +36,20 @@ fi
 # https://github.com/sharkdp/vivid
 export LS_COLORS="$(vivid generate nord)"
 
+if [[ -d $HOME/.asdf ]]; then
+  export ASDF_DATA_DIR="$HOME/.asdf"
+  export PATH="$ASDF_DATA_DIR/shims:$PATH"
+fi
+
+# Load when installed via ARCH aur package
+if [[ -f /opt/asdf-vm/asdf.sh ]]; then
+  . "/opt/asdf-vm/asdf.sh"
+fi
+
+if [[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]]; then
+  . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
+fi
+
 # Aliases
 alias ls="ls --color=always"
 alias vim="nvim"
@@ -46,10 +60,6 @@ eval "$(zoxide init zsh)"
 
 # https://starship.rs/
 eval "$(starship init zsh)"
-
-if [[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]]; then
-  . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
-fi
 
 if command -v fastfetch 2>&1 >/dev/null; then
   fastfetch
