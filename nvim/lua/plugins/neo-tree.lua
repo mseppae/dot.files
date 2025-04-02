@@ -11,6 +11,10 @@ return {
 		{ "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
 	},
 	opts = {
+		close_if_last_window = true,
+		follow_current_file = {
+			enabled = true,
+		},
 		filesystem = {
 			window = {
 				mappings = {
