@@ -14,7 +14,7 @@ return {
 			},
 		},
 		opts = {
-			notify_on_error = false,
+			notify_on_error = true,
 			format_on_save = function(bufnr)
 				local disable_filetypes = { c = true, cpp = true }
 				local lsp_format_opt
@@ -24,7 +24,7 @@ return {
 					lsp_format_opt = "fallback"
 				end
 				return {
-					timeout_ms = 500,
+					timeout_ms = 1500,
 					lsp_format = lsp_format_opt,
 				}
 			end,
