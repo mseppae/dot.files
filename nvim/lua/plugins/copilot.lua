@@ -1,7 +1,7 @@
 return {
 	{
 		"zbirenbaum/copilot.lua",
-		enable = false,
+		enable = true,
 		cmd = "Copilot",
 		event = "InsertEnter",
 		config = function()
@@ -11,21 +11,21 @@ return {
 
 	{
 		"zbirenbaum/copilot-cmp",
-		enable = false,
+		enable = true,
 		opts = {
 			-- https://github.com/zbirenbaum/copilot.lua#setup-and-configuration
 			suggestion = {
-				enable = false,
+				enable = true,
 			},
 			panel = {
-				enable = false,
+				enable = true,
 			},
 		},
 	},
 
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
-		enable = false,
+		enable = true,
 		lazy = false,
 		branch = "main",
 		dependencies = {
@@ -33,6 +33,14 @@ return {
 			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		},
 		build = "make tiktoken",
+		keys = {
+			{
+				"<leader>ccT",
+				":CopilotChatToggle<cr>",
+				mode = "",
+				desc = "AI Toggle Chat",
+			},
+		},
 		opts = {
 			window = {
 				layout = "float",
