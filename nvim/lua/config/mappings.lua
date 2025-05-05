@@ -19,5 +19,3 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>")
-
-vim.keymap.set("n", "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
