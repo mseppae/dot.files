@@ -34,4 +34,18 @@ return {
 		local cmp = require("cmp")
 		cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 	end,
+
+	{
+		"mrjones2014/smart-splits.nvim",
+		keys = {
+			{ "<A-h>", "<cmd>lua require('smart-splits').resize_left()<CR>", desc = "Resize left" },
+			{ "<A-j>", "<cmd>lua require('smart-splits').resize_down()<CR>", desc = "Resize down" },
+			{ "<A-k>", "<cmd>lua require('smart-splits').resize_up()<CR>", desc = "Resize up" },
+			{ "<A-l>", "<cmd>lua require('smart-splits').resize_right()<CR>", desc = "Resize right" },
+			{ "<C-h>", "<cmd>lua require('smart-splits').move_cursor_left()<CR>", desc = "Move cursor left" },
+			{ "<C-j>", "<cmd>lua require('smart-splits').move_cursor_down()<CR>", desc = "Move cursor down" },
+			{ "<C-k>", "<cmd>lua require('smart-splits').move_cursor_up()<CR>", desc = "Move cursor up" },
+			{ "<C-l>", "<cmd>lua require('smart-splits').move_cursor_right()<CR>", desc = "Move cursor right" },
+		},
+	},
 }
