@@ -29,6 +29,7 @@ vim.lsp.enable({
 	"gopls",
 	"ruby_lsp",
 	"sorbet",
+	"zig",
 })
 
 vim.diagnostic.config({

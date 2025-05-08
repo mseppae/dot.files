@@ -32,6 +32,7 @@ return {
 				lua = { "stylua" },
 				json = { "prettierd" },
 				ruby = { "rubocop" },
+				zig = { "zig fmt" },
 				go = {
 					"goimports-reviser",
 					"gofumpt",
