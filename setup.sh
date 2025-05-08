@@ -99,7 +99,8 @@ else
   echo "zsh-syntax-highlighting already cloned..."
 fi
 
-safe_symbolic_link $project_root/zsh/zshenv ${target_home}/.zshenv
+safe_symbolic_link $project_root/zsh/zshenv-compatible ${target_home}/.zshenv
+safe_symbolic_link $project_root/zsh/zshenv ${zsh_config_dir}/.zshenv
 safe_symbolic_link $project_root/zsh/zshrc ${zsh_config_dir}/.zshrc
 
 # wezterm terminal emulator
