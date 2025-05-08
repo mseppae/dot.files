@@ -6,12 +6,6 @@ local act = w.action
 
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
-w.on("update-right-status", function(window, pane)
-	window:set_right_status(window:active_workspace(), pane:active_pane_index())
-end)
-
-config.keys = {}
-
 local function is_vim(pane)
 	return pane:get_user_vars().IS_NVIM == "true"
 end
