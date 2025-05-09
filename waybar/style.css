@@ -1,9 +1,12 @@
 @import "./mocha.css";
 
 * {
-  font-family: FantasqueSansMono Nerd Font;
-  font-size: 17px;
+  font-family: JetbrainsMono Nerd Font;
+  font-size: 20px;
   min-height: 0;
+  padding-right: 2px;
+  padding-left: 2px;
+  padding-bottom: 0px;
 }
 
 window#waybar {
@@ -14,7 +17,8 @@ window#waybar {
   color: @text;
 }
 
-.modules-right {
+.modules-right,
+.modules-center {
   margin: 5px 1rem 5px 1rem;
   border-radius: 1rem 1rem 1rem 1rem;
   background-color: @surface0;
@@ -97,11 +101,11 @@ window#waybar {
 }
 
 #battery {
-  color: @green;
+  color: @sapphire;
 }
 
 #battery.charging {
-  color: @green;
+  color: @teal;
 }
 
 #battery.warning:not(.charging) {
@@ -113,7 +117,7 @@ window#waybar {
 }
 
 #pulseaudio {
-  color: @maroon;
+  color: @lavender;
 }
 
 #custom-music {

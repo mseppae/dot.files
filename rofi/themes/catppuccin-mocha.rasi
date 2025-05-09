@@ -9,7 +9,7 @@
     grey: #6c7086;
 
     width: 50%;
-    font: "Hack Nerd Font 14";
+    font: "JetbrainsMono Nerd Font";
 }
 
 element-text, element-icon , mode-switcher {

@@ -1,33 +1,33 @@
 // -*- mode: jsonc -*-
 {
-    "height": 30,
-    "spacing": 0,
+    "layer": "top",
+    "position": "top",
     "modules-left": [
         "hyprland/workspaces"
     ],
     "modules-center": [
-        "custom/media"
+        "clock"
     ],
     "modules-right": [
         "pulseaudio",
-        "backlight",
+        // "backlight",
         "network",
         "privacy",
-        "idle_inhibitor",
+        // "idle_inhibitor",
         "power-profiles-daemon",
         "tray",
         "custom/weather",
         "bluetooth",
         "battery",
-        "clock",
-        "custom/power"
+        "custom/lock"
     ],
     "hyprland/workspaces": {
         "disable-scroll": true,
         "sort-by-name": true,
-        "format": " {icon} ",
+        "format": "{name}: {icon}",
         "format-icons": {
-            "default": ""
+          "active": "",
+          "default": ""
         }
     },
     "idle_inhibitor": {
@@ -38,7 +38,7 @@
         }
     },
     "tray": {
-        // "icon-size": 21,
+        "icon-size": 21,
         "spacing": 10
     },
     "clock": {
@@ -69,6 +69,11 @@
                 "tooltip-icon-size": 24
             },
             {
+                "type": "audio-out",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
                 "type": "audio-in",
                 "tooltip": true,
                 "tooltip-icon-size": 24
@@ -76,9 +81,8 @@
         ]
     },
     "bluetooth": {
-        // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
         "format": "",
-        "format-disabled": "", // an empty format will hide the module
+        "format-disabled": "",
         "on-click": "alacritty -e bluetui",
         "format-connected": " {num_connections}",
         "tooltip-format": "{controller_alias}\t{controller_address}",
@@ -131,15 +135,14 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
+        "format-wifi": "",
+        "format-ethernet": "",
+        "tooltip-format": "{essid} ({signalStrength}%)",
+        "format-linked": "{ifname} ",
         "format-disconnected": "Disconnected ⚠",
         "on-click": "alacritty -e nmtui"
     },
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon} {format_source}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
@@ -148,11 +151,6 @@
         "format-source-muted": "",
         "format-icons": {
             "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
             "default": [
                 "",
                 "",
@@ -161,28 +159,16 @@
         },
         "on-click": "alacritty -e pulsemixer --color 2"
     },
-    "custom/media": {
-        "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    },
-    "custom/power": {
-        "format": "⏻ ",
+    "custom/lock": {
         "tooltip": false,
-        "on-click": "wlogout &"
+        "on-click": "sh -c '(sleep 0.5s; hyprlock)' & disown",
+        "format": ""
     },
     "custom/weather": {
         "format": "{}",
         "tooltip": true,
         "interval": 3600,
-        "exec": "wttrbar --location Bergwitz --hide-conditions --date-format '%m/%d' --custom-indicator '{ICON}   {temp_C}°  ({areaName})'",
+        "exec": "wttrbar --location Bergwitz --hide-conditions --date-format '%m/%d' --custom-indicator '{ICON} {temp_C}°'",
         "return-type": "json"
     }
 }
