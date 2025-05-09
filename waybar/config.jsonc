@@ -83,7 +83,7 @@
     "bluetooth": {
         "format": "",
         "format-disabled": "",
-        "on-click": "alacritty -e bluetui",
+        "on-click": "wezterm start bluetui",
         "format-connected": " {num_connections}",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
@@ -140,7 +140,7 @@
         "tooltip-format": "{essid} ({signalStrength}%)",
         "format-linked": "{ifname} ",
         "format-disconnected": "Disconnected ⚠",
-        "on-click": "alacritty -e nmtui"
+        "on-click": "wezterm start nmtui"
     },
     "pulseaudio": {
         "format": "{volume}% {icon} {format_source}",
@@ -157,7 +157,7 @@
                 ""
             ]
         },
-        "on-click": "alacritty -e pulsemixer --color 2"
+        "on-click": "wezterm start pulsemixer --color 2"
     },
     "custom/lock": {
         "tooltip": false,
