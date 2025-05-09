@@ -51,11 +51,13 @@ neovim_lua_dir=${neovim_dir}/lua
 neovim_plugins_dir=${neovim_lua_dir}/plugins
 neovim_configs_dir=${neovim_lua_dir}/config
 neovim_custom_telescope_dir=${neovim_configs_dir}/telescope
+neovim_custom_git_dir=${neovim_configs_dir}/custom
 
 create_directory $neovim_lsp_dir
 create_directory $neovim_plugins_dir
 create_directory $neovim_configs_dir
 create_directory $neovim_custom_telescope_dir
+create_directory $neovim_custom_git_dir
 
 symlink_pattern "$project_root/nvim/lsp/*.lua" $neovim_lsp_dir
 symlink_pattern "$project_root/nvim/*.lua" $neovim_dir
@@ -63,6 +65,7 @@ symlink_pattern "$project_root/nvim/lua/*.lua" $neovim_lua_dir
 symlink_pattern "$project_root/nvim/lua/plugins/*.lua" $neovim_plugins_dir
 symlink_pattern "$project_root/nvim/lua/config/*.lua" $neovim_configs_dir
 symlink_pattern "$project_root/nvim/lua/config/telescope/*.lua" $neovim_custom_telescope_dir
+symlink_pattern "$project_root/nvim/lua/config/custom/*.lua" $neovim_custom_git_dir
 
 # rofi application launcher
 rofi_config_dir=${target_root}/rofi
