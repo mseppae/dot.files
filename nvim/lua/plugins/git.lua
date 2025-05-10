@@ -13,7 +13,7 @@ return {
 			current_line_blame_opts = {
 				virt_text = true,
 				virt_text_pos = "eol", -- End of line
-				delay = 1000,
+				delay = 250,
 				ignore_whitespace = false,
 			},
 			on_attach = function(bufnr)
@@ -59,7 +59,7 @@ return {
 				map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "git [p]review hunk" })
 				map("n", "<leader>hb", gitsigns.blame_line, { desc = "git [b]lame line" })
 				map("n", "<leader>hd", gitsigns.diffthis, { desc = "git [d]iff against index" })
-				map("n", "<leader>hc", ":GitsignsCopyBlameHash<cr>", { desc = "git [c]opy SHA to clipboard" })
+				map("n", "<leader>hw", ":GitOpenBlameHash<CR>", { noremap = true, silent = true })
 				map("n", "<leader>hD", function()
 					gitsigns.diffthis("@")
 				end, { desc = "git [D]iff against last commit" })

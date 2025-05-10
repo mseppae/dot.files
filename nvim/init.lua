@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-require("config.custom.git-commit-sha-copy-command")
+require("config.custom.git-sha-open")
 
 -- Use lazy.nvim as package manager
 require("config.lazy")
