@@ -19,6 +19,7 @@
         "custom/weather",
         "bluetooth",
         "battery",
+        "custom/airplanemode",
         "custom/lock"
     ],
     "hyprland/workspaces": {
@@ -171,6 +172,14 @@
         "tooltip": true,
         "interval": 3600,
         "exec": "wttrbar --location Bergwitz --hide-conditions --date-format '%m/%d' --custom-indicator '{ICON} {temp_C}°'",
+        "return-type": "json"
+    },
+    "custom/airplanemode": {
+        "format": "✈️ {text}",
+        "exec": "$HOME/.config/scripts/check-airplanemode.sh",
+        "on-click": "$HOME/.config/scripts/airplanemode.sh",
+        "tooltip": true,
+        "interval": 1,
         "return-type": "json"
     }
 }

@@ -69,6 +69,7 @@ window#waybar {
 #privacy,
 #bluetooth,
 #custom-weather,
+#custom-airplanemode,
 #custom-power {
   padding: 0.5rem 1rem;
   margin: 5px 0;
@@ -90,6 +91,7 @@ window#waybar {
 #privacy:hover,
 #bluetooth:hover,
 #custom-weather:hover,
+#custom-airplanemode:hover,
 #custom-power:hover {
   margin: 0;
   border-radius: 1rem 1rem 1rem 1rem;

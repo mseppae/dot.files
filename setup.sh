@@ -16,6 +16,13 @@ fi
 . ./scripts/helpers.sh
 
 #
+# Scripts
+#
+
+create_directory ${target_root}/scripts
+safe_symbolic_link "${project_root}/scripts/*.sh" ${target_root}/scripts
+
+#
 # Applications
 # 
  
@@ -74,6 +81,7 @@ rofi_theme_dir=$rofi_config_dir/themes
 create_directory $rofi_config_dir
 
 symlink_pattern "$project_root/rofi/*.rasi" $rofi_config_dir
+symlink_pattern "$project_root/rofi/*.sh" $rofi_config_dir
 
 create_directory $rofi_theme_dir
 symlink_pattern "$project_root/rofi/themes/*.rasi" $rofi_theme_dir
