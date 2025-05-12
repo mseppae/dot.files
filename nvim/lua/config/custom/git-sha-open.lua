@@ -31,19 +31,16 @@ function M.get_git_sha_and_open()
 	end
 
 	local remote_url = remote_handle:read("*a"):gsub("\n", "")
-	print(remote_url)
 	remote_handle:close()
 	-- extract project domain from remote URL
 	local project_domain = remote_url:match("git@(.-)%:.-.git") or remote_url:match("https://(.-)%/.-.git")
-	print(project_domain)
 	if not project_domain then
 		vim.notify("Could not parse project domain from remote URL", vim.log.levels.ERROR)
 		return
 	end
 
 	-- Extract project path from remote URL
-	local project_path = remote_url:match("git@.-:(.-)%.git") or remote_url:match("https://.-/(.-)%.git")
-	print(project_path)
+	local project_path = remote_url:match("https://[^/]+/(.-)%.git") or remote_url:match("ssh://[^/]+:?%d*/(.-)%.git")
 	if not project_path then
 		vim.notify("Could not parse project path from remote URL", vim.log.levels.ERROR)
 		return
