@@ -33,7 +33,11 @@ vim.lsp.enable({
 })
 
 vim.diagnostic.config({
-	virtual_text = true,
+	virtual_text = {
+		source = true,
+		prefix = "●",
+		spacing = 2,
+	},
 	underline = true,
 	virtual_lines = false,
 })

@@ -28,7 +28,7 @@ return {
 				"gopls",
 				"gofumpt",
 				"goimports-reviser",
-				-- "golines",
+				"staticcheck",
 				"gomodifytags",
 				"gotests",
 				"iferr",

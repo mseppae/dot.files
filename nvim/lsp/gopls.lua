@@ -5,11 +5,10 @@ return {
 	-- https://github.com/golang/tools/blob/master/gopls/doc/settings.md
 	settings = {
 		gopls = {
-			-- Just as fast debugging thing that the settings structure is correct
-			analyses = {
-				appends = true,
-			},
-			gofumpt = true,
+			-- We do gofumpt and goimports-reviser in conform.nvim
+			gofumpt = false,
+			-- Enable all staticcheck checks
+			staticcheck = true,
 		},
 	},
 }

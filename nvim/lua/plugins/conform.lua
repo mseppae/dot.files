@@ -36,7 +36,6 @@ return {
 				go = {
 					"goimports-reviser",
 					"gofumpt",
-					-- "golines",
 				},
 				css = { "prettierd" },
 				html = { "prettierd" },
