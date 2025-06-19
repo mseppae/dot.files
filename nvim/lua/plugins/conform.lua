@@ -41,6 +41,11 @@ return {
 				html = { "prettierd" },
 				javascript = { "prettierd" },
 			},
+			formatters = {
+				["goimports-reviser"] = {
+					args = { "-d" },
+				},
+			},
 		},
 	},
 }
