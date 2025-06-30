@@ -1,0 +1,47 @@
+{
+  "window.commandCenter": true,
+  "workbench.colorTheme": "Cursor Dark Midnight",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<esc>"],
+      "commands": [":nohlsearch"]
+    },
+    {
+      "before": ["<left>"],
+      "commands": []
+    },
+    {
+      "before": ["<right>"],
+      "commands": []
+    },
+    {
+      "before": ["<up>"],
+      "commands": []
+    },
+    {
+      "before": ["<down>"],
+      "commands": []
+    }
+  ],
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "k"],
+      "after": ["<esc>"]
+    }
+  ],
+  "vim.useCtrlKeys": true,
+  "vim.leader": " ",
+  "vim.number": true,
+  "vim.tabstop": 2,
+  "vim.expandtab": true,
+  "vim.autoindent": true,
+  "vim.cursorline": true,
+  "vim.scrolloff": 5,
+  "vim.ignorecase": true,
+  "vim.smartcase": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.lineNumbers": "on",
+  "editor.cursorSurroundingLines": 5,
+  "vim.useSystemClipboard": true
+}
