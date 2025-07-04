@@ -1,6 +1,23 @@
 {
   "window.commandCenter": true,
+
   "workbench.colorTheme": "Cursor Dark Midnight",
+
+  "vim.normalModeKeyBindings": [
+    {
+      "before": ["<S-l>"],
+      "commands": ["workbench.action.nextEditor"]
+    },
+    {
+      "before": ["<S-k>"],
+      "commands": ["editor.action.showHover"]
+    },
+    {
+      "before": ["<S-h>"],
+      "commands": ["workbench.action.previousEditor"]
+    }
+  ],
+
   "vim.normalModeKeyBindingsNonRecursive": [
     {
       "before": ["<esc>"],
@@ -21,27 +38,115 @@
     {
       "before": ["<down>"],
       "commands": []
+    },
+    {
+      "before": ["leader", "f"],
+      "commands": ["editor.action.formatDocument"]
+    },
+    {
+      "before": ["leader", "s", "f"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    {
+      "before": ["leader", "s", "."],
+      "commands": ["workbench.action.quickOpenRecent"]
+    },
+    {
+      "before": ["C-h"],
+      "commands": ["workbench.action.focusLeftGroup"],
+      "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+    },
+    {
+      "before": ["C-h"],
+      "commands": ["workbench.explorer.fileView.focus"],
+      "when": "editorTextFocus && vim.active && vim.mode != 'Insert' && activeEditorGroupIndex == 1 && explorerViewletVisible"
+    },
+    {
+      "before": ["C-l"],
+      "commands": ["workbench.action.focusRightGroup"],
+      "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+    },
+    {
+      "before": ["C-l"],
+      "commands": ["composerMode.agent"],
+      "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+    },
+    {
+      "before": ["C-f"],
+      "commands": ["revealInExplorer"]
+    },
+    {
+      "before": ["C-e"],
+      "commands": ["workbench.action.toggleSidebarVisibility"]
+    },
+    {
+      "before": ["<"],
+      "after": ["<", "<"],
+      "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+    },
+    {
+      "before": [">"],
+      "after": [">", ">"],
+      "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+    },
+    {
+      "before": ["<S-c>"],
+      "after": ["~"],
+      "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+    },
+    {
+      "before": ["["],
+      "commands": ["editor.action.marker.next"],
+      "when": "editorFocus"
+    },
+    {
+      "before": ["]"],
+      "commands": ["editor.action.marker.prev"],
+      "when": "editorFocus"
+    },
+    {
+      "before": ["leader", "q"],
+      "commands": ["workbench.actions.view.problems"],
+      "when": "workbench.panel.markers.view.active"
+    },
+    {
+      "before": ["leader", "r"],
+      "commands": ["references-view.findReferences"]
+    },
+    {
+      "before": ["C-u"],
+      "after": ["C-u", "z", "z"]
+    },
+    {
+      "before": ["C-d"],
+      "after": ["C-d", "z", "z"]
     }
   ],
+
   "vim.insertModeKeyBindings": [
     {
       "before": ["j", "k"],
       "after": ["<esc>"]
     }
   ],
+
   "vim.useCtrlKeys": true,
   "vim.leader": " ",
-  "vim.number": true,
-  "vim.tabstop": 2,
-  "vim.expandtab": true,
   "vim.autoindent": true,
-  "vim.cursorline": true,
-  "vim.scrolloff": 5,
   "vim.ignorecase": true,
   "vim.smartcase": true,
+  "vim.useSystemClipboard": true,
+
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.lineNumbers": "on",
   "editor.cursorSurroundingLines": 5,
-  "vim.useSystemClipboard": true
+  "editor.formatOnSave": true,
+  "editor.cursorBlinking": "solid",
+
+  "cursor-retrieval.canAttemptGithubLogin": false,
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
