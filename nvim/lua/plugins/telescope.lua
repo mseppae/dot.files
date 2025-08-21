@@ -6,20 +6,42 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		{
+			"nvim-telescope/telescope-live-grep-args.nvim",
+			-- This will not install any breaking changes.
+			-- For major updates, this must be adjusted manually.
+			version = "^1.0.0",
+		},
 	},
 	keys = {
-		{ "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-		{ "<leader>s.", "<cmd>Telescope oldfiles<cr>", desc = "Old files" },
-		{ "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "Search word" },
-		{ "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "Search by grep" },
+		{ "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "Search files" },
+		{ "<leader>s.", "<cmd>Telescope oldfiles<cr>", desc = "Search old files" },
+		{
+			"<leader>sw",
+			"<cmd>lua require('telescope-live-grep-args.shortcuts').grep_word_under_cursor()<CR>",
+			desc = "Search word",
+		},
+		{
+			"<leader>sw",
+			"<cmd>lua require('telescope-live-grep-args.shortcuts').grep_visual_selection()<CR>",
+			desc = "Search visual",
+			mode = { "v" },
+		},
+		{
+			"<leader>sg",
+			"<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>",
+			desc = "Search by grep",
+		},
 		{ "<leader>sr", "<cmd>Telescope resume<cr>", desc = "Resume search" },
 		{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Search help" },
 		{ "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Existing buffers" },
 	},
 	init = function()
-		require("telescope").load_extension("fzf")
-		require("config.telescope.multigrep").setup()
-		require("telescope").setup({
+		local telescope = require("telescope")
+		telescope.load_extension("live_grep_args")
+		telescope.load_extension("fzf")
+		-- local lga_actions = require("telescope-live-grep-args.actions")
+		telescope.setup({
 			pickers = {
 				oldfiles = {
 					cwd_only = true,
@@ -27,6 +49,22 @@ return {
 			},
 			extensions = {
 				fzf = {},
+				live_grep_args = {
+					auto_quoting = false, -- enable/disable auto-quoting
+					-- define mappings, e.g.
+					-- mappings = { -- extend mappings
+					-- 	i = {
+					-- 		["<C-k>"] = lga_actions.quote_prompt(),
+					-- 		["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+					-- 		-- freeze the current list and start a fuzzy search in the frozen list
+					-- 		["<C-space>"] = lga_actions.to_fuzzy_refine,
+					-- 	},
+					-- },
+					-- ... also accepts theme settings, for example:
+					-- theme = "dropdown", -- use dropdown theme
+					-- theme = { }, -- use own theme spec
+					-- layout_config = { mirror=true }, -- mirror preview pane
+				},
 			},
 		})
 	end,
