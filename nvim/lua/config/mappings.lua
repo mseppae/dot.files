@@ -1,11 +1,19 @@
--- Clear highlights on search when pressing <Esc> in normal mode
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-
+local map = vim.keymap.set
+map("i", "jk", "<esc>")
+map("n", "<leader>s", "<Cmd>update %<CR><Cmd>source %<CR>", { desc = "Save and source from current file", silent = true })
+-- Easier interaction with the system clipboard
+map({ 'n', 'x' }, '<leader>y', '"+y', { desc = 'Copy to system clipboard' })
+map({ 'n', 'x' }, '<leader>p', '"+p', { desc = 'Paste from system clipboard after the cursor position' })
+map({ 'n', 'x' }, '<leader>P', '"+P', { desc = 'Paste from system clipboard before the cursor position' })
+-- Ctrl-L redraws the screen by default. Now it will also toggle search highlighting.
+map("n", "<esc>", "<cmd>nohlsearch<CR>")
+-- Disable arrow keys
+map({ "n", "i", "v" }, "<left>", "<nop>")
+map({ "n", "i", "v" }, "<right>", "<nop>")
+map({ "n", "i", "v" }, "<up>", "<nop>")
+map({ "n", "i", "v" }, "<down>", "<nop>")
 -- Diagnostic keymaps
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-
--- Disable arrow keys in normal mode
-vim.keymap.set("n", "<left>", "<nop>")
-vim.keymap.set("n", "<right>", "<nop>")
-vim.keymap.set("n", "<up>", "<nop>")
-vim.keymap.set("n", "<down>", "<nop>")
+map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+-- Package management
+map("n", "<leader>pr", ":restart<CR>", { desc = "Restart the Neovim session", silent = true })
+map("n", "<leader>pu", "<Cmd>vim.pack.update<CR>", { desc = "Restart the Neovim session", silent = true })
