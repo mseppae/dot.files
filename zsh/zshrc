@@ -36,18 +36,21 @@ fi
 # https://github.com/sharkdp/vivid
 export LS_COLORS="$(vivid generate nord)"
 
-if [[ -d $HOME/.asdf ]]; then
-  export ASDF_DATA_DIR="$HOME/.asdf"
-  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+if [[ -d $HOME/.config/mise ]]; then
+  eval "$(mise activate zsh)"
 fi
 
-# Load when installed via ARCH aur package
-if [[ -f /opt/asdf-vm/asdf.sh ]]; then
-  . "/opt/asdf-vm/asdf.sh"
+# libpg
+if [[ -d /opt/homebrew/opt/libpq/lib ]] then
+  export LDFLAGS="-L/opt/homebrew/opt/libpq/lib"
 fi
 
-if [[ -f /opt/homebrew/opt/asdf/libexec/asdf.sh ]]; then
-  . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
+if [[ -d /opt/homebrew/opt/libpq/include ]] then
+  export CPPFLAGS="-I/opt/homebrew/opt/libpq/include"
+fi
+
+if [[ -f /Users/mseppae/.local/share/bob/env/env.sh ]] then
+  . "/Users/mseppae/.local/share/bob/env/env.sh"
 fi
 
 # Aliases
