@@ -3,7 +3,7 @@ vim.lsp.enable(
     "lua_ls",
     "gopls",
     "ruby_lsp",
-    "sorbet",
+--    "sorbet",
     "zig",
   }
 )

@@ -1,6 +1,6 @@
 return {
 	cmd = {
-		vim.fn.expandcmd("~/.asdf/shims/ruby-lsp"),
+		"ruby-lsp"
 	},
 	filetypes = { "ruby" },
 	root_markers = { "Gemfile" },
