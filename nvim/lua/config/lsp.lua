@@ -4,6 +4,7 @@ vim.lsp.enable(
     "gopls",
     "ruby_lsp",
 --    "sorbet",
+    "ts_ls",
     "zig",
   }
 )
