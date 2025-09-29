@@ -4,7 +4,7 @@ local w = require("wezterm")
 local config = w.config_builder()
 local act = w.action
 
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
+config.leader = { key = "\\", mods = "CTRL", timeout_milliseconds = 1000 }
 
 local function is_vim(pane)
 	return pane:get_user_vars().IS_NVIM == "true"
