@@ -19,7 +19,9 @@ if [[ "$OS" == "Darwin" ]]; then
         fi
         echo "Homebrew installed and PATH updated."
     else
-        echo "Homebrew is already installed."
+        echo "Homebrew is already installed - upgrading."
+        brew upgrade
+        echo "Homebrew recipes upgraded."
     fi
 else
     echo "Not on macOS ($OS detected). Skipping Homebrew installation."
@@ -36,10 +38,12 @@ if ! command_exists mise; then
     fi
     echo "Mise installed."
 else
-    echo "Mise is already installed."
+    echo "Mise is already installed - upgrading tools."
+    mise upgrade
+    echo "Mise tools upgraded."
 fi
 
-BREW_APPS=("vivid" "starship" "zoxide")
+BREW_APPS=("vivid" "starship" "zoxide" "rg" "wezterm")
 
 if command_exists brew; then
     for app in "${BREW_APPS[@]}"; do
