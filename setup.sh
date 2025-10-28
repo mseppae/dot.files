@@ -1,90 +1,51 @@
 #!/bin/bash
 
+set -euo pipefail
+
+OS="$(uname -s)"
+
 # Needs to match the directory this repository is cloned to
-project_root=$HOME/Development/dot.files
+project_root=$HOME/development/dot.files
 # Target home is here a variable so we can easily test linking
 # and copying to some random test "home" directory
 # target_home=$HOME/test
 target_home=$HOME
 target_root=${target_home}/.config
 
-if [[ ! -d $project_root ]]; then
-  echo "Expected dot files to be located in $project_root"
-  exit 1
-fi
-
 . ./scripts/helpers.sh
 
-#
 # Scripts
-#
 
 create_directory ${target_root}/scripts
-safe_symbolic_link "${project_root}/scripts/*.sh" ${target_root}/scripts
 
-#
+# Enable nullglob (so the glob expands to nothing if no matches)
+shopt -s nullglob
+
+# Glob **only regular files** (skip directories, symlinks, etc.)
+for file in "${project_root}/scripts/*.sh"; do
+    # Skip if it's not a regular file
+    [[ -f "${file}" ]] || continue
+
+    # Call the function with the full path
+    safe_symbolic_link "${file}" "${target_root}/scripts/${file}"
+done
+
+# turn nullglob back off
+shopt -u nullglob
+
+# OS specific setup
+. ./scripts/installenvironment.sh
+. ./scripts/symlinklinux.sh
+
 # Applications
-# 
- 
-# dunst for doing desktop notifications
-dunst_config_dir=${target_root}/dunst
 
-create_directory $dunst_config_dir
+## neovim
+neovim_src_dir=${project_root}/nvim
+neovim_trg_dir=${target_root}/nvim
 
-safe_symbolic_link $project_root/dunst/dunstrc ${dunst_config_dir}/dunstrc
-
-# i3wm
-i3_config_dir=${target_root}/i3
-i3_config_plugins_dir=${i3_config_dir}/plugins
-i3_config_scripts_dir=${i3_config_dir}/scripts
-
-create_directory $i3_config_plugins_dir
-create_directory $i3_config_scripts_dir
-
-if [[ ! -d ${i3_config_dir}/bumblebee-status ]]; then
-  git clone "https://github.com/tobi-wan-kenobi/bumblebee-status" ${i3_config_dir}/bumblebee-status
-else
-  echo "bumblebee-status already cloned..."
-fi
-
-safe_symbolic_link $project_root/i3/config ${i3_config_dir}/config
-
-symlink_pattern "$project_root/i3/scripts/*" $i3_config_scripts_dir
-
-# neovim
-neovim_dir=${target_root}/nvim
-neovim_lsp_dir=${neovim_dir}/lsp
-neovim_lua_dir=${neovim_dir}/lua
-neovim_plugins_dir=${neovim_lua_dir}/plugins
-neovim_configs_dir=${neovim_lua_dir}/config
-neovim_custom_telescope_dir=${neovim_configs_dir}/telescope
-neovim_custom_git_dir=${neovim_configs_dir}/custom
-
-create_directory $neovim_lsp_dir
-create_directory $neovim_plugins_dir
-create_directory $neovim_configs_dir
-create_directory $neovim_custom_telescope_dir
-create_directory $neovim_custom_git_dir
-
-symlink_pattern "$project_root/nvim/lsp/*.lua" $neovim_lsp_dir
-symlink_pattern "$project_root/nvim/*.lua" $neovim_dir
-symlink_pattern "$project_root/nvim/lua/*.lua" $neovim_lua_dir
-symlink_pattern "$project_root/nvim/lua/plugins/*.lua" $neovim_plugins_dir
-symlink_pattern "$project_root/nvim/lua/config/*.lua" $neovim_configs_dir
-symlink_pattern "$project_root/nvim/lua/config/telescope/*.lua" $neovim_custom_telescope_dir
-symlink_pattern "$project_root/nvim/lua/config/custom/*.lua" $neovim_custom_git_dir
-
-# rofi application launcher
-rofi_config_dir=${target_root}/rofi
-rofi_theme_dir=$rofi_config_dir/themes
-
-create_directory $rofi_config_dir
-
-symlink_pattern "$project_root/rofi/*.rasi" $rofi_config_dir
-symlink_pattern "$project_root/rofi/*.sh" $rofi_config_dir
-
-create_directory $rofi_theme_dir
-symlink_pattern "$project_root/rofi/themes/*.rasi" $rofi_theme_dir
+[[ -d ${neovim_trg_dir} ]] && mv ${neovim_trg_dir} "${neovim_trg_dir}.$(date +%Y%m%d-%H%M%S)"
+create_directory $neovim_trg_dir
+cp -r ${neovim_src_dir} ${target_root}
 
 # zsh shell
 zsh_config_dir=${target_root}/zsh
@@ -128,43 +89,12 @@ create_directory $alacritty_config_dir
 
 safe_symbolic_link $project_root/alacritty/alacritty.toml ${alacritty_config_dir}/alacritty.toml
 
-# X11 graphical user interface
-x11_config_dir=${target_root}/X11
-
-safe_symbolic_link ${project_root}/X11/Xresources ${target_home}/.Xresources
-safe_symbolic_link ${project_root}/X11/xprofile ${target_home}/.xprofile
-
-# hyprland GUI
-hyprland_config_dir=${target_root}/hypr
-
-create_directory $hyprland_config_dir
-
-safe_symbolic_link "$project_root/hypr/*.conf" $hyprland_config_dir
-
-# waybar
-waybar_config_dir=${target_root}/waybar
-
-create_directory $waybar_config_dir
-
-safe_symbolic_link "${project_root}/waybar/*.jsonc" $waybar_config_dir
-safe_symbolic_link "${project_root}/waybar/*.css" $waybar_config_dir
- 
-# Wallpapers for the eye candy
-wallpapers_dir=${target_root}/Wallpapers
-
-create_directory $wallpapers_dir
-
-safe_symbolic_link "$project_root/Wallpapers/*" ${wallpapers_dir}
-
-# greenclip for a copy paste history via dmenu
-safe_symbolic_link $project_root/greenclip.toml ${target_root}/greenclip.toml
-
-# picom as a compositor for X11
-safe_symbolic_link $project_root/picom.conf ${target_root}/picom.conf
-
 # starship as a cross shell prompt
 safe_symbolic_link $project_root/starship.toml ${target_root}/starship.toml
 
-# asdf default versions
+# mise default versions
 
-safe_symbolic_link $project_root/.tool-versions ${target_home}/.tool-versions
+create_directory ${target_root}/mise
+safe_symbolic_link $project_root/mise/config.toml ${target_root}/mise/config.toml
+
+echo "Setup complete!"
