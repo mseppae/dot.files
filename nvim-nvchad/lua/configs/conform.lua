@@ -1,2 +1,0 @@
--- Deletion of the file causes problems, probably some caching thing?
--- Not bothered to spend time on this right now
