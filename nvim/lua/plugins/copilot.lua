@@ -1,6 +1,7 @@
 return {
 	{
 		"zbirenbaum/copilot.lua",
+		enabled = false,
 		dependencies = {
 			"copilotlsp-nvim/copilot-lsp",
 		},
@@ -46,6 +47,7 @@ return {
 	},
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
+		enabled = false,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},

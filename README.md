@@ -38,3 +38,16 @@ Use diff so fancy:
 ```
 git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX
 ```
+
+## Neovim
+
+### Clearing lazy.nvim cache
+
+If plugins aren't updating or disabled plugins still load, clear the cache:
+
+```
+rm -rf ~/.config/local/share/nvim/lazy/<plugin-name>
+rm -f ~/.local/state/nvim/lazy/pkg-cache.lua
+```
+
+Then restart neovim completely (`:qa!` and reopen).

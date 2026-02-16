@@ -67,3 +67,5 @@ eval "$(starship init zsh)"
 if command -v fastfetch 2>&1 >/dev/null; then
   fastfetch
 fi
+
+export PATH="$HOME/.local/bin:$PATH"
