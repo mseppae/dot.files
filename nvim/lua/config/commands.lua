@@ -1,5 +1,5 @@
-vim.cmd([[set mouse=]])
-vim.cmd([[set noswapfile]])
+vim.opt.mouse = ""
+vim.opt.swapfile = false
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",

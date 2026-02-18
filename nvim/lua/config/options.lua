@@ -6,7 +6,6 @@ vim.schedule(function()
 	vim.opt.clipboard = "unnamedplus"
 end)
 vim.opt.winborder = "rounded"
-vim.opt.smartcase = true
 vim.opt.cursorcolumn = false
 -- Length of an actual \t character:
 vim.opt.tabstop = 2

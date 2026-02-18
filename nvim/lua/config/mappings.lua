@@ -2,7 +2,7 @@ local map = vim.keymap.set
 map("i", "jk", "<esc>")
 map(
 	"n",
-	"<leader>s",
+	"<leader>S",
 	"<Cmd>update %<CR><Cmd>source %<CR>",
 	{ desc = "Save and source from current file", silent = true }
 )
@@ -20,8 +20,7 @@ map({ "n", "i", "v" }, "<down>", "<nop>")
 -- Diagnostic keymaps
 map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 -- Package management
-map("n", "<leader>pr", ":restart<CR>", { desc = "Restart the Neovim session", silent = true })
-map("n", "<leader>pu", "<Cmd>vim.pack.update<CR>", { desc = "Restart the Neovim session", silent = true })
+map("n", "<leader>pu", "<Cmd>Lazy update<CR>", { desc = "Update plugins", silent = true })
 -- Scroll up/down in terminal mode without needing Esc
 map("t", "<C-u>", "<C-\\><C-N><C-u>", { desc = "Scroll up in terminal" })
 map("t", "<C-d>", "<C-\\><C-N><C-d>", { desc = "Scroll down in terminal" })

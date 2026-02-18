@@ -33,7 +33,6 @@ return {
 				lua = { "stylua" },
 				json = { "prettierd" },
 				ruby = { "rubocop" },
-				zig = { "zig fmt" },
 				go = {
 					"goimports-reviser",
 					"gofumpt",
@@ -41,11 +40,6 @@ return {
 				css = { "prettierd" },
 				html = { "prettierd" },
 				javascript = { "prettierd" },
-			},
-			formatters = {
-				["goimports-reviser"] = {
-					args = { "-d" },
-				},
 			},
 		},
 	},

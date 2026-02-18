@@ -12,7 +12,7 @@ return {
 				version = "^1.0.0",
 			},
 		},
-		init = function()
+		config = function()
 			local telescope = require("telescope")
 			telescope.load_extension("live_grep_args")
 			telescope.load_extension("fzf")

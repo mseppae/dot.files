@@ -13,10 +13,10 @@ return {
 		},
 		opts = {
 			close_if_last_window = true,
-			follow_current_file = {
-				enabled = true,
-			},
 			filesystem = {
+				follow_current_file = {
+					enabled = true,
+				},
 				window = {
 					mappings = {
 						["\\"] = "close_window",
