@@ -11,12 +11,11 @@ return {
 				width = 0.85,
 				height = 0.85,
 				border = "rounded",
-				backdrop = 30,
+				backdrop = false,
 				keys = {
 					claude_hide = {
 						toggle_key,
 						function(self)
-							vim.cmd("stopinsert")
 							self:hide()
 						end,
 						mode = "t",
@@ -26,10 +25,11 @@ return {
 			},
 		},
 		diff_opts = {
-			keep_terminal_focus = false, -- jump to diff when it opens
-			auto_close_on_accept = true,
-			vertical_split = true,
-			open_in_current_tab = true,
+			keep_terminal_focus = true, -- Keep focus on Claude terminal
+			auto_close_on_accept = true, -- Close diff windows after accepting
+			vertical_split = true, -- Use vertical splits for diffs
+			open_in_current_tab = false, -- Don't create new tabs
+			open_in_new_tab = false, -- Don't create new tabs
 		},
 	},
 	keys = {
