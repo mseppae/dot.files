@@ -6,6 +6,11 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# Ensure Linuxbrew is on PATH if already installed (for re-runs)
+if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 if [[ "$OS" == "Darwin" ]]; then
     if ! command_exists brew; then
         echo "macOS detected. Homebrew not found. Installing Homebrew..."
@@ -23,13 +28,24 @@ if [[ "$OS" == "Darwin" ]]; then
         brew upgrade
         echo "Homebrew recipes upgraded."
     fi
+elif [[ "$DISTRO" == "bazzite" ]]; then
+    if ! command_exists brew; then
+        echo "Bazzite detected. Installing Linuxbrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        echo "Linuxbrew installed and PATH updated."
+    else
+        echo "Linuxbrew is already installed - upgrading."
+        brew upgrade
+        echo "Homebrew recipes upgraded."
+    fi
 else
-    echo "Not on macOS ($OS detected). Skipping Homebrew installation."
+    echo "Not on macOS or Bazzite ($OS detected). Skipping Homebrew installation."
 fi
 
 # Install mise (works on macOS and Linux via Homebrew or direct install)
 if ! command_exists mise; then
-    if [[ "$OS" == "Darwin" ]] && command_exists brew; then
+    if command_exists brew; then
         echo "Installing mise via Homebrew..."
         brew install mise
     else

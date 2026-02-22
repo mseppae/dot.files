@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-if [[ "$OS" != "Darwin" ]]; then
+if [[ "$DISTRO" == "arch" ]]; then
   # dunst for doing desktop notifications
   #
   dunst_config_dir=${target_root}/dunst

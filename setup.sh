@@ -4,6 +4,22 @@ set -euo pipefail
 
 OS="$(uname -s)"
 
+DISTRO="unknown"
+if [[ "$OS" == "Linux" ]] && [[ -f /etc/os-release ]]; then
+  _variant_id="$(. /etc/os-release && echo "${VARIANT_ID:-}")"
+  _os_id="$(. /etc/os-release && echo "${ID:-unknown}")"
+  case "$_variant_id" in
+    bazzite) DISTRO="bazzite" ;;
+    *)
+      case "$_os_id" in
+        arch) DISTRO="arch" ;;
+        *)    DISTRO="$_os_id" ;;
+      esac
+      ;;
+  esac
+  unset _variant_id _os_id
+fi
+
 # Needs to match the directory this repository is cloned to
 project_root=$HOME/development/dot.files
 # Target home is here a variable so we can easily test linking
