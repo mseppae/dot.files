@@ -59,7 +59,11 @@ else
     echo "Mise tools upgraded."
 fi
 
-BREW_APPS=("vivid" "starship" "zoxide" "rg" "wezterm")
+BREW_APPS=("vivid" "starship" "zoxide" "rg")
+
+if [[ "$DISTRO" != "bazzite" ]]; then
+    BREW_APPS+=("wezterm")
+fi
 
 if command_exists brew; then
     for app in "${BREW_APPS[@]}"; do
