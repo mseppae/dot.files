@@ -43,7 +43,7 @@ else
     echo "Not on macOS or Bazzite ($OS detected). Skipping Homebrew installation."
 fi
 
-BREW_APPS=("vivid" "starship" "zoxide" "rg")
+BREW_APPS=("vivid" "starship" "zoxide" "rg" "bob")
 
 if [[ "$DISTRO" != "bazzite" ]]; then
     BREW_APPS+=("wezterm")
@@ -66,6 +66,18 @@ if command_exists brew; then
 else
     echo "Homebrew not available. Skipping installation of: ${BREW_APPS[*]}"
     echo "Install them manually or use alternative package managers (e.g., apt, dnf, pacman)."
+fi
+
+# Neovim via bob (nightly build)
+if command_exists bob; then
+    if ! bob ls 2>/dev/null | grep -q nightly; then
+        echo "Installing Neovim nightly via bob..."
+        bob install nightly
+        bob use nightly
+    else
+        echo "Neovim nightly is already installed - upgrading."
+        bob update nightly
+    fi
 fi
 
 # Install mise (works on macOS and Linux via Homebrew or direct install)
