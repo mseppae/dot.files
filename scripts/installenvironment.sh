@@ -65,6 +65,11 @@ if [[ "$DISTRO" != "bazzite" ]]; then
     BREW_APPS+=("wezterm")
 fi
 
+# Ruby build dependencies (needed by mise/ruby-build)
+if [[ "$DISTRO" == "bazzite" ]]; then
+    BREW_APPS+=("openssl" "readline" "libyaml" "libffi")
+fi
+
 if command_exists brew; then
     for app in "${BREW_APPS[@]}"; do
         if ! command_exists "$app"; then
