@@ -104,10 +104,12 @@ if ! command_exists mise; then
         echo "Installing mise via official script..."
         curl https://mise.jdx.dev/install.sh | sh
     fi
+    mise trust "${target_root}/mise/config.toml"
     mise install
     echo "Mise installed."
 else
     echo "Mise is already installed - upgrading tools."
+    mise trust "${target_root}/mise/config.toml"
     mise upgrade
     echo "Mise tools upgraded."
 fi
