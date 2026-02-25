@@ -20,8 +20,8 @@ if [[ "$OS" == "Linux" ]] && [[ -f /etc/os-release ]]; then
   unset _variant_id _os_id
 fi
 
-# Needs to match the directory this repository is cloned to
-project_root=$HOME/development/dot.files
+# Resolve the repo root from the script's own location
+project_root="$(cd "$(dirname "$0")" && pwd)"
 # Target home is here a variable so we can easily test linking
 # and copying to some random test "home" directory
 # target_home=$HOME/test
