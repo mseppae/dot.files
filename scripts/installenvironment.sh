@@ -43,7 +43,7 @@ else
     echo "Not on macOS or Bazzite ($OS detected). Skipping Homebrew installation."
 fi
 
-BREW_APPS=("vivid" "starship" "zoxide" "rg" "bob")
+BREW_APPS=("zsh" "vivid" "starship" "zoxide" "rg" "bob")
 
 if [[ "$DISTRO" != "bazzite" ]]; then
     BREW_APPS+=("wezterm")
@@ -66,6 +66,17 @@ if command_exists brew; then
 else
     echo "Homebrew not available. Skipping installation of: ${BREW_APPS[*]}"
     echo "Install them manually or use alternative package managers (e.g., apt, dnf, pacman)."
+fi
+
+# Set zsh as default shell
+zsh_path="$(command -v zsh || true)"
+if [[ -n "$zsh_path" ]] && [[ "$SHELL" != "$zsh_path" ]]; then
+    echo "Setting zsh as default shell..."
+    if ! grep -qF "$zsh_path" /etc/shells; then
+        echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
+    fi
+    chsh -s "$zsh_path"
+    echo "Default shell set to $zsh_path (takes effect on next login)."
 fi
 
 # Neovim via bob (nightly build)
