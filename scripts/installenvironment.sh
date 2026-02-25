@@ -75,7 +75,11 @@ if [[ -n "$zsh_path" ]] && [[ "$SHELL" != "$zsh_path" ]]; then
     if ! grep -qF "$zsh_path" /etc/shells; then
         echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
     fi
-    chsh -s "$zsh_path"
+    if command_exists chsh; then
+        chsh -s "$zsh_path"
+    else
+        sudo usermod --shell "$zsh_path" "$USER"
+    fi
     echo "Default shell set to $zsh_path (takes effect on next login)."
 fi
 
