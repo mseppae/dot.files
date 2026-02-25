@@ -43,22 +43,6 @@ else
     echo "Not on macOS or Bazzite ($OS detected). Skipping Homebrew installation."
 fi
 
-# Install mise (works on macOS and Linux via Homebrew or direct install)
-if ! command_exists mise; then
-    if command_exists brew; then
-        echo "Installing mise via Homebrew..."
-        brew install mise
-    else
-        echo "Installing mise via official script..."
-        curl https://mise.jdx.dev/install.sh | sh
-    fi
-    echo "Mise installed."
-else
-    echo "Mise is already installed - upgrading tools."
-    mise upgrade
-    echo "Mise tools upgraded."
-fi
-
 BREW_APPS=("vivid" "starship" "zoxide" "rg")
 
 if [[ "$DISTRO" != "bazzite" ]]; then
@@ -82,4 +66,20 @@ if command_exists brew; then
 else
     echo "Homebrew not available. Skipping installation of: ${BREW_APPS[*]}"
     echo "Install them manually or use alternative package managers (e.g., apt, dnf, pacman)."
+fi
+
+# Install mise (works on macOS and Linux via Homebrew or direct install)
+if ! command_exists mise; then
+    if command_exists brew; then
+        echo "Installing mise via Homebrew..."
+        brew install mise
+    else
+        echo "Installing mise via official script..."
+        curl https://mise.jdx.dev/install.sh | sh
+    fi
+    echo "Mise installed."
+else
+    echo "Mise is already installed - upgrading tools."
+    mise upgrade
+    echo "Mise tools upgraded."
 fi
