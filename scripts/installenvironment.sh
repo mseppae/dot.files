@@ -83,3 +83,15 @@ else
     mise upgrade
     echo "Mise tools upgraded."
 fi
+
+# Claude Code (needs npm from mise/node)
+if command_exists npm; then
+    if ! command_exists claude; then
+        echo "Installing Claude Code..."
+        npm install -g @anthropic-ai/claude-code
+    else
+        echo "Claude Code is already installed."
+    fi
+else
+    echo "npm not found. Skipping Claude Code installation."
+fi
