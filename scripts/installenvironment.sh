@@ -77,6 +77,7 @@ if ! command_exists mise; then
         echo "Installing mise via official script..."
         curl https://mise.jdx.dev/install.sh | sh
     fi
+    mise install
     echo "Mise installed."
 else
     echo "Mise is already installed - upgrading tools."
@@ -84,14 +85,15 @@ else
     echo "Mise tools upgraded."
 fi
 
-# Claude Code (needs npm from mise/node)
-if command_exists npm; then
-    if ! command_exists claude; then
-        echo "Installing Claude Code..."
-        npm install -g @anthropic-ai/claude-code
-    else
-        echo "Claude Code is already installed."
-    fi
+# Activate mise so tool binaries (node, npm, etc.) are on PATH
+if command_exists mise; then
+    eval "$(mise activate bash)"
+fi
+
+# Claude Code (native installer with auto-updates)
+if ! command_exists claude; then
+    echo "Installing Claude Code..."
+    curl -fsSL https://claude.ai/install.sh | sh
 else
-    echo "npm not found. Skipping Claude Code installation."
+    echo "Claude Code is already installed."
 fi
