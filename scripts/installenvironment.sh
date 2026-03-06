@@ -85,14 +85,10 @@ fi
 
 # Neovim via bob (nightly build)
 if command_exists bob; then
-    if ! bob ls 2>/dev/null | grep -q nightly; then
-        echo "Installing Neovim nightly via bob..."
-        bob install nightly
-        bob use nightly
-    else
-        echo "Neovim nightly is already installed - upgrading."
-        bob update nightly
-    fi
+    echo "Installing/updating Neovim nightly via bob..."
+    chmod -f u+w ~/.local/share/bob/nvim-bin/nvim 2>/dev/null || true
+    bob install nightly
+    bob use nightly
 fi
 
 # Install mise (works on macOS and Linux via Homebrew or direct install)
