@@ -1,16 +1,13 @@
 # Dot.files
 
-Personal dotfiles for ArchLinux and macOS, managed with [chezmoi](https://www.chezmoi.io/).
+Personal dotfiles for Bazzite, macOS, and Arch Linux (untested), managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Bootstrap a new machine
 
-```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply mseppae
-```
-
-Or if chezmoi is already installed:
+Install chezmoi via Homebrew, then apply:
 
 ```bash
+brew install chezmoi
 chezmoi init --apply git@github.com:mseppae/dot.files.git
 ```
 
@@ -18,7 +15,7 @@ chezmoi will:
 1. Clone this repo to `~/development/dot.files`
 2. Apply all config files to their destinations
 3. Clone zsh plugins via `.chezmoiexternal.toml`
-4. Run `run_once_install-environment.sh` to install Homebrew, tools, and language runtimes
+4. Run `run_once_install-environment.sh` to install Homebrew/Linuxbrew, tools, and language runtimes
 
 ## Daily use
 
@@ -38,10 +35,10 @@ chezmoi apply
 
 ## Tool updates
 
-chezmoi manages config files, not tool lifecycles. Update tools manually:
+chezmoi manages config files, not tool lifecycles. Update tools with:
 
 ```bash
-topgrade       # upgrades brew, mise runtimes, and Neovim (bob)
+topgrade       # upgrades brew, mise runtimes, Neovim (bob), and system (Bazzite)
 ```
 
 ## Neovim
@@ -62,4 +59,5 @@ Then restart neovim completely (`:qa!` and reopen).
 - Config files live under `dot_config/` in this repo (mirrors `~/.config/`)
 - `dot_zshenv` → `~/.zshenv` (XDG bootstrap for zsh)
 - `nvim/lazy-lock.json` is excluded from chezmoi tracking (machine-local)
-- Linux-only configs (hypr, waybar, rofi, i3, dunst, X11) are excluded on macOS via `.chezmoiignore.tmpl`
+- Tiling WM configs (hypr, waybar, rofi, i3, dunst, X11) are excluded on macOS and Bazzite via `.chezmoiignore.tmpl`
+- GNOME configs (gtk-3.0, gtk-4.0, gnome-shell) are Bazzite-only
