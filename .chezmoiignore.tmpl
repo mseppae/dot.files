@@ -1,0 +1,34 @@
+# chezmoi-managed files to skip
+.config/nvim/lazy-lock.json
+
+# Repo meta files — not deployed to home directory
+README.md
+Dockerfile
+CLAUDE.md
+
+# macOS LaunchAgents — macOS only
+{{ if ne .chezmoi.os "darwin" }}
+Library
+{{ end }}
+
+# Tiling WM configs — Arch Linux only (exclude on macOS and Bazzite/GNOME)
+{{ if or (ne .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "bazzite") }}
+.config/hypr
+.config/waybar
+.config/rofi
+.config/i3
+.config/dunst
+.config/greenclip.toml
+.config/picom.conf
+.Xresources
+.xprofile
+Wallpapers
+.config/scripts
+{{ end }}
+
+# GNOME configs — Bazzite only (exclude on macOS and Arch Linux)
+{{ if or (ne .chezmoi.os "linux") (ne (index .chezmoi.osRelease "id") "bazzite") }}
+.config/gtk-3.0
+.config/gtk-4.0
+.config/gnome-shell
+{{ end }}

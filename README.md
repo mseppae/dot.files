@@ -1,42 +1,47 @@
 # Dot.files
 
-User setup for ArchLinux and OSX.
+Personal dotfiles for ArchLinux and macOS, managed with [chezmoi](https://www.chezmoi.io/).
 
-## Prerequisities
+## Bootstrap a new machine
 
-### OSX with [homebrew](https://brew.sh/)
-
-```
-brew install coreutils starship git curl vivid zoxide wezterm fzf diff-so-fancy
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply mseppae
 ```
 
-### Deprecated: ArchLinux with pacman and yay on EndeavorOS with i3
+Or if chezmoi is already installed:
 
-```
-sudo pacman -S starship vivid zoxide wezterm xclip fzf diff-so-fancy
-```
-
-```
-yay -S rofi-greenclip
+```bash
+chezmoi init --apply git@github.com:mseppae/dot.files.git
 ```
 
-## Setup
-Run the setup script, which creates the directories and links the files.
+chezmoi will:
+1. Clone this repo to `~/development/dot.files`
+2. Apply all config files to their destinations
+3. Clone zsh plugins via `.chezmoiexternal.toml`
+4. Run `run_once_install-environment.sh` to install Homebrew, tools, and language runtimes
 
+## Daily use
+
+```bash
+# Pull latest dotfiles and apply
+chezmoi update
+
+# Preview what would change before applying
+chezmoi diff
+
+# Edit a dotfile (opens in $EDITOR, re-applies on save)
+chezmoi edit ~/.config/zsh/.zshrc
+
+# After manually editing a file in ~/development/dot.files
+chezmoi apply
 ```
-./setup.sh
-```
 
-### ArchLinux with Hyprland
+## Tool updates
 
-Coming soon.
+chezmoi manages config files, not tool lifecycles. Update tools manually:
 
-### Post setup
-
-Use diff so fancy:
-
-```
-git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX
+```bash
+topgrade       # upgrades brew, mise runtimes, and Neovim (bob)
 ```
 
 ## Neovim
@@ -45,9 +50,16 @@ git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX
 
 If plugins aren't updating or disabled plugins still load, clear the cache:
 
-```
+```bash
 rm -rf ~/.config/local/share/nvim/lazy/<plugin-name>
 rm -f ~/.local/state/nvim/lazy/pkg-cache.lua
 ```
 
 Then restart neovim completely (`:qa!` and reopen).
+
+## Notes
+
+- Config files live under `dot_config/` in this repo (mirrors `~/.config/`)
+- `dot_zshenv` → `~/.zshenv` (XDG bootstrap for zsh)
+- `nvim/lazy-lock.json` is excluded from chezmoi tracking (machine-local)
+- Linux-only configs (hypr, waybar, rofi, i3, dunst, X11) are excluded on macOS via `.chezmoiignore.tmpl`

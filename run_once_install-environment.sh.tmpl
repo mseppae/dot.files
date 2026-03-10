@@ -1,4 +1,7 @@
 #!/bin/bash
+# chezmoi run_once_ script: runs on first apply (or when this file changes).
+# Purpose: bootstrap a new machine. Does NOT upgrade already-installed tools.
+# For ongoing upgrades use: topgrade
 
 set -euo pipefail
 
@@ -6,50 +9,63 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Ensure Linuxbrew is on PATH if already installed (for re-runs)
+# OS and distro detection
+OS="$(uname -s)"
+DISTRO="unknown"
+if [[ "$OS" == "Linux" ]] && [[ -f /etc/os-release ]]; then
+  _variant_id="$(. /etc/os-release && echo "${VARIANT_ID:-}")"
+  _os_id="$(. /etc/os-release && echo "${ID:-unknown}")"
+  case "$_variant_id" in
+    bazzite) DISTRO="bazzite" ;;
+    *)
+      case "$_os_id" in
+        arch) DISTRO="arch" ;;
+        *)    DISTRO="$_os_id" ;;
+      esac
+      ;;
+  esac
+  unset _variant_id _os_id
+fi
+
+# Ensure Linuxbrew is on PATH if already installed
 if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+# Install Homebrew / Linuxbrew if not present
 if [[ "$OS" == "Darwin" ]]; then
     if ! command_exists brew; then
         echo "macOS detected. Homebrew not found. Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-        # Add Homebrew to PATH (non-interactive shells)
         if [[ "$(uname -m)" == "arm64" ]]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
         else
             eval "$(/usr/local/bin/brew shellenv)"
         fi
-        echo "Homebrew installed and PATH updated."
+        echo "Homebrew installed."
     else
-        echo "Homebrew is already installed - upgrading."
-        brew upgrade
-        echo "Homebrew recipes upgraded."
+        echo "Homebrew is already installed."
     fi
 elif [[ "$DISTRO" == "bazzite" ]]; then
     if ! command_exists brew; then
         echo "Bazzite detected. Installing Linuxbrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-        echo "Linuxbrew installed and PATH updated."
+        echo "Linuxbrew installed."
     else
-        echo "Linuxbrew is already installed - upgrading."
-        brew upgrade
-        echo "Homebrew recipes upgraded."
+        echo "Linuxbrew is already installed."
     fi
 else
-    echo "Not on macOS or Bazzite ($OS detected). Skipping Homebrew installation."
+    echo "Not on macOS or Bazzite ($OS / $DISTRO). Skipping Homebrew installation."
 fi
 
-BREW_APPS=("zsh" "vivid" "starship" "zoxide" "rg" "bob")
+# Install tools via Homebrew
+BREW_APPS=("zsh" "vivid" "starship" "zoxide" "rg" "bob" "topgrade")
 
 if [[ "$DISTRO" != "bazzite" ]]; then
     BREW_APPS+=("wezterm")
 fi
 
-# Ruby build dependencies (needed by mise/ruby-build)
 if [[ "$DISTRO" == "bazzite" ]]; then
     BREW_APPS+=("openssl" "readline" "libyaml" "libffi")
 fi
@@ -64,8 +80,7 @@ if command_exists brew; then
         fi
     done
 else
-    echo "Homebrew not available. Skipping installation of: ${BREW_APPS[*]}"
-    echo "Install them manually or use alternative package managers (e.g., apt, dnf, pacman)."
+    echo "Homebrew not available. Install manually: ${BREW_APPS[*]}"
 fi
 
 # Set zsh as default shell
@@ -75,23 +90,25 @@ if [[ -n "$zsh_path" ]] && [[ "$SHELL" != "$zsh_path" ]]; then
     if ! grep -qF "$zsh_path" /etc/shells; then
         echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
     fi
-    if command_exists chsh; then
+    if [[ "$OS" == "Darwin" ]]; then
         chsh -s "$zsh_path"
+    elif command_exists usermod; then
+        sudo usermod --shell "$zsh_path" "$(whoami)"
     else
-        sudo usermod --shell "$zsh_path" "$USER"
+        sudo chsh -s "$zsh_path" "$(whoami)"
     fi
     echo "Default shell set to $zsh_path (takes effect on next login)."
 fi
 
 # Neovim via bob (nightly build)
 if command_exists bob; then
-    echo "Installing/updating Neovim nightly via bob..."
+    echo "Installing Neovim nightly via bob..."
     chmod -f u+w ~/.local/share/bob/nvim-bin/nvim 2>/dev/null || true
     bob install nightly
     bob use nightly
 fi
 
-# Install mise (works on macOS and Linux via Homebrew or direct install)
+# Install mise
 if ! command_exists mise; then
     if command_exists brew; then
         echo "Installing mise via Homebrew..."
@@ -100,18 +117,13 @@ if ! command_exists mise; then
         echo "Installing mise via official script..."
         curl https://mise.jdx.dev/install.sh | sh
     fi
-    mise trust "${target_root}/mise/config.toml"
-    mise install
     echo "Mise installed."
-else
-    echo "Mise is already installed - upgrading tools."
-    mise trust "${target_root}/mise/config.toml"
-    mise upgrade
-    echo "Mise tools upgraded."
 fi
 
-# Activate mise so tool binaries (node, npm, etc.) are on PATH
+# Trust config and install language runtimes
 if command_exists mise; then
+    mise trust "$HOME/.config/mise/config.toml"
+    mise install
     eval "$(mise activate bash)"
 fi
 

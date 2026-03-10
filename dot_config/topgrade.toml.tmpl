@@ -1,0 +1,19 @@
+[misc]
+cleanup = true  # Remove unused Homebrew dependencies after upgrade
+
+# Only run these steps — everything else (rustup, gem, pip, cargo, npm, etc.)
+# is managed by mise and should not be upgraded by topgrade
+{{ if eq .chezmoi.os "darwin" -}}
+only = ["brew_formula", "brew_cask", "mise", "custom_commands", "claude_code", "system", "chezmoi"]
+{{ else -}}
+only = ["brew_formula", "mise", "custom_commands", "chezmoi"]
+{{ end }}
+[brew]
+greedy_cask = true   # Update casks even if they declare auto_updates
+autoremove = true    # Remove stale formulae after brew upgrade
+
+[commands]
+"Neovim (bob)" = "bob update"
+{{ if and (eq .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "bazzite") -}}
+"System (Bazzite)" = "ujust update"
+{{ end -}}

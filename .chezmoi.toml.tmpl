@@ -1,0 +1,5 @@
+{{ if stat (joinPath .chezmoi.homeDir "Development/dot.files") -}}
+sourceDir = "{{ .chezmoi.homeDir }}/Development/dot.files"
+{{ else -}}
+sourceDir = "{{ .chezmoi.homeDir }}/development/dot.files"
+{{ end -}}
