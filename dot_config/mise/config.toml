@@ -1,7 +1,7 @@
 [tools]
 node = "lts"
 python = "latest"
-ruby = "3.4.8"
+ruby = "latest"
 go = "latest"
 lua = "5.4.8"
 rust = "latest"
