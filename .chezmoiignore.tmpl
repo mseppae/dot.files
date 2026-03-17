@@ -32,3 +32,10 @@ Wallpapers
 .config/gtk-4.0
 .config/gnome-shell
 {{ end }}
+
+# KDE configs — Bazzite only (exclude on macOS and Arch Linux)
+{{ if or (ne .chezmoi.os "linux") (ne (index .chezmoi.osRelease "id") "bazzite") }}
+.config/kxkbrc
+.config/konsolerc
+.local/share/konsole
+{{ end }}
