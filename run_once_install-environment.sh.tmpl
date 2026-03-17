@@ -62,10 +62,6 @@ fi
 # Install tools via Homebrew
 BREW_APPS=("zsh" "vivid" "starship" "zoxide" "rg" "bob" "topgrade")
 
-if [[ "$DISTRO" != "bazzite" ]]; then
-    BREW_APPS+=("wezterm")
-fi
-
 if [[ "$DISTRO" == "bazzite" ]]; then
     BREW_APPS+=("openssl" "readline" "libyaml" "libffi")
 fi
@@ -81,6 +77,24 @@ if command_exists brew; then
     done
 else
     echo "Homebrew not available. Install manually: ${BREW_APPS[*]}"
+fi
+
+# Install Ghostty
+if ! command_exists ghostty; then
+    if [[ "$DISTRO" == "bazzite" ]]; then
+        echo "Installing Ghostty via rpm-ostree (requires reboot to take effect)..."
+        . /etc/os-release
+        curl -fsSL "https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-${VERSION_ID}/scottames-ghostty-fedora-${VERSION_ID}.repo" \
+            | sudo tee /etc/yum.repos.d/_copr_scottames-ghostty.repo > /dev/null
+        rpm-ostree refresh-md && rpm-ostree install -y ghostty
+    elif [[ "$OS" == "Darwin" ]]; then
+        echo "Installing Ghostty via Homebrew Cask..."
+        brew install --cask ghostty
+    else
+        echo "Please install Ghostty manually: https://ghostty.org"
+    fi
+else
+    echo "Ghostty is already installed."
 fi
 
 # Set zsh as default shell

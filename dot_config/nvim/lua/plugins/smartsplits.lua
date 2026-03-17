@@ -2,7 +2,7 @@ return {
 	{
 		"mrjones2014/smart-splits.nvim",
 		opts = {
-			multiplexer_integration = "wezterm", -- Enable Wezterm support
+			multiplexer_integration = "ghostty", -- Enable Ghostty support
 			at_edge = "wrap", -- Wrap to opposite side when at edge (or set to "stop")
 			default_amount = 3, -- Default resize amount
 			ignored_filetypes = { "nofile", "quickfix", "prompt" },
