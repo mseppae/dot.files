@@ -1,2 +1,0 @@
-setxkbmap -option ctrl:nocaps
-xrandr --output eDP --scale '0.75x0.75'
