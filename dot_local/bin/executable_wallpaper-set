@@ -1,0 +1,23 @@
+#!/bin/bash
+WALLPAPER="$1"
+
+if [ -z "$WALLPAPER" ]; then
+  echo "Usage: wallpaper-set /path/to/image.jpg"
+  exit 1
+fi
+
+# update hyprpaper
+hyprctl hyprpaper unload all
+hyprctl hyprpaper preload "$WALLPAPER"
+hyprctl hyprpaper wallpaper ",$WALLPAPER"
+
+# regenerate color palette and reload apps
+matugen image "$WALLPAPER"
+
+# reload waybar
+pkill waybar && waybar &
+
+# reload mako
+makoctl reload
+
+echo "Wallpaper and colors updated."

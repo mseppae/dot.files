@@ -1,0 +1,27 @@
+@import "colors.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 13px;
+}
+
+window#waybar {
+  background-color: @base;
+  color: @text;
+  border-bottom: 2px solid @border;
+}
+
+#workspaces button {
+  color: @muted;
+  padding: 0 8px;
+}
+
+#workspaces button.active {
+  color: @accent;
+  border-bottom: 2px solid @accent;
+}
+
+#clock, #pulseaudio, #network, #battery {
+  color: @text;
+  padding: 0 10px;
+}
