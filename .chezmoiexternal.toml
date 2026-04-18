@@ -4,12 +4,6 @@
   clone.args = ["--depth", "1"]
   pull.args = ["--ff-only"]
 
-[".config/zsh/plugins/zsh-completions"]
-  type = "git-repo"
-  url = "https://github.com/zsh-users/zsh-completions.git"
-  clone.args = ["--depth", "1"]
-  pull.args = ["--ff-only"]
-
 [".config/zsh/plugins/zsh-syntax-highlighting"]
   type = "git-repo"
   url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"

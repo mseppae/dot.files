@@ -46,9 +46,9 @@ if [[ "$OS" == "Darwin" ]]; then
     else
         echo "Homebrew is already installed."
     fi
-elif [[ "$DISTRO" == "bazzite" ]]; then
+elif [[ "$DISTRO" == "bazzite" ]] || [[ "$DISTRO" == "arch" ]]; then
     if ! command_exists brew; then
-        echo "Bazzite detected. Installing Linuxbrew..."
+        echo "$DISTRO detected. Installing Linuxbrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
         echo "Linuxbrew installed."
@@ -56,19 +56,15 @@ elif [[ "$DISTRO" == "bazzite" ]]; then
         echo "Linuxbrew is already installed."
     fi
 else
-    echo "Not on macOS or Bazzite ($OS / $DISTRO). Skipping Homebrew installation."
+    echo "Not on macOS, Bazzite, or Arch ($OS / $DISTRO). Skipping Homebrew installation."
 fi
 
 # Install tools via Homebrew
-BREW_APPS=("zsh" "vivid" "starship" "zoxide" "rg" "bob" "topgrade")
-
-if [[ "$DISTRO" == "bazzite" ]]; then
-    BREW_APPS+=("openssl" "readline" "libyaml" "libffi")
-fi
+BREW_APPS=("zsh" "vivid" "starship" "zoxide" "ripgrep" "bob" "topgrade" "fastfetch" "coreutils" "openssl" "readline" "libyaml" "libffi")
 
 if command_exists brew; then
     for app in "${BREW_APPS[@]}"; do
-        if ! command_exists "$app"; then
+        if ! brew list --formula "$app" &>/dev/null 2>&1; then
             echo "Installing $app via Homebrew..."
             brew install "$app"
         else
@@ -79,6 +75,15 @@ else
     echo "Homebrew not available. Install manually: ${BREW_APPS[*]}"
 fi
 
+# Bootstrap paru (AUR helper) on Arch
+if [[ "$DISTRO" == "arch" ]] && ! command_exists paru; then
+    echo "Installing paru (AUR helper)..."
+    sudo pacman -S --needed --noconfirm base-devel git
+    git clone https://aur.archlinux.org/paru.git /tmp/paru-build
+    (cd /tmp/paru-build && makepkg -si --noconfirm)
+    rm -rf /tmp/paru-build
+fi
+
 # Install Ghostty
 if ! command_exists ghostty; then
     if [[ "$DISTRO" == "bazzite" ]]; then
@@ -87,6 +92,9 @@ if ! command_exists ghostty; then
         curl -fsSL "https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-${VERSION_ID}/scottames-ghostty-fedora-${VERSION_ID}.repo" \
             | sudo tee /etc/yum.repos.d/_copr_scottames-ghostty.repo > /dev/null
         rpm-ostree refresh-md && rpm-ostree install -y ghostty
+    elif [[ "$DISTRO" == "arch" ]]; then
+        echo "Installing Ghostty via paru..."
+        paru -S --noconfirm ghostty
     elif [[ "$OS" == "Darwin" ]]; then
         echo "Installing Ghostty via Homebrew Cask..."
         brew install --cask ghostty
@@ -95,6 +103,38 @@ if ! command_exists ghostty; then
     fi
 else
     echo "Ghostty is already installed."
+fi
+
+# Arch: Hyprland desktop stack
+if [[ "$DISTRO" == "arch" ]]; then
+    ARCH_PACKAGES=(
+        # Hyprland + Wayland
+        hyprland hyprland-guiutils
+        xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+        qt5-wayland qt6-wayland
+        polkit-kde-agent
+        # Display manager
+        sddm
+        # Desktop components
+        waybar wofi mako hyprpaper hyprlock hypridle
+        # Utilities
+        grim slurp wl-clipboard brightnessctl playerctl openssh
+        # Fonts (required by mako, waybar, neovim)
+        ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono ttf-jetbrains-mono-nerd
+    )
+    echo "Installing Arch desktop packages..."
+    sudo pacman -S --needed --noconfirm "${ARCH_PACKAGES[@]}"
+
+    # AUR packages
+    if command_exists paru; then
+        paru -S --needed --noconfirm matugen-bin
+    fi
+
+    # Enable SDDM
+    if ! systemctl is-enabled sddm &>/dev/null; then
+        echo "Enabling SDDM..."
+        sudo systemctl enable sddm
+    fi
 fi
 
 # Set zsh as default shell
@@ -129,7 +169,7 @@ if ! command_exists mise; then
         brew install mise
     else
         echo "Installing mise via official script..."
-        curl https://mise.jdx.dev/install.sh | sh
+        curl -fsSL https://mise.jdx.dev/install.sh | sh
     fi
     echo "Mise installed."
 fi

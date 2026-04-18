@@ -5,6 +5,8 @@ cleanup = true  # Remove unused Homebrew dependencies after upgrade
 # is managed by mise and should not be upgraded by topgrade
 {{ if eq .chezmoi.os "darwin" -}}
 only = ["brew_formula", "brew_cask", "mise", "custom_commands", "claude_code", "system", "chezmoi"]
+{{ else if and (eq .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "arch") -}}
+only = ["paru", "brew_formula", "mise", "custom_commands", "chezmoi"]
 {{ else -}}
 only = ["brew_formula", "mise", "custom_commands", "chezmoi"]
 {{ end }}
