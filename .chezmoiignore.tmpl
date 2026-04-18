@@ -12,7 +12,7 @@ Library
 {{ end }}
 
 # Hyprland configs — Arch Linux only
-{{ if or (ne .chezmoi.os "linux") (ne (index .chezmoi.osRelease "id") "arch") }}
+{{ if or (ne .chezmoi.os "linux") (ne (default "" (index .chezmoi.osRelease "id")) "arch") }}
 .config/hypr
 .config/mako
 .config/matugen
@@ -21,14 +21,14 @@ Library
 {{ end }}
 
 # GNOME configs — Bazzite GNOME only
-{{ if or (ne .chezmoi.os "linux") (not (hasPrefix "bazzite-gnome" (index .chezmoi.osRelease "variant_id"))) }}
+{{ if or (ne .chezmoi.os "linux") (not (hasPrefix "bazzite-gnome" (default "" (index .chezmoi.osRelease "variant_id")))) }}
 .config/gtk-3.0
 .config/gtk-4.0
 .config/gnome-shell
 {{ end }}
 
 # KDE configs — Bazzite KDE only
-{{ if or (ne .chezmoi.os "linux") (ne (index .chezmoi.osRelease "variant_id") "bazzite") }}
+{{ if or (ne .chezmoi.os "linux") (ne (default "" (index .chezmoi.osRelease "variant_id")) "bazzite") }}
 .config/kxkbrc
 .config/konsolerc
 .local/share/konsole
