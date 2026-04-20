@@ -13,17 +13,19 @@ if [[ ! -f "$WALLPAPER" ]]; then
   exit 1
 fi
 
+WALLPAPER="$(realpath "$WALLPAPER")"
 echo "Setting wallpaper: $WALLPAPER"
 
-hyprctl hyprpaper unload all
-hyprctl hyprpaper preload "$WALLPAPER"
-hyprctl hyprpaper wallpaper "eDP-1,$WALLPAPER"
+awww img "$WALLPAPER" --transition-type fade --transition-duration 1
 
 matugen image "$WALLPAPER"
 
 hyprctl reload
 
-pkill waybar; waybar & disown
+pkill waybar || true
+sleep 0.3
+waybar &
+disown
 
 makoctl reload
 
