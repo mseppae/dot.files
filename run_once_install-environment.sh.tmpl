@@ -60,7 +60,7 @@ else
 fi
 
 # Install tools via Homebrew
-BREW_APPS=("zsh" "vivid" "zoxide" "fzf" "ripgrep" "bob" "topgrade" "fastfetch" "coreutils" "openssl" "readline" "libyaml" "libffi")
+BREW_APPS=("zsh" "vivid" "zoxide" "fzf" "ripgrep" "bob" "topgrade" "fastfetch" "coreutils" "openssl" "readline" "libyaml" "libffi" "mise")
 
 if command_exists brew; then
     for app in "${BREW_APPS[@]}"; do
@@ -73,6 +73,21 @@ if command_exists brew; then
     done
 else
     echo "Homebrew not available. Install manually: ${BREW_APPS[*]}"
+fi
+
+# Install mise (fallback for non-brew systems)
+if ! command_exists mise; then
+    echo "Installing mise via official script..."
+    curl -fsSL https://mise.jdx.dev/install.sh | sh
+    echo "Mise installed."
+fi
+
+# Bootstrap mise runtimes early — needed before AUR builds (mise Python used by makepkg)
+if command_exists mise; then
+    mise trust "$HOME/.config/mise/config.toml"
+    mise install
+    eval "$(mise activate bash)"
+    mise exec python -- pip install --quiet --upgrade build setuptools wheel installer attrs numpy pillow toml pyyaml
 fi
 
 # Bootstrap paru (AUR helper) on Arch
@@ -121,6 +136,8 @@ if [[ "$DISTRO" == "arch" ]]; then
         grim slurp wl-clipboard brightnessctl playerctl openssh
         # Fonts (required by mako, waybar, neovim)
         ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono ttf-jetbrains-mono-nerd
+        # GTK theming
+        nwg-look adw-gtk-theme papirus-icon-theme
     )
     MISSING_ARCH_PACKAGES=()
     for pkg in "${ARCH_PACKAGES[@]}"; do
@@ -135,18 +152,24 @@ if [[ "$DISTRO" == "arch" ]]; then
 
     # AUR packages
     if command_exists paru; then
-        if ! pacman -Q matugen-bin &>/dev/null; then
-            paru -S --needed --noconfirm matugen-bin
-        fi
-        if ! pacman -Q sddm-astronaut-theme &>/dev/null; then
-            paru -S --needed --noconfirm sddm-astronaut-theme
-        fi
+        for aur_pkg in matugen-bin sddm-astronaut-theme bibata-cursor-theme; do
+            if ! pacman -Q "$aur_pkg" &>/dev/null; then
+                paru -S --needed --noconfirm "$aur_pkg"
+            fi
+        done
     fi
 
     # Enable SDDM
     if ! systemctl is-enabled sddm &>/dev/null; then
         echo "Enabling SDDM..."
         sudo systemctl enable sddm
+    fi
+
+    # System cursor theme
+    if [[ ! -f /usr/share/icons/default/index.theme ]]; then
+        echo "Configuring system cursor theme..."
+        sudo mkdir -p /usr/share/icons/default
+        printf '[Icon Theme]\nInherits=Bibata-Modern-Ice\n' | sudo tee /usr/share/icons/default/index.theme >/dev/null
     fi
 
     # Set SDDM theme
@@ -219,24 +242,6 @@ if command_exists bob; then
     bob use nightly
 fi
 
-# Install mise
-if ! command_exists mise; then
-    if command_exists brew; then
-        echo "Installing mise via Homebrew..."
-        brew install mise
-    else
-        echo "Installing mise via official script..."
-        curl -fsSL https://mise.jdx.dev/install.sh | sh
-    fi
-    echo "Mise installed."
-fi
-
-# Trust config and install language runtimes
-if command_exists mise; then
-    mise trust "$HOME/.config/mise/config.toml"
-    mise install
-    eval "$(mise activate bash)"
-fi
 
 # Claude Code (native installer with auto-updates)
 if ! command_exists claude; then

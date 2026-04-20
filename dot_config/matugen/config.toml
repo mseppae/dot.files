@@ -13,3 +13,11 @@ output_path = "~/.config/mako/colors"
 [templates.hyprland-colors]
 input_path = "~/.config/matugen/templates/hyprland-colors.conf"
 output_path = "~/.config/hypr/colors.conf"
+
+[templates.hyprlock-colors]
+input_path = "~/.config/matugen/templates/hyprlock-colors.conf"
+output_path = "~/.config/hypr/hyprlock-colors.conf"
+
+[templates.ghostty-colors]
+input_path = "~/.config/matugen/templates/ghostty-colors.conf"
+output_path = "~/.config/ghostty/colors.conf"

@@ -1,23 +1,30 @@
 #!/bin/bash
+set -euo pipefail
+
 WALLPAPER="$1"
 
-if [ -z "$WALLPAPER" ]; then
+if [[ -z "$WALLPAPER" ]]; then
   echo "Usage: wallpaper-set /path/to/image.jpg"
   exit 1
 fi
 
-# update hyprpaper
+if [[ ! -f "$WALLPAPER" ]]; then
+  echo "Error: file not found: $WALLPAPER"
+  exit 1
+fi
+
+echo "Setting wallpaper: $WALLPAPER"
+
 hyprctl hyprpaper unload all
 hyprctl hyprpaper preload "$WALLPAPER"
-hyprctl hyprpaper wallpaper ",$WALLPAPER"
+hyprctl hyprpaper wallpaper "eDP-1,$WALLPAPER"
 
-# regenerate color palette and reload apps
 matugen image "$WALLPAPER"
 
-# reload waybar
-pkill waybar && waybar &
+hyprctl reload
 
-# reload mako
+pkill waybar; waybar & disown
+
 makoctl reload
 
-echo "Wallpaper and colors updated."
+echo "Done. Wallpaper and colors updated."
