@@ -155,6 +155,43 @@ if [[ "$DISTRO" == "arch" ]]; then
         sudo mkdir -p /etc/sddm.conf.d
         printf '[Theme]\nCurrent=sddm-astronaut-theme\n' | sudo tee /etc/sddm.conf.d/theme.conf >/dev/null
     fi
+
+    # Snapper btrfs snapshots (pre/post on every pacman transaction via snap-pac)
+    if ! pacman -Q snapper &>/dev/null; then
+        sudo pacman -S --needed --noconfirm snapper snap-pac
+    fi
+    if command_exists paru && ! pacman -Q snapper-rollback &>/dev/null; then
+        paru -S --needed --noconfirm snapper-rollback
+    fi
+    # Create snapper root config manually — do NOT use `snapper create-config /`
+    # as it conflicts with the @snapshots subvolume mounted at /.snapshots
+    if [[ ! -f /etc/snapper/configs/root ]]; then
+        echo "Creating snapper root config..."
+        sudo mkdir -p /etc/snapper/configs
+        sudo cp /usr/share/snapper/config-templates/default /etc/snapper/configs/root
+        # Register config
+        if [[ -f /etc/conf.d/snapper ]]; then
+            sudo sed -i 's/^SNAPPER_CONFIGS=.*/SNAPPER_CONFIGS="root"/' /etc/conf.d/snapper
+        else
+            echo 'SNAPPER_CONFIGS="root"' | sudo tee /etc/conf.d/snapper >/dev/null
+        fi
+        # Retention: pre/post only, keep last 5 pairs, allow user access
+        sudo sed -i \
+            -e 's/^TIMELINE_CREATE=.*/TIMELINE_CREATE="no"/' \
+            -e 's/^TIMELINE_CLEANUP=.*/TIMELINE_CLEANUP="no"/' \
+            -e 's/^NUMBER_CLEANUP=.*/NUMBER_CLEANUP="yes"/' \
+            -e 's/^NUMBER_MIN_AGE=.*/NUMBER_MIN_AGE="1800"/' \
+            -e 's/^NUMBER_LIMIT=.*/NUMBER_LIMIT="5"/' \
+            -e 's/^NUMBER_LIMIT_IMPORTANT=.*/NUMBER_LIMIT_IMPORTANT="3"/' \
+            -e 's/^ALLOW_USERS=.*/ALLOW_USERS="'"$(whoami)"'"/' \
+            -e 's/^SYNC_ACL=.*/SYNC_ACL="yes"/' \
+            /etc/snapper/configs/root
+        echo "Snapper root config created."
+    fi
+    if ! systemctl is-enabled snapper-cleanup.timer &>/dev/null; then
+        echo "Enabling snapper-cleanup.timer..."
+        sudo systemctl enable --now snapper-cleanup.timer
+    fi
 fi
 
 # Set zsh as default shell
