@@ -7,3 +7,5 @@ padding=12
 margin=8
 default-timeout=5000
 anchor=top-right
+
+include=~/.config/mako/colors
