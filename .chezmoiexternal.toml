@@ -1,6 +1,12 @@
-[".config/zsh/plugins/zsh-autocomplete"]
+[".config/zsh/plugins/powerlevel10k"]
   type = "git-repo"
-  url = "https://github.com/marlonrichert/zsh-autocomplete"
+  url = "https://github.com/romkatv/powerlevel10k"
+  clone.args = ["--depth", "1"]
+  pull.args = ["--ff-only"]
+
+[".config/zsh/plugins/fzf-tab"]
+  type = "git-repo"
+  url = "https://github.com/Aloxaf/fzf-tab"
   clone.args = ["--depth", "1"]
   pull.args = ["--ff-only"]
 

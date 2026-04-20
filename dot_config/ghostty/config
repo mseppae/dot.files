@@ -1,6 +1,8 @@
 # Ghostty config
 # Shell integration enables Neovim-aware split navigation via smart-splits.nvim
 
+font-family = JetBrainsMono Nerd Font
+
 # Unbind ctrl+, (default: open_config) so it passes through to Neovim
 keybind = ctrl+,=unbind
 
