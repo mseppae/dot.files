@@ -122,6 +122,13 @@ fi
 
 # Arch: Hyprland desktop stack
 if [[ "$DISTRO" == "arch" ]]; then
+    # Enable multilib repo (required for 32-bit Steam/gaming libraries)
+    if ! grep -q '^\[multilib\]' /etc/pacman.conf; then
+        echo "Enabling multilib repository..."
+        sudo sed -i '/^#\[multilib\]/{n;s/^#Include/Include/;s/^#\[multilib\]/[multilib]/}' /etc/pacman.conf
+        sudo pacman -Sy
+    fi
+
     ARCH_PACKAGES=(
         # Hyprland + Wayland
         hyprland hyprland-guiutils
@@ -141,6 +148,18 @@ if [[ "$DISTRO" == "arch" ]]; then
         nwg-look adw-gtk-theme papirus-icon-theme
         # Apps
         thunar gvfs imv zathura zathura-pdf-mupdf mpv file-roller p7zip godot
+        # GPU drivers (AMD/RADV)
+        mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon
+        libva-mesa-driver lib32-libva-mesa-driver vulkan-tools
+        # Audio (PipeWire)
+        pipewire pipewire-alsa pipewire-pulse pipewire-jack
+        wireplumber lib32-pipewire helvum
+        # Bluetooth
+        bluez bluez-utils
+        # Gaming
+        steam lutris wine-staging winetricks
+        gamemode lib32-gamemode mangohud lib32-mangohud
+        flatpak obs-studio
     )
     MISSING_ARCH_PACKAGES=()
     for pkg in "${ARCH_PACKAGES[@]}"; do
@@ -155,11 +174,50 @@ if [[ "$DISTRO" == "arch" ]]; then
 
     # AUR packages
     if command_exists paru; then
-        for aur_pkg in matugen-bin sddm-astronaut-theme bibata-cursor-theme 1password; do
+        for aur_pkg in matugen-bin sddm-astronaut-theme bibata-cursor-theme 1password \
+                       proton-ge-custom-bin protonup-qt heroic-games-launcher-bin \
+                       corectrl flatseal fooyin; do
             if ! pacman -Q "$aur_pkg" &>/dev/null; then
                 paru -S --needed --noconfirm "$aur_pkg"
             fi
         done
+    fi
+
+    # PipeWire user services
+    for _svc in pipewire pipewire-pulse wireplumber; do
+        systemctl --user is-enabled "$_svc" &>/dev/null || systemctl --user enable --now "$_svc"
+    done
+
+    # GameMode user service
+    if pacman -Q gamemode &>/dev/null; then
+        systemctl --user is-enabled gamemoded &>/dev/null || systemctl --user enable --now gamemoded
+    fi
+
+    # Bluetooth
+    if pacman -Q bluez &>/dev/null; then
+        systemctl is-enabled bluetooth &>/dev/null || sudo systemctl enable --now bluetooth
+    fi
+
+    # Flatpak: add Flathub remote
+    if command_exists flatpak && ! flatpak remotes | grep -q flathub; then
+        flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    fi
+
+    # corectrl polkit rule (allow wheel group without password prompt)
+    if pacman -Q corectrl &>/dev/null && [[ ! -f /etc/polkit-1/rules.d/90-corectrl.rules ]]; then
+        echo "Configuring corectrl polkit rule..."
+        sudo mkdir -p /etc/polkit-1/rules.d
+        sudo tee /etc/polkit-1/rules.d/90-corectrl.rules >/dev/null <<'POLKIT'
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.corectrl.helper.init" ||
+         action.id == "org.corectrl.helperkiller.init") &&
+        subject.local == true &&
+        subject.active == true &&
+        subject.isInGroup("wheel")) {
+            return polkit.Result.YES;
+    }
+});
+POLKIT
     fi
 
     # Enable SDDM
