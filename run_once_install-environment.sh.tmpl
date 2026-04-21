@@ -133,11 +133,14 @@ if [[ "$DISTRO" == "arch" ]]; then
         # Desktop components
         waybar wofi mako awww hyprlock hypridle
         # Utilities
-        grim slurp wl-clipboard brightnessctl playerctl openssh unzip
+        grim slurp wl-clipboard brightnessctl playerctl openssh unzip fd
+        tree-sitter tree-sitter-cli
         # Fonts (required by mako, waybar, neovim)
         ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono ttf-jetbrains-mono-nerd
         # GTK theming
         nwg-look adw-gtk-theme papirus-icon-theme
+        # Apps
+        thunar gvfs imv zathura zathura-pdf-mupdf mpv file-roller p7zip godot
     )
     MISSING_ARCH_PACKAGES=()
     for pkg in "${ARCH_PACKAGES[@]}"; do
@@ -152,7 +155,7 @@ if [[ "$DISTRO" == "arch" ]]; then
 
     # AUR packages
     if command_exists paru; then
-        for aur_pkg in matugen-bin sddm-astronaut-theme bibata-cursor-theme; do
+        for aur_pkg in matugen-bin sddm-astronaut-theme bibata-cursor-theme 1password; do
             if ! pacman -Q "$aur_pkg" &>/dev/null; then
                 paru -S --needed --noconfirm "$aur_pkg"
             fi
@@ -214,6 +217,46 @@ if [[ "$DISTRO" == "arch" ]]; then
     if ! systemctl is-enabled snapper-cleanup.timer &>/dev/null; then
         echo "Enabling snapper-cleanup.timer..."
         sudo systemctl enable --now snapper-cleanup.timer
+    fi
+
+    # Suppress kernel messages on active TTY (suspend/resume noise, battery events)
+    if [[ ! -f /etc/sysctl.d/99-quiet-printk.conf ]]; then
+        echo "Configuring quiet kernel console log level..."
+        echo 'kernel.printk = 3 4 1 3' | sudo tee /etc/sysctl.d/99-quiet-printk.conf >/dev/null
+        sudo sysctl -p /etc/sysctl.d/99-quiet-printk.conf
+    fi
+
+    # Plymouth graphical boot splash + LUKS passphrase prompt
+    if command_exists paru && ! pacman -Q plymouth &>/dev/null; then
+        echo "Installing Plymouth..."
+        paru -S --needed --noconfirm plymouth
+    fi
+    if pacman -Q plymouth &>/dev/null; then
+        # Add plymouth hook to mkinitcpio.conf (idempotent)
+        # plymouth must appear before encrypt; no plymouth-encrypt hook since Plymouth 2023+
+        if ! grep -q '\bplymouth\b' /etc/mkinitcpio.conf; then
+            echo "Adding Plymouth hook to mkinitcpio.conf..."
+            sudo sed -i 's/\(HOOKS=([^)]*udev\)/\1 plymouth/' /etc/mkinitcpio.conf
+            sudo mkinitcpio -P
+        fi
+        # Set theme
+        if ! plymouth-set-default-theme 2>/dev/null | grep -qx 'spinner'; then
+            echo "Setting Plymouth theme to spinner..."
+            sudo plymouth-set-default-theme -R spinner
+        fi
+        # Add quiet splash to all bootloader entries
+        for _entry in /boot/loader/entries/*.conf; do
+            if grep -q '^options' "$_entry" && ! grep -q '\bsplash\b' "$_entry"; then
+                echo "Adding splash to $_entry..."
+                sudo sed -i '/^options/ s/$/ splash/' "$_entry"
+            fi
+        done
+        # Enable Plymouth systemd services
+        for _svc in plymouth-quit-wait.service plymouth-read-write.service; do
+            if ! systemctl is-enabled "$_svc" &>/dev/null; then
+                sudo systemctl enable "$_svc"
+            fi
+        done
     fi
 fi
 

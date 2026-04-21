@@ -30,6 +30,9 @@ return {
 
 				-- Zig
 				"zls",
+
+				-- Shell
+				"bash-language-server",
 			}
 
 			require("mason-tool-installer").setup({

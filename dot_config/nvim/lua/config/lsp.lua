@@ -6,6 +6,8 @@ vim.lsp.enable(
 --    "sorbet",
     "ts_ls",
     "zig",
+    "bash_ls",
+    "gdscript",
   }
 )
 
