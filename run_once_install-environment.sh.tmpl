@@ -302,13 +302,15 @@ POLKIT
             echo "Setting Plymouth theme to spinner..."
             sudo plymouth-set-default-theme -R spinner
         fi
-        # Add quiet splash to all bootloader entries
-        for _entry in /boot/loader/entries/*.conf; do
-            if grep -q '^options' "$_entry" && ! grep -q '\bsplash\b' "$_entry"; then
-                echo "Adding splash to $_entry..."
-                sudo sed -i '/^options/ s/$/ splash/' "$_entry"
-            fi
-        done
+        # Add quiet splash to all systemd-boot entries (skip if using GRUB)
+        if [[ -d /boot/loader/entries ]]; then
+            for _entry in /boot/loader/entries/*.conf; do
+                if grep -q '^options' "$_entry" && ! grep -q '\bsplash\b' "$_entry"; then
+                    echo "Adding splash to $_entry..."
+                    sudo sed -i '/^options/ s/$/ splash/' "$_entry"
+                fi
+            done
+        fi
         # Enable Plymouth systemd services
         for _svc in plymouth-quit-wait.service plymouth-read-write.service; do
             if ! systemctl is-enabled "$_svc" &>/dev/null; then
