@@ -1,0 +1,80 @@
+@import "colors.rasi"
+
+* {
+    font:             "JetBrainsMono Nerd Font 11";
+    background-color: transparent;
+    text-color:       @fg;
+    border-color:     @accent;
+}
+
+window {
+    background-color: @bg;
+    width:            840px;
+    border:           2px solid;
+    border-radius:    12px;
+    padding:          20px;
+}
+
+mainbox {
+    background-color: transparent;
+    spacing:          16px;
+}
+
+inputbar {
+    background-color: @surface;
+    border-radius:    8px;
+    padding:          10px 16px;
+    spacing:          8px;
+    children:         [prompt, entry];
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @muted;
+    str:              "";
+}
+
+entry {
+    background-color:  transparent;
+    placeholder:       "Search";
+    placeholder-color: @muted;
+    cursor-color:      @accent;
+}
+
+listview {
+    background-color: transparent;
+    columns:          6;
+    lines:            4;
+    layout:           vertical;
+    fixed-columns:    true;
+    fixed-height:     false;
+    spacing:          4px;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    8px;
+    padding:          12px 4px;
+    orientation:      vertical;
+    cursor:           pointer;
+    spacing:          6px;
+}
+
+element selected {
+    background-color: @surface;
+}
+
+element-icon {
+    background-color: transparent;
+    size:             52px;
+    horizontal-align: 0.5;
+    cursor:           inherit;
+}
+
+element-text {
+    background-color: transparent;
+    horizontal-align: 0.5;
+    vertical-align:   0.5;
+    font:             "JetBrainsMono Nerd Font 9";
+    cursor:           inherit;
+}

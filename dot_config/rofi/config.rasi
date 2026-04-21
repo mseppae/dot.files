@@ -1,0 +1,10 @@
+configuration {
+    modi:                "drun";
+    show-icons:          true;
+    drun-display-format: "{name}";
+    icon-theme:          "Papirus-Dark";
+    terminal:            "ghostty";
+    kb-cancel:           "Escape,Super+space";
+}
+
+@theme "~/.config/rofi/launcher.rasi"

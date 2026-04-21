@@ -87,7 +87,7 @@ if command_exists mise; then
     mise trust "$HOME/.config/mise/config.toml"
     mise install
     eval "$(mise activate bash)"
-    mise exec python -- pip install --quiet --upgrade build setuptools wheel installer attrs numpy pillow toml pyyaml
+    mise exec python -- pip install --quiet --upgrade build setuptools wheel installer attrs numpy pillow toml pyyaml protobuf
 fi
 
 # Bootstrap paru (AUR helper) on Arch
@@ -175,8 +175,8 @@ if [[ "$DISTRO" == "arch" ]]; then
     # AUR packages
     if command_exists paru; then
         for aur_pkg in matugen-bin sddm-astronaut-theme bibata-cursor-theme 1password \
-                       proton-ge-custom-bin protonup-qt heroic-games-launcher-bin \
-                       corectrl flatseal fooyin; do
+                       proton-ge-custom-bin heroic-games-launcher-bin \
+                       corectrl flatseal fooyin rofi-wayland; do
             if ! pacman -Q "$aur_pkg" &>/dev/null; then
                 paru -S --needed --noconfirm "$aur_pkg"
             fi

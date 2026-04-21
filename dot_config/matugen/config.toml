@@ -21,3 +21,7 @@ output_path = "~/.config/hypr/hyprlock-colors.conf"
 [templates.ghostty-colors]
 input_path = "~/.config/matugen/templates/ghostty-colors.conf"
 output_path = "~/.config/ghostty/colors.conf"
+
+[templates.rofi-colors]
+input_path = "~/.config/matugen/templates/rofi-colors.rasi"
+output_path = "~/.config/rofi/colors.rasi"
