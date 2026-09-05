@@ -11,6 +11,11 @@ CLAUDE.md
 Library
 {{ end }}
 
+# systemd user services — Linux only
+{{ if ne .chezmoi.os "linux" }}
+.config/systemd
+{{ end }}
+
 # Tiling WM configs — Arch Linux only (exclude on macOS and Bazzite/GNOME)
 {{ if or (ne .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "bazzite") }}
 .config/hypr

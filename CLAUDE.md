@@ -44,7 +44,10 @@ Files are organized to mirror their destination paths
 - `.chezmoiignore.tmpl` — Excludes Linux-only configs on macOS,
   and excludes `nvim/lazy-lock.json` (machine-local)
 - Linux-specific: `dot_config/hypr/`, `dot_config/waybar/`,
-  `dot_config/rofi/`, `dot_config/i3/`, `dot_config/dunst/`
+  `dot_config/rofi/`, `dot_config/i3/`, `dot_config/dunst/`,
+  `dot_config/systemd/user/` (user services;
+  `run_onchange_enable-*.sh.tmpl` scripts `daemon-reload` +
+  `systemctl --user enable` them)
 - macOS-specific: `dot_config/alacritty/`
 
 ## Key Patterns

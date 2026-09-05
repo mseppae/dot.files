@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+
+# Enable the Spotify singleton cleanup user service.
+# Re-runs whenever the unit file changes:
+# spotify-cleanup.service hash: {{ include "dot_config/systemd/user/spotify-cleanup.service" | sha256sum }}
+
+# systemd --user only (skip on macOS and minimal containers)
+command -v systemctl &>/dev/null || exit 0
+[[ -d /run/systemd/system ]] || exit 0
+
+systemctl --user daemon-reload
+systemctl --user enable --now spotify-cleanup.service

@@ -1,0 +1,18 @@
+[Unit]
+Description=Clean up stale Spotify singleton lock files
+# Runs the cleanup when the user session stops (logout / shutdown / reboot),
+# so Spotify starts cleanly next time instead of complaining about an
+# already-running instance. The oneshot below stays "active" after ExecStart
+# and only does real work in ExecStop.
+DefaultDependencies=no
+Before=shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
+ExecStop=-/usr/bin/find %h/.var/app/com.spotify.Client/cache/spotify/ -name 'Singleton*' -delete
+
+[Install]
+WantedBy=default.target
