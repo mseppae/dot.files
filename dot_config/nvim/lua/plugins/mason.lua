@@ -30,6 +30,9 @@ return {
 
 				-- Zig
 				"zls",
+
+				-- Odin (the ols package also ships the odinfmt binary)
+				"ols",
 			}
 
 			require("mason-tool-installer").setup({

@@ -8,6 +8,7 @@ return {
 				ensure_installed = {
 					"c",
 					"go",
+					"odin",
 					"ruby",
 					"json",
 					"lua",

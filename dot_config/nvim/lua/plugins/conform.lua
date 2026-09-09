@@ -37,6 +37,7 @@ return {
 					"goimports-reviser",
 					"gofumpt",
 				},
+				odin = { "odinfmt" },
 				css = { "prettierd" },
 				html = { "prettierd" },
 				javascript = { "prettierd" },

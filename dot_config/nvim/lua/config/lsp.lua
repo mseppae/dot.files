@@ -6,6 +6,7 @@ vim.lsp.enable(
 --    "sorbet",
     "ts_ls",
     "zig",
+    "odin",
   }
 )
 
