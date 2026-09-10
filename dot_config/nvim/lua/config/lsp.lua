@@ -31,6 +31,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.lsp.completion.get()
       end)
     end
+
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+      -- Off by default; toggle per-buffer with <leader>uh
+      vim.keymap.set('n', '<leader>uh', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }), { bufnr = ev.buf })
+      end, { buffer = ev.buf, desc = 'Toggle inlay hints' })
+    end
   end,
 })
 
