@@ -148,3 +148,15 @@ if ! command_exists claude; then
 else
     echo "Claude Code is already installed."
 fi
+
+# OpenAI Codex
+{{ if .installCodex -}}
+if ! command_exists codex; then
+    echo "Installing OpenAI Codex..."
+    curl -fsSL https://chatgpt.com/codex/install.sh | sh -s -- --no
+else
+    echo "OpenAI Codex is already installed."
+fi
+{{ else -}}
+echo "OpenAI Codex installation disabled for this machine."
+{{ end -}}
