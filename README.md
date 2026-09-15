@@ -1,21 +1,46 @@
 # Dot.files
 
-Personal dotfiles for Bazzite, macOS, and Arch Linux (untested), managed with [chezmoi](https://www.chezmoi.io/).
+Personal dotfiles for macOS, Bazzite, and Arch Linux, managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Bootstrap a new machine
 
-Install chezmoi via Homebrew, then apply:
+Install chezmoi with your platform's package path. On macOS/Bazzite with Homebrew:
 
 ```bash
 brew install chezmoi
+```
+
+On Arch (start with an up-to-date system):
+
+```bash
+sudo pacman -Syu --needed chezmoi git curl
+```
+
+Then initialize and apply on any supported platform:
+
+```bash
 chezmoi init --apply git@github.com:mseppae/dot.files.git
 ```
 
 chezmoi will:
-1. Clone this repo to `~/development/dot.files`
+
+1. Use `~/development/dot.files` (or existing `~/Development/dot.files`) as its source directory
 2. Apply all config files to their destinations
 3. Clone zsh plugins via `.chezmoiexternal.toml`
-4. Run `run_once_install-environment.sh` to install Homebrew/Linuxbrew, tools, and language runtimes
+4. Bootstrap tools using Homebrew on macOS/Bazzite or official pacman packages on Arch
+
+All platforms use Bob for Neovim nightly and the native Claude Code installer.
+mise uses Homebrew on macOS/Bazzite and its official installer on Arch.
+Ghostty uses a Homebrew cask on macOS, COPR/rpm-ostree on Bazzite (reboot required),
+and pacman on Arch. Arch bootstrap does not install Homebrew or an AUR helper.
+
+Codex installation is optional per machine; the initialization prompt defaults to
+false and saves `installCodex` in the local chezmoi config. Its native installer
+runs non-interactively (`CODEX_NON_INTERACTIVE=1`).
+
+On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
+then run `chezmoi apply`. `run_once_` records successful rendered script contents:
+a changed bootstrap (including a changed Codex choice) can run again on apply.
 
 ## Daily use
 
@@ -40,6 +65,9 @@ chezmoi manages config files, not tool lifecycles. Update tools with:
 ```bash
 topgrade       # upgrades brew, mise runtimes, Neovim (bob), and system (Bazzite)
 ```
+
+Topgrade is installed on macOS/Bazzite. Arch bootstrap omits it to avoid requiring
+the AUR; use `sudo pacman -Syu`, `mise upgrade`, and `bob update` there.
 
 ## Neovim
 

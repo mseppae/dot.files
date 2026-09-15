@@ -1,162 +1,177 @@
 #!/bin/bash
-# chezmoi run_once_ script: runs on first apply (or when this file changes).
-# Purpose: bootstrap a new machine. Does NOT upgrade already-installed tools.
-# For ongoing upgrades use: topgrade
+# chezmoi runs each distinct rendered version once after a successful apply.
+# Bootstrap missing tools; use the platform package manager for ongoing upgrades.
 
 set -euo pipefail
 
 command_exists() {
-    command -v "$1" >/dev/null 2>&1
+  command -v "$1" >/dev/null 2>&1
 }
 
-# OS and distro detection
-OS="$(uname -s)"
-DISTRO="unknown"
-if [[ "$OS" == "Linux" ]] && [[ -f /etc/os-release ]]; then
-  _variant_id="$(. /etc/os-release && echo "${VARIANT_ID:-}")"
-  _os_id="$(. /etc/os-release && echo "${ID:-unknown}")"
-  case "$_variant_id" in
-    bazzite) DISTRO="bazzite" ;;
-    *)
-      case "$_os_id" in
-        arch) DISTRO="arch" ;;
-        *)    DISTRO="$_os_id" ;;
-      esac
+detect_platform() {
+  OS="$(uname -s)"
+  PLATFORM="unsupported"
+  case "$OS" in
+    Darwin) PLATFORM="macos" ;;
+    Linux)
+      if [[ -f /etc/os-release ]]; then
+        local os_id variant_id
+        os_id="$(. /etc/os-release && echo "${ID:-unknown}")"
+        variant_id="$(. /etc/os-release && echo "${VARIANT_ID:-}")"
+        case "$os_id" in
+          arch) PLATFORM="arch" ;;
+          bazzite) PLATFORM="bazzite" ;;
+          *)
+            case "$variant_id" in
+              bazzite|bazzite-*) PLATFORM="bazzite" ;;
+            esac
+            ;;
+        esac
+      fi
       ;;
   esac
-  unset _variant_id _os_id
-fi
+  if [[ "$PLATFORM" == "unsupported" ]]; then
+    echo "Unsupported platform: $OS. Bootstrap supports macOS, Bazzite, and Arch Linux." >&2
+    exit 1
+  fi
+}
 
-# Ensure Linuxbrew is on PATH if already installed
-if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
+install_brew() {
+  local brew_path
+  if [[ "$PLATFORM" == "bazzite" ]]; then
+    brew_path="/home/linuxbrew/.linuxbrew/bin/brew"
+  elif [[ "$(uname -m)" == "arm64" ]]; then
+    brew_path="/opt/homebrew/bin/brew"
+  else
+    brew_path="/usr/local/bin/brew"
+  fi
 
-# Install Homebrew / Linuxbrew if not present
-if [[ "$OS" == "Darwin" ]]; then
-    if ! command_exists brew; then
-        echo "macOS detected. Homebrew not found. Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        if [[ "$(uname -m)" == "arm64" ]]; then
-            eval "$(/opt/homebrew/bin/brew shellenv)"
-        else
-            eval "$(/usr/local/bin/brew shellenv)"
-        fi
-        echo "Homebrew installed."
-    else
-        echo "Homebrew is already installed."
+  if [[ -x "$brew_path" ]]; then
+    eval "$("$brew_path" shellenv)"
+  fi
+  if ! command_exists brew; then
+    echo "Installing Homebrew for $PLATFORM..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$("$brew_path" shellenv)"
+  fi
+}
+
+install_brew_apps() {
+  local app
+  local apps=(zsh vivid starship zoxide ripgrep bob topgrade)
+  if [[ "$PLATFORM" == "bazzite" ]]; then
+    apps+=(openssl@3 readline libyaml libffi)
+  fi
+  for app in "${apps[@]}"; do
+    # Formula names need not be commands (ripgrep provides rg; libraries none).
+    if ! brew list --formula "$app" >/dev/null 2>&1; then
+      echo "Installing $app via Homebrew..."
+      brew install "$app"
     fi
-elif [[ "$DISTRO" == "bazzite" ]]; then
-    if ! command_exists brew; then
-        echo "Bazzite detected. Installing Linuxbrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-        echo "Linuxbrew installed."
-    else
-        echo "Linuxbrew is already installed."
-    fi
-else
-    echo "Not on macOS or Bazzite ($OS / $DISTRO). Skipping Homebrew installation."
-fi
+  done
+}
 
-# Install tools via Homebrew
-BREW_APPS=("zsh" "vivid" "starship" "zoxide" "rg" "bob" "topgrade")
+install_arch_apps() {
+  # Use existing sync databases; never perform a partial upgrade with pacman -Sy.
+  # topgrade is omitted: bootstrap does not require an AUR helper.
+  sudo pacman -S --needed zsh vivid starship zoxide ripgrep bob ghostty
+}
 
-if [[ "$DISTRO" == "bazzite" ]]; then
-    BREW_APPS+=("openssl" "readline" "libyaml" "libffi")
-fi
+install_ghostty() {
+  if command_exists ghostty || [[ "$PLATFORM" == "arch" ]]; then
+    return
+  fi
+  if [[ "$PLATFORM" == "bazzite" ]]; then
+    echo "Installing Ghostty via rpm-ostree (requires reboot to take effect)..."
+    local version_id
+    version_id="$(. /etc/os-release && echo "$VERSION_ID")"
+    curl -fsSL "https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-${version_id}/scottames-ghostty-fedora-${version_id}.repo" \
+      | sudo tee /etc/yum.repos.d/_copr_scottames-ghostty.repo > /dev/null
+    rpm-ostree refresh-md
+    rpm-ostree install --idempotent -y ghostty
+  elif ! brew list --cask ghostty >/dev/null 2>&1; then
+    echo "Installing Ghostty via Homebrew Cask..."
+    brew install --cask ghostty
+  fi
+}
 
-if command_exists brew; then
-    for app in "${BREW_APPS[@]}"; do
-        if ! command_exists "$app"; then
-            echo "Installing $app via Homebrew..."
-            brew install "$app"
-        else
-            echo "$app is already installed."
-        fi
-    done
-else
-    echo "Homebrew not available. Install manually: ${BREW_APPS[*]}"
-fi
-
-# Install Ghostty
-if ! command_exists ghostty; then
-    if [[ "$DISTRO" == "bazzite" ]]; then
-        echo "Installing Ghostty via rpm-ostree (requires reboot to take effect)..."
-        . /etc/os-release
-        curl -fsSL "https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-${VERSION_ID}/scottames-ghostty-fedora-${VERSION_ID}.repo" \
-            | sudo tee /etc/yum.repos.d/_copr_scottames-ghostty.repo > /dev/null
-        rpm-ostree refresh-md && rpm-ostree install -y ghostty
-    elif [[ "$OS" == "Darwin" ]]; then
-        echo "Installing Ghostty via Homebrew Cask..."
-        brew install --cask ghostty
-    else
-        echo "Please install Ghostty manually: https://ghostty.org"
-    fi
-else
-    echo "Ghostty is already installed."
-fi
-
-# Set zsh as default shell
-zsh_path="$(command -v zsh || true)"
-if [[ -n "$zsh_path" ]] && [[ "$SHELL" != "$zsh_path" ]]; then
+set_default_shell() {
+  local zsh_path
+  zsh_path="$(command -v zsh)"
+  if [[ "${SHELL:-}" != "$zsh_path" ]]; then
     echo "Setting zsh as default shell..."
-    if ! grep -qF "$zsh_path" /etc/shells; then
-        echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
+    if ! grep -qxF "$zsh_path" /etc/shells; then
+      echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
     fi
-    if [[ "$OS" == "Darwin" ]]; then
-        chsh -s "$zsh_path"
+    if [[ "$PLATFORM" == "macos" ]]; then
+      chsh -s "$zsh_path"
     elif command_exists usermod; then
-        sudo usermod --shell "$zsh_path" "$(whoami)"
+      sudo usermod --shell "$zsh_path" "$(whoami)"
     else
-        sudo chsh -s "$zsh_path" "$(whoami)"
+      sudo chsh -s "$zsh_path" "$(whoami)"
     fi
     echo "Default shell set to $zsh_path (takes effect on next login)."
-fi
+  fi
+}
 
-# Neovim via bob (nightly build)
-if command_exists bob; then
-    echo "Installing Neovim nightly via bob..."
-    chmod -f u+w ~/.local/share/bob/nvim-bin/nvim 2>/dev/null || true
-    bob install nightly
-    bob use nightly
-fi
+install_neovim() {
+  echo "Installing Neovim nightly via bob..."
+  chmod -f u+w "$HOME/.local/share/bob/nvim-bin/nvim" 2>/dev/null || true
+  bob install nightly
+  bob use nightly
+}
 
-# Install mise
-if ! command_exists mise; then
-    if command_exists brew; then
-        echo "Installing mise via Homebrew..."
-        brew install mise
+install_mise() {
+  if ! command_exists mise; then
+    if [[ "$PLATFORM" != "arch" ]]; then
+      echo "Installing mise via Homebrew..."
+      brew install mise
     else
-        echo "Installing mise via official script..."
-        curl https://mise.jdx.dev/install.sh | sh
+      echo "Installing mise via official script..."
+      curl -fsSL https://mise.jdx.dev/install.sh | sh
     fi
-    echo "Mise installed."
-fi
+  fi
+  mise trust "$HOME/.config/mise/config.toml"
+  mise install
+  eval "$(mise activate bash)"
+}
 
-# Trust config and install language runtimes
-if command_exists mise; then
-    mise trust "$HOME/.config/mise/config.toml"
-    mise install
-    eval "$(mise activate bash)"
-fi
-
-# Claude Code (native installer with auto-updates)
-if ! command_exists claude; then
+install_claude() {
+  if ! command_exists claude; then
     echo "Installing Claude Code..."
     curl -fsSL https://claude.ai/install.sh | sh
-else
+  else
     echo "Claude Code is already installed."
-fi
+  fi
+}
 
-# OpenAI Codex
-{{ if .installCodex -}}
-if ! command_exists codex; then
+install_codex() {
+{{ if (index . "installCodex" | default false) }}
+  if ! command_exists codex; then
     echo "Installing OpenAI Codex..."
-    curl -fsSL https://chatgpt.com/codex/install.sh | sh -s -- --no
-else
+    # Suppress installer prompts, including its offer to launch Codex.
+    curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
+  else
     echo "OpenAI Codex is already installed."
-fi
-{{ else -}}
-echo "OpenAI Codex installation disabled for this machine."
-{{ end -}}
+  fi
+{{ else }}
+  echo "OpenAI Codex installation disabled for this machine."
+{{ end }}
+}
+
+detect_platform
+# Native installers use this directory; expose tools in this apply as well.
+export PATH="$HOME/.local/bin:$PATH"
+case "$PLATFORM" in
+  macos|bazzite)
+    install_brew
+    install_brew_apps
+    ;;
+  arch) install_arch_apps ;;
+esac
+install_ghostty
+set_default_shell
+install_neovim
+install_mise
+install_claude
+install_codex

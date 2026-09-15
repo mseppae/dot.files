@@ -38,6 +38,9 @@ fi
 # https://github.com/sharkdp/vivid
 export LS_COLORS="$(vivid generate nord)"
 
+# Native installers (including mise on Arch) place commands here.
+export PATH="$HOME/.local/bin:$PATH"
+
 if [[ -d $HOME/.config/mise ]]; then
   eval "$(mise activate zsh)"
 fi
@@ -69,5 +72,3 @@ eval "$(starship init zsh)"
 if command -v fastfetch 2>&1 >/dev/null; then
   fastfetch
 fi
-
-export PATH="$HOME/.local/bin:$PATH"
