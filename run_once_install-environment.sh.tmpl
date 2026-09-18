@@ -145,6 +145,46 @@ install_claude() {
   fi
 }
 
+install_codex_desktop() (
+  # OpenAI now distributes the desktop app with Codex as ChatGPT.
+  case "$PLATFORM" in
+    macos)
+      if [[ -d /Applications/ChatGPT.app || -d "$HOME/Applications/ChatGPT.app" ]] \
+        || brew list --cask chatgpt >/dev/null 2>&1; then
+        return
+      fi
+      echo "Installing the desktop app with Codex via Homebrew Cask..."
+      brew install --cask chatgpt
+      ;;
+    arch)
+      if pacman -Q chatgpt >/dev/null 2>&1; then
+        return
+      fi
+      local installer_dir
+      installer_dir="$(mktemp -d)"
+      trap 'rm -rf "$installer_dir"' EXIT
+      echo "Installing the desktop app with Codex (adds OpenAI's repository and upgrades Arch)..."
+      curl -fsSL https://persistent.oaistatic.com/codex-app-prod/linux/install-arch.sh \
+        -o "$installer_dir/install-arch.sh"
+      sudo bash "$installer_dir/install-arch.sh"
+      ;;
+    bazzite)
+      if rpm -q chatgpt >/dev/null 2>&1; then
+        return
+      fi
+      local rpm_arch
+      case "$(uname -m)" in
+        x86_64) rpm_arch=x86_64 ;;
+        aarch64|arm64) rpm_arch=aarch64 ;;
+        *) echo "Unsupported desktop app architecture: $(uname -m)" >&2; return 1 ;;
+      esac
+      echo "Installing the desktop app with Codex via rpm-ostree (requires reboot to take effect)..."
+      rpm-ostree install --idempotent -y \
+        "https://persistent.oaistatic.com/codex-app-prod/linux/rpm/latest/chatgpt.${rpm_arch}.rpm"
+      ;;
+  esac
+)
+
 install_codex() {
 {{ if (index . "installCodex" | default false) }}
   if ! command_exists codex; then
@@ -154,6 +194,7 @@ install_codex() {
   else
     echo "OpenAI Codex is already installed."
   fi
+  install_codex_desktop
 {{ else }}
   echo "OpenAI Codex installation disabled for this machine."
 {{ end }}

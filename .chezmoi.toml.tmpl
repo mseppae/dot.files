@@ -1,4 +1,4 @@
-{{- $installCodex := promptBoolOnce . "installCodex" "Install OpenAI Codex on this machine?" false -}}
+{{- $installCodex := promptBoolOnce . "installCodex" "Install OpenAI Codex CLI and desktop app on this machine?" false -}}
 
 {{ if stat (joinPath .chezmoi.homeDir "Development/dot.files") -}}
 sourceDir = "{{ .chezmoi.homeDir }}/Development/dot.files"

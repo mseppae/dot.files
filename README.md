@@ -36,7 +36,13 @@ and pacman on Arch. Arch bootstrap does not install Homebrew or an AUR helper.
 
 Codex installation is optional per machine; the initialization prompt defaults to
 false and saves `installCodex` in the local chezmoi config. Its native installer
-runs non-interactively (`CODEX_NON_INTERACTIVE=1`).
+runs non-interactively (`CODEX_NON_INTERACTIVE=1`). The same setting also installs
+the desktop app with Codex, now distributed as ChatGPT: the `chatgpt` Homebrew
+cask on macOS, OpenAI's official installer on Arch (adds its signed package
+repository and prompts for a full system upgrade), and the official RPM layered
+with rpm-ostree on Bazzite (reboot required). See the
+[official desktop installation guide](https://learn.chatgpt.com/docs/linux/linux-app).
+Existing CLI installations still receive the desktop app when it is missing.
 
 On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
 then run `chezmoi apply`. `run_once_` records successful rendered script contents:
