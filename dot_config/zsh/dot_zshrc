@@ -34,16 +34,16 @@ if [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]]; then
   MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
-# LS_COLORS themes with vivid
-# https://github.com/sharkdp/vivid
-export LS_COLORS="$(vivid generate nord)"
-
-# Native installers (including mise on Arch) place commands here.
+# Native installers place commands here.
 export PATH="$HOME/.local/bin:$PATH"
 
 if [[ -d $HOME/.config/mise ]]; then
   eval "$(mise activate zsh)"
 fi
+
+# LS_COLORS themes with vivid (installed by mise)
+# https://github.com/sharkdp/vivid
+export LS_COLORS="$(vivid generate nord)"
 
 # libpg
 if [[ -d /opt/homebrew/opt/libpq/lib ]] then

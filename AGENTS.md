@@ -4,10 +4,12 @@
 
 This is my personal chezmoi dotfiles repository.
 
-Supported environments are macOS, Bazzite, and Arch Linux.
+Supported environments are macOS, Bazzite, and Arch Linux (including Omarchy).
 macOS and Bazzite use Homebrew/Linuxbrew; Arch uses official pacman packages
-without Homebrew or a required AUR helper. Bob manages Neovim nightly everywhere.
-Claude Code uses its native installer; Codex is optional via `installCodex`.
+without Homebrew or a required AUR helper. The OS package manager installs zsh
+and mise; mise installs CLI tools (Claude Code, gh, topgrade, bob, ...) on every
+platform. Bob manages Neovim nightly everywhere. `installClaude` and `installCodex`
+each gate a CLI (via mise) and its desktop app (via the OS package manager).
 
 ## Important
 
@@ -31,12 +33,18 @@ Claude Code uses its native installer; Codex is optional via `installCodex`.
 
 - `dot_` becomes `.` in the destination; `dot_config/` mirrors `~/.config/`.
 - `dot_zshenv` sets XDG paths and `ZDOTDIR`; shell config lives in `dot_config/zsh/`.
+  Omarchy keeps bash instead: `dot_bashrc` (Omarchy only) sources Omarchy's
+  defaults and adds personal settings; zsh files are ignored there.
 - `.chezmoiexternal.toml` clones zsh plugins during apply.
 - `dot_config/nvim/` has additional guidance in its own `AGENTS.md`.
 - `dot_config/wezterm/` has Neovim-aware `Ctrl+hjkl` navigation and `Ctrl+\` leader.
-- `dot_config/mise/config.toml` declares language runtimes and tools.
+- `dot_config/mise/conf.d/` declares language runtimes and CLI tools. Do not
+  manage `~/.config/mise/config.toml`: `mise use -g` (and Omarchy) write to it.
 - `.chezmoiignore.tmpl` gates platform configs and excludes machine-local `nvim/lazy-lock.json`.
-- Tiling WM configs target Arch; GNOME/KDE configs target Bazzite.
+- Tiling WM configs target plain Arch (not Omarchy, which owns its Hyprland
+  setup); GNOME/KDE configs target Bazzite.
+- On Omarchy, Ghostty/Alacritty configs layer on Omarchy's packaged defaults in
+  `/usr/share/omarchy/config/` so theme switching keeps working.
 - `Library/LaunchAgents/` is macOS-only; `dot_config/systemd/user/` is Linux-only.
   Service scripts reload and enable user units.
 - Bootstrap is `run_once_install-environment.sh.tmpl`; ongoing updates use the

@@ -1,0 +1,4 @@
+# Keep old installs on upgrade so running tools (claude, codex) are not
+# deleted out from under a live session.
+[settings.upgrade]
+auto_prune = false

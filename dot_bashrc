@@ -1,0 +1,36 @@
+# Omarchy only: bash stays the login shell there (see .chezmoiignore.tmpl).
+# Based on Omarchy's /etc/skel/.bashrc.
+
+# Omarchy environment (OMARCHY_PATH + PATH), needed even for non-interactive shells
+[[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
+
+# If not running interactively, don't do anything else (leave this above the rc source)
+[[ $- != *i* ]] && return
+
+# All the default Omarchy aliases and functions (mise, starship, zoxide, fzf)
+source "$OMARCHY_PATH/default/bash/rc"
+
+# Personal overrides, loaded after Omarchy's defaults.
+export EDITOR="nvim"
+export VISUAL="nvim"
+export SUDO_EDITOR="$EDITOR"
+
+export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# LS_COLORS themes with vivid (installed by mise)
+# https://github.com/sharkdp/vivid
+if command -v vivid &> /dev/null; then
+  export LS_COLORS="$(vivid generate nord)"
+fi
+
+if [[ -f ${HOME}/.local/share/bob/env/env.sh ]]; then
+  . "${HOME}/.local/share/bob/env/env.sh"
+fi
+
+alias vim="nvim"
+alias vi="nvim"
+
+if command -v fastfetch &> /dev/null; then
+  fastfetch
+fi

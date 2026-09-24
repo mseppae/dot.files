@@ -1,10 +1,18 @@
+{{- $osId := "" -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   $osId = index .chezmoi.osRelease "id" -}}
+{{- end -}}
 [misc]
 cleanup = true  # Remove unused Homebrew dependencies after upgrade
 
 # Only run these steps — everything else (rustup, gem, pip, cargo, npm, etc.)
-# is managed by mise and should not be upgraded by topgrade
+# is managed by mise and should not be upgraded by topgrade.
+# mise also updates Claude Code, Codex, and the other CLI tools.
 {{ if eq .chezmoi.os "darwin" -}}
-only = ["brew_formula", "brew_cask", "mise", "custom_commands", "claude_code", "system", "chezmoi"]
+only = ["brew_formula", "brew_cask", "mise", "custom_commands", "system", "chezmoi"]
+{{ else if eq $osId "omarchy" -}}
+# omarchy-update upgrades system packages and runs mise up.
+only = ["custom_commands", "chezmoi"]
 {{ else -}}
 only = ["brew_formula", "mise", "custom_commands", "chezmoi"]
 {{ end }}
@@ -14,6 +22,8 @@ autoremove = true    # Remove stale formulae after brew upgrade
 
 [commands]
 "Neovim (bob)" = "bob update"
-{{ if and (eq .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "bazzite") -}}
+{{ if eq $osId "bazzite" -}}
 "System (Bazzite)" = "ujust update"
+{{ else if eq $osId "omarchy" -}}
+"System (Omarchy)" = "omarchy-update"
 {{ end -}}

@@ -1,4 +1,10 @@
 # Ghostty config
+{{- if and (eq .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "omarchy") }}
+
+# Omarchy defaults: theme colors (follow Omarchy theme switching), font, padding.
+# Ghostty loads included files after this one; their keybinds do not overlap ours.
+config-file = ?"/usr/share/omarchy/config/ghostty/config"
+{{- end }}
 # Shell integration enables Neovim-aware split navigation via smart-splits.nvim
 
 # Unbind ctrl+, (default: open_config) so it passes through to Neovim

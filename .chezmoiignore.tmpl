@@ -8,6 +8,15 @@ CLAUDE.md
 AGENTS.md
 BOOTSTRAP_MODERNIZATION_PLAN.md
 
+# Shell: Omarchy keeps its bash setup; zsh everywhere else
+{{ if and (eq .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "omarchy") }}
+.zshenv
+.config/zsh
+.config/zsh/**
+{{ else }}
+.bashrc
+{{ end }}
+
 # macOS LaunchAgents — macOS only
 {{ if ne .chezmoi.os "darwin" }}
 Library
@@ -18,8 +27,9 @@ Library
 .config/systemd
 {{ end }}
 
-# Tiling WM configs — Arch Linux only (exclude on macOS and Bazzite/GNOME)
-{{ if or (ne .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "bazzite") }}
+# Tiling WM configs — plain Arch Linux only (exclude on macOS, Bazzite/GNOME,
+# and Omarchy, which manages its own Hyprland setup)
+{{ if or (ne .chezmoi.os "linux") (eq (index .chezmoi.osRelease "id") "bazzite") (eq (index .chezmoi.osRelease "id") "omarchy") }}
 .config/hypr
 .config/waybar
 .config/rofi

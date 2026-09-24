@@ -1,0 +1,17 @@
+{{- $installClaude := true -}}
+{{- if hasKey . "installClaude" }}{{ $installClaude = .installClaude }}{{ end -}}
+# Command-line tools installed the same way on every platform.
+[tools]
+bob = "latest"
+gh = "latest"
+ripgrep = "latest"
+starship = "latest"
+topgrade = "latest"
+vivid = "latest"
+zoxide = "latest"
+{{- if $installClaude }}
+claude = "latest"
+{{- end }}
+{{- if (index . "installCodex" | default false) }}
+codex = "latest"
+{{- end }}

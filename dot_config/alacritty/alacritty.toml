@@ -1,8 +1,0 @@
-[general]
-import = ["~/.cache/wal/colors-alacritty.toml"]
-live_config_reload = true
-
-[window]
-padding = { x = 5, y = 5 }
-opacity = 0.9
-blur = true

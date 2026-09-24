@@ -1,6 +1,9 @@
 #!/bin/bash
+{{- $installClaude := true }}
+{{- if hasKey . "installClaude" }}{{ $installClaude = .installClaude }}{{ end }}
 # chezmoi runs each distinct rendered version once after a successful apply.
-# Bootstrap missing tools; use the platform package manager for ongoing upgrades.
+# Bootstrap missing tools. The OS package manager provides zsh and mise; mise
+# installs the command-line tools declared in ~/.config/mise/conf.d.
 
 set -euo pipefail
 
@@ -11,6 +14,7 @@ command_exists() {
 detect_platform() {
   OS="$(uname -s)"
   PLATFORM="unsupported"
+  IS_OMARCHY=false
   case "$OS" in
     Darwin) PLATFORM="macos" ;;
     Linux)
@@ -20,6 +24,8 @@ detect_platform() {
         variant_id="$(. /etc/os-release && echo "${VARIANT_ID:-}")"
         case "$os_id" in
           arch) PLATFORM="arch" ;;
+          # Omarchy is Arch-based and uses the same pacman packages.
+          omarchy) PLATFORM="arch"; IS_OMARCHY=true ;;
           bazzite) PLATFORM="bazzite" ;;
           *)
             case "$variant_id" in
@@ -58,7 +64,7 @@ install_brew() {
 
 install_brew_apps() {
   local app
-  local apps=(zsh vivid starship zoxide ripgrep bob topgrade)
+  local apps=(zsh mise)
   if [[ "$PLATFORM" == "bazzite" ]]; then
     apps+=(openssl@3 readline libyaml libffi)
   fi
@@ -73,8 +79,16 @@ install_brew_apps() {
 
 install_arch_apps() {
   # Use existing sync databases; never perform a partial upgrade with pacman -Sy.
-  # topgrade is omitted: bootstrap does not require an AUR helper.
-  sudo pacman -S --needed zsh vivid starship zoxide ripgrep bob ghostty
+  local apps=(ghostty)
+  # Omarchy keeps bash as the login shell.
+  if [[ "$IS_OMARCHY" != true ]]; then
+    apps+=(zsh)
+  fi
+  # Omarchy ships mise-bin, which provides and conflicts with the mise package.
+  if ! command_exists mise; then
+    apps+=(mise)
+  fi
+  sudo pacman -S --needed "${apps[@]}"
 }
 
 install_ghostty() {
@@ -96,6 +110,9 @@ install_ghostty() {
 }
 
 set_default_shell() {
+  if [[ "$IS_OMARCHY" == true ]]; then
+    return
+  fi
   local zsh_path
   zsh_path="$(command -v zsh)"
   if [[ "${SHELL:-}" != "$zsh_path" ]]; then
@@ -114,35 +131,18 @@ set_default_shell() {
   fi
 }
 
+install_mise_tools() {
+  echo "Installing mise tools..."
+  mise install
+  # Expose mise-managed tools (including bob) to the rest of this script.
+  export PATH="${MISE_DATA_DIR:-$HOME/.local/share/mise}/shims:$PATH"
+}
+
 install_neovim() {
   echo "Installing Neovim nightly via bob..."
   chmod -f u+w "$HOME/.local/share/bob/nvim-bin/nvim" 2>/dev/null || true
   bob install nightly
   bob use nightly
-}
-
-install_mise() {
-  if ! command_exists mise; then
-    if [[ "$PLATFORM" != "arch" ]]; then
-      echo "Installing mise via Homebrew..."
-      brew install mise
-    else
-      echo "Installing mise via official script..."
-      curl -fsSL https://mise.jdx.dev/install.sh | sh
-    fi
-  fi
-  mise trust "$HOME/.config/mise/config.toml"
-  mise install
-  eval "$(mise activate bash)"
-}
-
-install_claude() {
-  if ! command_exists claude; then
-    echo "Installing Claude Code..."
-    curl -fsSL https://claude.ai/install.sh | sh
-  else
-    echo "Claude Code is already installed."
-  fi
 }
 
 install_codex_desktop() (
@@ -158,6 +158,12 @@ install_codex_desktop() (
       ;;
     arch)
       if pacman -Q chatgpt >/dev/null 2>&1; then
+        return
+      fi
+      if [[ "$IS_OMARCHY" == true ]]; then
+        # Omarchy packages the app; it conflicts with OpenAI's chatgpt-bin.
+        echo "Installing the desktop app with Codex from the Omarchy repository..."
+        omarchy-pkg-add openai-codex-desktop
         return
       fi
       local installer_dir
@@ -185,15 +191,47 @@ install_codex_desktop() (
   esac
 )
 
+install_claude_desktop() {
+  case "$PLATFORM" in
+    macos)
+      if [[ -d /Applications/Claude.app || -d "$HOME/Applications/Claude.app" ]] \
+        || brew list --cask claude >/dev/null 2>&1; then
+        return
+      fi
+      echo "Installing Claude Desktop via Homebrew Cask..."
+      brew install --cask claude
+      ;;
+    arch)
+      if pacman -Q claude-desktop >/dev/null 2>&1; then
+        return
+      fi
+      if [[ "$IS_OMARCHY" == true ]]; then
+        echo "Installing Claude Desktop from the Omarchy repository..."
+        omarchy-pkg-add claude-desktop
+      else
+        # Bootstrap does not require an AUR helper; the AUR has claude-desktop.
+        echo "Claude Desktop is not in the official Arch repositories; see https://claude.com/download"
+      fi
+      ;;
+    bazzite)
+      # Anthropic publishes Linux builds as Debian packages only.
+      echo "Claude Desktop has no Fedora package; see https://claude.com/download"
+      ;;
+  esac
+}
+
+install_claude() {
+{{ if $installClaude }}
+  # Claude Code is installed by mise (conf.d/cli.toml).
+  install_claude_desktop
+{{ else }}
+  echo "Claude installation disabled for this machine."
+{{ end }}
+}
+
 install_codex() {
 {{ if (index . "installCodex" | default false) }}
-  if ! command_exists codex; then
-    echo "Installing OpenAI Codex..."
-    # Suppress installer prompts, including its offer to launch Codex.
-    curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
-  else
-    echo "OpenAI Codex is already installed."
-  fi
+  # The Codex CLI is installed by mise (conf.d/cli.toml).
   install_codex_desktop
 {{ else }}
   echo "OpenAI Codex installation disabled for this machine."
@@ -212,7 +250,7 @@ case "$PLATFORM" in
 esac
 install_ghostty
 set_default_shell
+install_mise_tools
 install_neovim
-install_mise
 install_claude
 install_codex
