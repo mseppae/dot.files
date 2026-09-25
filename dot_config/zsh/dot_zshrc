@@ -41,10 +41,6 @@ if [[ -d $HOME/.config/mise ]]; then
   eval "$(mise activate zsh)"
 fi
 
-# LS_COLORS themes with vivid (installed by mise)
-# https://github.com/sharkdp/vivid
-export LS_COLORS="$(vivid generate nord)"
-
 # libpg
 if [[ -d /opt/homebrew/opt/libpq/lib ]] then
   export LDFLAGS="-L/opt/homebrew/opt/libpq/lib"
@@ -54,21 +50,18 @@ if [[ -d /opt/homebrew/opt/libpq/include ]] then
   export CPPFLAGS="-I/opt/homebrew/opt/libpq/include"
 fi
 
-if [[ -f ${HOME}/.local/share/bob/env/env.sh ]] then
-  . "${HOME}/.local/share/bob/env/env.sh"
-fi
-
-# Aliases
-alias ls="ls --color=always"
-alias vim="nvim"
-alias vi="nvim"
-
 # https://github.com/ajeetdsouza/zoxide
 eval "$(zoxide init zsh)"
 
 # https://starship.rs/
 eval "$(starship init zsh)"
 
-if command -v fastfetch 2>&1 >/dev/null; then
-  fastfetch
+# https://github.com/junegunn/fzf (Ctrl+T, Ctrl+R, Alt+C key bindings)
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --zsh)"
+fi
+
+# Shared zsh/bash config
+if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/shell/rc.sh ]]; then
+  . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/rc.sh"
 fi

@@ -11,26 +11,21 @@
 source "$OMARCHY_PATH/default/bash/rc"
 
 # Personal overrides, loaded after Omarchy's defaults.
-export EDITOR="nvim"
-export VISUAL="nvim"
-export SUDO_EDITOR="$EDITOR"
 
-export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# History: bash equivalents of dot_config/zsh/dot_zshrc's zsh history setopts.
+HISTSIZE=10000                     # Maximum events kept in memory (zsh HISTSIZE).
+HISTFILESIZE=10000                 # Maximum events kept in the history file (zsh SAVEHIST).
+HISTCONTROL=ignoreboth:erasedups   # Skip space-prefixed & repeat commands, drop older duplicates
+                                    # (HIST_IGNORE_SPACE, HIST_IGNORE_DUPS, HIST_IGNORE_ALL_DUPS,
+                                    # HIST_SAVE_NO_DUPS).
+shopt -s histappend                # Append to the history file instead of overwriting it.
+shopt -s cmdhist                   # Save multi-line commands as one history entry.
+shopt -s histverify                # Let you edit a history expansion before running it (HIST_VERIFY).
 
-# LS_COLORS themes with vivid (installed by mise)
-# https://github.com/sharkdp/vivid
-if command -v vivid &> /dev/null; then
-  export LS_COLORS="$(vivid generate nord)"
-fi
+# Share history live between sessions (closest bash equivalent of zsh SHARE_HISTORY): write this
+# session's new lines, then reload the merged file, before each prompt.
+PROMPT_COMMAND="history -a; history -c; history -r${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 
-if [[ -f ${HOME}/.local/share/bob/env/env.sh ]]; then
-  . "${HOME}/.local/share/bob/env/env.sh"
-fi
-
-alias vim="nvim"
-alias vi="nvim"
-
-if command -v fastfetch &> /dev/null; then
-  fastfetch
+if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/shell/rc.sh ]]; then
+  . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/rc.sh"
 fi

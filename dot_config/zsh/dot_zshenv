@@ -3,11 +3,9 @@
 # https://wiki.archlinux.org/title/XDG_Base_Directory
 export XDG_DATA_HOME="$XDG_CONFIG_HOME/local/share"
 export XDG_CACHE_HOME="$XDG_CONFIG_HOME/cache"
-export EDITOR="nvim"
-export VISUAL="nvim"
 
-export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git'"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# EDITOR/VISUAL and the FZF_* command overrides live in dot_config/shell/rc.sh,
+# shared with bash (sourced from dot_config/zsh/dot_zshrc).
 
 export HISTFILE="$ZDOTDIR/zhistory"     # History filepath
 export HISTSIZE=10000                   # Maximum events for internal history
