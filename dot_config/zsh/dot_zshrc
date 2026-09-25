@@ -11,6 +11,11 @@ if [[ -f $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin
   . $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 fi
 
+# Set here, not in .zshenv: macOS /etc/zshrc resets these in between.
+HISTFILE="$ZDOTDIR/.zsh_history"   # History filepath
+HISTSIZE=10000                     # Maximum events for internal history
+SAVEHIST=10000                     # Maximum events in history file
+
 # Taken from https://github.com/Phantas0s/.dotfiles/blob/master/zsh/zshrc
 setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
@@ -34,8 +39,9 @@ if [[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]]; then
   MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
-# Native installers place commands here.
-export PATH="$HOME/.local/bin:$PATH"
+# Native installers place commands here. Appended, so nothing written to this
+# user-writable directory can shadow system commands such as sudo or ssh.
+export PATH="$PATH:$HOME/.local/bin"
 
 if [[ -d $HOME/.config/mise ]]; then
   eval "$(mise activate zsh)"

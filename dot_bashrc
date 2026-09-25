@@ -7,8 +7,11 @@
 # If not running interactively, don't do anything else (leave this above the rc source)
 [[ $- != *i* ]] && return
 
-# All the default Omarchy aliases and functions (mise, starship, zoxide, fzf)
-source "$OMARCHY_PATH/default/bash/rc"
+# All the default Omarchy aliases and functions (mise, starship, zoxide, fzf).
+# Guarded: with OMARCHY_PATH unset this would source /default/bash/rc.
+if [[ -n ${OMARCHY_PATH:-} && -r $OMARCHY_PATH/default/bash/rc ]]; then
+  source "$OMARCHY_PATH/default/bash/rc"
+fi
 
 # Personal overrides, loaded after Omarchy's defaults.
 

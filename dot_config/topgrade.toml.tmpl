@@ -8,13 +8,15 @@ cleanup = true  # Remove unused Homebrew dependencies after upgrade
 # Only run these steps — everything else (rustup, gem, pip, cargo, npm, etc.)
 # is managed by mise and should not be upgraded by topgrade.
 # mise also updates Claude Code, Codex, and the other CLI tools.
+# No "chezmoi" step: `chezmoi update` pulls and applies (running run_ scripts,
+# some with sudo) unreviewed. Pull, check `chezmoi diff`, then apply by hand.
 {{ if eq .chezmoi.os "darwin" -}}
-only = ["brew_formula", "brew_cask", "mise", "custom_commands", "system", "chezmoi"]
+only = ["brew_formula", "brew_cask", "mise", "custom_commands", "system"]
 {{ else if eq $osId "omarchy" -}}
 # omarchy-update upgrades system packages and runs mise up.
-only = ["custom_commands", "chezmoi"]
+only = ["custom_commands"]
 {{ else -}}
-only = ["brew_formula", "mise", "custom_commands", "chezmoi"]
+only = ["brew_formula", "mise", "custom_commands"]
 {{ end }}
 [brew]
 greedy_cask = true   # Update casks even if they declare auto_updates

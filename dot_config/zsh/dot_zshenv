@@ -1,15 +1,14 @@
 #!/usr/bin/env zsh
 # Inspured by https://thevaluable.dev/zsh-install-configure-mouseless/
 # https://wiki.archlinux.org/title/XDG_Base_Directory
-export XDG_DATA_HOME="$XDG_CONFIG_HOME/local/share"
-export XDG_CACHE_HOME="$XDG_CONFIG_HOME/cache"
+# XDG_DATA_HOME and XDG_CACHE_HOME keep their defaults (~/.local/share,
+# ~/.cache): data under ~/.config gets synced and backed up with config.
 
 # EDITOR/VISUAL and the FZF_* command overrides live in dot_config/shell/rc.sh,
 # shared with bash (sourced from dot_config/zsh/dot_zshrc).
 
-export HISTFILE="$ZDOTDIR/zhistory"     # History filepath
-export HISTSIZE=10000                   # Maximum events for internal history
-export SAVEHIST=10000                   # Maximum events in history fle
+# HISTFILE/HISTSIZE/SAVEHIST are set in dot_zshrc: macOS /etc/zshrc runs
+# after .zshenv and would override them.
 
 # https://wiki.archlinux.org/title/Wayland#Qt
 export QT_QPA_PLATFORM=wayland 

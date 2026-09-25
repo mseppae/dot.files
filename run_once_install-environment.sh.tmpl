@@ -11,6 +11,63 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+# OpenAI's Linux repositories for the desktop app with Codex. The key is trusted
+# only if it matches this fingerprint, pinned here rather than taken from the CDN.
+OPENAI_REPO_URL="https://persistent.oaistatic.com/codex-app-prod/linux"
+OPENAI_KEY_FINGERPRINT="3BFA0E4AE8B8CC16A2D9BA684A3B4A566C4660E4"
+
+download() {
+  curl --proto '=https' --tlsv1.2 -fsSL "$1" -o "$2"
+}
+
+sha256() {
+  if command_exists sha256sum; then
+    sha256sum "$1" | cut -d' ' -f1
+  else
+    shasum -a 256 "$1" | cut -d' ' -f1
+  fi
+}
+
+# Download an installer script and run it only after interactive confirmation,
+# never piping the network straight into a shell.
+run_reviewed_script() {
+  local url="$1" script answer
+  script="$(mktemp)"
+  download "$url" "$script"
+  echo "Downloaded $url"
+  echo "  sha256: $(sha256 "$script")"
+  if ! { true </dev/tty; } 2>/dev/null; then
+    echo "No terminal to confirm on; review and run it yourself: $url" >&2
+    rm -f "$script"
+    return 1
+  fi
+  while true; do
+    read -r -p "Run it? [y]es / [v]iew / [N]o: " answer </dev/tty
+    case "$answer" in
+      v|V) "${PAGER:-less}" "$script" </dev/tty ;;
+      y|Y) break ;;
+      *) rm -f "$script"; return 1 ;;
+    esac
+  done
+  /bin/bash "$script"
+  rm -f "$script"
+}
+
+# Fetch OpenAI's repository signing key to $1, failing unless its primary key
+# fingerprint is exactly the pinned one.
+fetch_openai_key() {
+  local key="$1" gpg_home fingerprints
+  gpg_home="$(mktemp -d)"
+  download "$OPENAI_REPO_URL/repository-signing-key.gpg" "$key"
+  fingerprints="$(gpg --homedir "$gpg_home" --batch --show-keys --with-colons "$key" 2>/dev/null \
+    | awk -F: '$1 == "pub" { primary=1 } $1 == "sub" { primary=0 } $1 == "fpr" && primary { print $10; primary=0 }')"
+  rm -rf "$gpg_home"
+  if [[ "$fingerprints" != "$OPENAI_KEY_FINGERPRINT" ]]; then
+    echo "OpenAI signing key fingerprint mismatch; refusing to trust it." >&2
+    return 1
+  fi
+}
+
 detect_platform() {
   OS="$(uname -s)"
   PLATFORM="unsupported"
@@ -57,7 +114,7 @@ install_brew() {
   fi
   if ! command_exists brew; then
     echo "Installing Homebrew for $PLATFORM..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    run_reviewed_script https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
     eval "$("$brew_path" shellenv)"
   fi
 }
@@ -97,10 +154,23 @@ install_ghostty() {
   fi
   if [[ "$PLATFORM" == "bazzite" ]]; then
     echo "Installing Ghostty via rpm-ostree (requires reboot to take effect)..."
-    local version_id
+    local version_id repo_file
     version_id="$(. /etc/os-release && echo "$VERSION_ID")"
-    curl -fsSL "https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-${version_id}/scottames-ghostty-fedora-${version_id}.repo" \
-      | sudo tee /etc/yum.repos.d/_copr_scottames-ghostty.repo > /dev/null
+    if [[ ! "$version_id" =~ ^[0-9]+$ ]]; then
+      echo "Unexpected Fedora VERSION_ID '$version_id'; skipping Ghostty." >&2
+      return 1
+    fi
+    repo_file="$(mktemp)"
+    download "https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-${version_id}/scottames-ghostty-fedora-${version_id}.repo" \
+      "$repo_file"
+    # Only install the repository if it enforces package signatures.
+    if ! grep -qx 'gpgcheck=1' "$repo_file"; then
+      echo "Ghostty COPR repository does not set gpgcheck=1; refusing to add it." >&2
+      rm -f "$repo_file"
+      return 1
+    fi
+    sudo install -m 0644 "$repo_file" /etc/yum.repos.d/_copr_scottames-ghostty.repo
+    rm -f "$repo_file"
     rpm-ostree refresh-md
     rpm-ostree install --idempotent -y ghostty
   elif ! brew list --cask ghostty >/dev/null 2>&1; then
@@ -135,7 +205,7 @@ install_mise_tools() {
   echo "Installing mise tools..."
   mise install
   # Expose mise-managed tools (including bob) to the rest of this script.
-  export PATH="${MISE_DATA_DIR:-$HOME/.local/share/mise}/shims:$PATH"
+  export PATH="${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}/shims:$PATH"
 }
 
 install_neovim() {
@@ -157,7 +227,7 @@ install_codex_desktop() (
       brew install --cask chatgpt
       ;;
     arch)
-      if pacman -Q chatgpt >/dev/null 2>&1; then
+      if pacman -Q chatgpt >/dev/null 2>&1 || pacman -Q chatgpt-bin >/dev/null 2>&1; then
         return
       fi
       if [[ "$IS_OMARCHY" == true ]]; then
@@ -166,27 +236,57 @@ install_codex_desktop() (
         omarchy-pkg-add openai-codex-desktop
         return
       fi
-      local installer_dir
-      installer_dir="$(mktemp -d)"
-      trap 'rm -rf "$installer_dir"' EXIT
+      # Configure OpenAI's signed pacman repository directly instead of running
+      # its installer as root; pacman then verifies packages against the key.
+      local work_dir repo_conf=/etc/pacman.d/openai-chatgpt.conf
+      work_dir="$(mktemp -d)"
+      trap 'rm -rf "$work_dir"' EXIT
       echo "Installing the desktop app with Codex (adds OpenAI's repository and upgrades Arch)..."
-      curl -fsSL https://persistent.oaistatic.com/codex-app-prod/linux/install-arch.sh \
-        -o "$installer_dir/install-arch.sh"
-      sudo bash "$installer_dir/install-arch.sh"
+      fetch_openai_key "$work_dir/openai.gpg"
+      sudo pacman-key --add "$work_dir/openai.gpg"
+      sudo pacman-key --lsign-key "$OPENAI_KEY_FINGERPRINT"
+      if [[ ! -e "$repo_conf" ]]; then
+        cat >"$work_dir/openai-chatgpt.conf" <<EOF
+[openai-chatgpt]
+SigLevel = Required DatabaseRequired TrustedOnly
+Server = $OPENAI_REPO_URL/arch/\$arch
+EOF
+        sudo install -m 0644 "$work_dir/openai-chatgpt.conf" "$repo_conf"
+      fi
+      if ! grep -qxF "Include = $repo_conf" /etc/pacman.conf; then
+        printf '\nInclude = %s\n' "$repo_conf" | sudo tee -a /etc/pacman.conf >/dev/null
+      fi
+      # A new repository needs a sync; always pair it with a full upgrade.
+      sudo pacman -Syu --needed chatgpt-bin
       ;;
     bazzite)
       if rpm -q chatgpt >/dev/null 2>&1; then
         return
       fi
-      local rpm_arch
       case "$(uname -m)" in
-        x86_64) rpm_arch=x86_64 ;;
-        aarch64|arm64) rpm_arch=aarch64 ;;
+        x86_64|aarch64) ;;
         *) echo "Unsupported desktop app architecture: $(uname -m)" >&2; return 1 ;;
       esac
+      # Use OpenAI's signed dnf repository (not a bare RPM URL) so rpm-ostree
+      # checks package and metadata signatures, and upgrades keep it current.
+      local work_dir key_path=/etc/pki/rpm-gpg/RPM-GPG-KEY-openai-chatgpt
+      work_dir="$(mktemp -d)"
+      trap 'rm -rf "$work_dir"' EXIT
+      fetch_openai_key "$work_dir/openai.gpg"
+      sudo install -m 0644 "$work_dir/openai.gpg" "$key_path"
+      cat >"$work_dir/openai-chatgpt.repo" <<EOF
+[openai-chatgpt]
+name=OpenAI ChatGPT
+baseurl=$OPENAI_REPO_URL/rpm/\$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file://$key_path
+EOF
+      sudo install -m 0644 "$work_dir/openai-chatgpt.repo" /etc/yum.repos.d/openai-chatgpt.repo
       echo "Installing the desktop app with Codex via rpm-ostree (requires reboot to take effect)..."
-      rpm-ostree install --idempotent -y \
-        "https://persistent.oaistatic.com/codex-app-prod/linux/rpm/latest/chatgpt.${rpm_arch}.rpm"
+      rpm-ostree refresh-md
+      rpm-ostree install --idempotent -y chatgpt
       ;;
   esac
 )
@@ -240,7 +340,8 @@ install_codex() {
 
 detect_platform
 # Native installers use this directory; expose tools in this apply as well.
-export PATH="$HOME/.local/bin:$PATH"
+# Appended so it cannot shadow system commands (matches dot_zshrc).
+export PATH="$PATH:$HOME/.local/bin"
 case "$PLATFORM" in
   macos|bazzite)
     install_brew

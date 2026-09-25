@@ -60,11 +60,10 @@ a changed bootstrap (including a changed Claude or Codex choice) can run again o
 ## Daily use
 
 ```bash
-# Pull latest dotfiles and apply
-chezmoi update
-
-# Preview what would change before applying
+# Pull latest dotfiles, review, then apply (run_ scripts may use sudo)
+chezmoi git pull -- --ff-only
 chezmoi diff
+chezmoi apply
 
 # Edit a dotfile (opens in $EDITOR, re-applies on save)
 chezmoi edit ~/.config/zsh/.zshrc
@@ -81,6 +80,9 @@ chezmoi manages config files, not tool lifecycles. Update tools with:
 topgrade       # upgrades brew, mise tools, Neovim (bob), and system (Bazzite/Omarchy)
 ```
 
+topgrade deliberately skips its chezmoi step, which would pull and apply
+dotfiles without review.
+
 On Omarchy, topgrade runs `omarchy-update`, which upgrades system packages and
 mise tools, instead of its own mise step. On plain Arch, upgrade system packages
 with `sudo pacman -Syu`.
@@ -92,7 +94,7 @@ with `sudo pacman -Syu`.
 If plugins aren't updating or disabled plugins still load, clear the cache:
 
 ```bash
-rm -rf ~/.config/local/share/nvim/lazy/<plugin-name>
+rm -rf ~/.local/share/nvim/lazy/<plugin-name>
 rm -f ~/.local/state/nvim/lazy/pkg-cache.lua
 ```
 
