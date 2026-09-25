@@ -103,8 +103,7 @@ Then restart neovim completely (`:qa!` and reopen).
 - Config files live under `dot_config/` in this repo (mirrors `~/.config/`)
 - `dot_zshenv` → `~/.zshenv` (XDG bootstrap for zsh)
 - `nvim/lazy-lock.json` is excluded from chezmoi tracking (machine-local)
-- Tiling WM configs (hypr, waybar, rofi, i3, dunst, X11) are excluded on macOS, Bazzite, and Omarchy via `.chezmoiignore.tmpl`
-- On Omarchy, Ghostty and Alacritty load Omarchy's packaged defaults (theme, font) and apply personal settings on top
+- On Omarchy, Ghostty loads Omarchy's packaged defaults (theme, font) and applies personal settings on top; `xdg-terminals.list` makes it the default terminal (Super+Return)
 - Shell: zsh on macOS, Bazzite, and Arch; Omarchy keeps bash with its own defaults
   (aliases, fzf, mise, starship, zoxide). `dot_bashrc` (Omarchy only) layers personal
   settings on top; zsh config and plugins are not deployed there

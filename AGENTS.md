@@ -37,14 +37,16 @@ each gate a CLI (via mise) and its desktop app (via the OS package manager).
   defaults and adds personal settings; zsh files are ignored there.
 - `.chezmoiexternal.toml` clones zsh plugins during apply.
 - `dot_config/nvim/` has additional guidance in its own `AGENTS.md`.
-- `dot_config/wezterm/` has Neovim-aware `Ctrl+hjkl` navigation and `Ctrl+\` leader.
+- Ghostty is the only terminal config (`dot_config/ghostty/`): `Ctrl+\` leader for
+  splits; `Ctrl+hjkl` crosses Neovim/Ghostty splits via smart-splits.nvim.
 - `dot_config/mise/conf.d/` declares language runtimes and CLI tools. Do not
   manage `~/.config/mise/config.toml`: `mise use -g` (and Omarchy) write to it.
 - `.chezmoiignore.tmpl` gates platform configs and excludes machine-local `nvim/lazy-lock.json`.
-- Tiling WM configs target plain Arch (not Omarchy, which owns its Hyprland
-  setup); GNOME/KDE configs target Bazzite.
-- On Omarchy, Ghostty/Alacritty configs layer on Omarchy's packaged defaults in
-  `/usr/share/omarchy/config/` so theme switching keeps working.
+- No desktop/WM configs for plain Arch (Omarchy owns its Hyprland setup);
+  GNOME/KDE configs target Bazzite.
+- On Omarchy, the Ghostty config layers on Omarchy's packaged defaults in
+  `/usr/share/omarchy/config/` so theme switching keeps working, and
+  `dot_config/xdg-terminals.list` makes Ghostty the default terminal.
 - `Library/LaunchAgents/` is macOS-only; `dot_config/systemd/user/` is Linux-only.
   Service scripts reload and enable user units.
 - Bootstrap is `run_once_install-environment.sh.tmpl`; ongoing updates use the
@@ -77,5 +79,5 @@ mock installers for bootstrap tests that would otherwise change the host.
 - Prefer small, idiomatic changes.
 - Preserve existing conventions in the repository.
 - Prefer 2-space shell indentation and `set -euo pipefail` where applicable.
-- Preserve Lua formatting (generally tabs in Neovim/WezTerm); follow nearby code.
+- Preserve Lua formatting (generally tabs in Neovim); follow nearby code.
 - Make no unrelated changes.
