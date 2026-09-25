@@ -7,6 +7,11 @@ return {
 			{
 				"<leader>f",
 				function()
+					local trust = require("config.trust")
+					if not trust.buf_trusted(0) then
+						trust.notify_untrusted(trust.project_root(0))
+						return
+					end
 					require("conform").format({ async = true, lsp_format = "fallback" })
 				end,
 				mode = "",
@@ -17,6 +22,12 @@ return {
 		opts = {
 			notify_on_error = true,
 			format_on_save = function(bufnr)
+				-- Formatters like prettierd and rubocop load project code.
+				local trust = require("config.trust")
+				if not trust.buf_trusted(bufnr) then
+					trust.notify_untrusted(trust.project_root(bufnr))
+					return nil
+				end
 				local disable_filetypes = { c = true, cpp = true }
 				local lsp_format_opt
 				if disable_filetypes[vim.bo[bufnr].filetype] then

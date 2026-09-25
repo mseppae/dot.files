@@ -2,6 +2,8 @@
 -- no separate build mapping — the build alone would never be useful here.
 vim.keymap.set("n", "<leader>or", function()
 	local root = vim.fs.root(0, { "ols.json", ".git" }) or vim.fn.getcwd()
-	vim.cmd("botright 15split | terminal cd " .. vim.fn.fnameescape(root) .. " && odin run .")
+	-- Run without a shell, so the project path is never parsed as a command.
+	vim.cmd("botright 15split | enew")
+	vim.fn.jobstart({ "odin", "run", "." }, { term = true, cwd = root })
 	vim.cmd("startinsert")
 end, { buffer = true, desc = "Odin: run project" })

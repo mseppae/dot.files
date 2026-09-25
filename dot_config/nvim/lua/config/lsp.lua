@@ -1,14 +1,21 @@
-vim.lsp.enable(
-  {
-    "lua_ls",
-    "gopls",
-    "ruby_lsp",
---    "sorbet",
-    "ts_ls",
-    "zig",
-    "odin",
-  }
-)
+local servers = {
+  "lua_ls",
+  "gopls",
+  "ruby_lsp",
+--  "sorbet",
+  "ts_ls",
+  "zig",
+  "odin",
+}
+
+-- Servers can run project code, so only start them in trusted projects
+-- (see lua/config/trust.lua, :Trust).
+local trust = require("config.trust")
+for _, name in ipairs(servers) do
+  trust.gate_lsp(name)
+end
+
+vim.lsp.enable(servers)
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
