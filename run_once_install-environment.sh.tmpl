@@ -210,7 +210,13 @@ install_mise_tools() {
 
 install_neovim() {
   echo "Installing Neovim nightly via bob..."
-  chmod -f u+w "$HOME/.local/share/bob/nvim-bin/nvim" 2>/dev/null || true
+  # bob copies itself as the nvim proxy keeping its mode, read-only when mise
+  # installed it, so the next update cannot overwrite it. bob's data directory
+  # is ~/Library/Application Support/bob on macOS, ~/.local/share/bob on Linux.
+  local bob_dir
+  for bob_dir in "$HOME/Library/Application Support/bob" "${XDG_DATA_HOME:-$HOME/.local/share}/bob"; do
+    chmod -f u+w "$bob_dir/nvim-bin/nvim" 2>/dev/null || true
+  done
   bob install nightly
   bob use nightly
 }
