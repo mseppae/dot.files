@@ -1,2 +1,13 @@
 .netrwhist
 *~
+.DS_Store
+
+# Secrets and history, by source-state name, in case one bypasses
+# .chezmoiignore.tmpl (e.g. copied into the repo by hand).
+*zshwork
+*zsh_history
+*zhistory
+*bash_history
+**/dot_config/gh/hosts.yml
+**/*dot_ssh/*id_*
+**/*dot_gnupg/

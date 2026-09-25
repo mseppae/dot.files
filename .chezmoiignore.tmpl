@@ -1,6 +1,17 @@
 # chezmoi-managed files to skip
 .config/nvim/lazy-lock.json
 
+# Machine-local secrets and history: never manage these, so a broad
+# `chezmoi add ~/.config/zsh` (or similar) cannot pull them into the repo.
+.config/zsh/.zshwork
+.config/zsh/.zsh_history
+.config/zsh/zhistory
+.config/zsh/.zsh_sessions
+.bash_history
+.config/gh/hosts.yml
+.ssh/id_*
+.gnupg
+
 # Repo meta files — not deployed to home directory
 README.md
 Dockerfile
