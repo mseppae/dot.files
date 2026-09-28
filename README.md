@@ -31,22 +31,23 @@ chezmoi will:
 5. Install runtimes and CLI tools with `mise install`
 
 mise installs the same CLI tools everywhere (gh, topgrade, bob, starship,
-zoxide, vivid, ripgrep, plus Claude Code and Codex when enabled), declared in
+zoxide, vivid, ripgrep, plus Claude Code, Codex, and Pi when enabled), declared in
 `dot_config/mise/conf.d/`. chezmoi does not manage `~/.config/mise/config.toml`,
 so `mise use -g` (and Omarchy's tool wrappers) can write to it freely; a tool
 pinned there overrides the `conf.d` version. Bob installs Neovim nightly.
 Ghostty uses a Homebrew cask on macOS, COPR/rpm-ostree on Bazzite (reboot required),
 and pacman on Arch. Arch bootstrap does not install Homebrew or an AUR helper.
 
-Claude and Codex are optional per machine. `chezmoi init` asks once for each and
-saves `installClaude` (default true) and `installCodex` (default false) in the local
-chezmoi config. Each setting installs the CLI with mise and the desktop app with
-the OS package manager (mise does not manage desktop apps):
+Claude, Codex, and Pi are optional per machine. `chezmoi init` asks once for each
+and saves `installClaude` (default true), `installCodex` (default false), and
+`installPi` (default false) in the local chezmoi config. Each setting installs the
+CLI with mise; Claude and Codex also install their desktop app with the OS package
+manager (mise does not manage desktop apps). Pi is CLI-only:
 
 | Desktop app | macOS | Omarchy | Arch | Bazzite |
 |---|---|---|---|---|
 | Claude Desktop | `claude` cask | `claude-desktop` (Omarchy repo) | not installed (AUR only) | not installed (no Fedora package) |
-| ChatGPT with Codex | `chatgpt` cask | `openai-codex-desktop` (Omarchy repo) | OpenAI's installer (adds its signed repository, prompts for a full system upgrade) | official RPM via rpm-ostree (reboot required) |
+| ChatGPT with Codex | `chatgpt` cask | `openai-codex-desktop` (Omarchy repo) | OpenAI's signed pacman repository, key fingerprint pinned (prompts for a full system upgrade) | OpenAI's signed RPM repository via rpm-ostree (reboot required) |
 
 Omarchy's packages update with `omarchy-update`. See Claude's
 [download page](https://claude.com/download) and OpenAI's
@@ -56,6 +57,7 @@ Existing CLI installations still receive the desktop app when it is missing.
 On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
 then run `chezmoi apply`. `run_once_` records successful rendered script contents:
 a changed bootstrap (including a changed Claude or Codex choice) can run again on apply.
+A changed Pi choice only edits mise's `conf.d`; run `mise install` to add Pi.
 
 ## Daily use
 
