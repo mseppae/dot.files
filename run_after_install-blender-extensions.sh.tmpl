@@ -1,0 +1,50 @@
+#!/bin/bash
+# Keep opted-in Blender extensions present after every chezmoi apply.
+
+set -euo pipefail
+
+{{ if (index . "installBlender" | default false) }}
+# How Blender is run: a blender command (Arch), the app bundle (the macOS cask
+# adds no command), or the Flatpak (Bazzite).
+if command -v blender >/dev/null 2>&1; then
+  blender_cmd=(blender)
+elif [[ -x /Applications/Blender.app/Contents/MacOS/Blender ]]; then
+  blender_cmd=(/Applications/Blender.app/Contents/MacOS/Blender)
+elif command -v flatpak >/dev/null 2>&1 && flatpak info org.blender.Blender >/dev/null 2>&1; then
+  blender_cmd=(flatpak run org.blender.Blender)
+else
+  echo "Blender is not available yet; LoopTools will install after the next chezmoi apply."
+  exit 0
+fi
+
+looptools_is_installed() {
+  local config_root manifest
+  local config_roots=(
+    "$HOME/Library/Application Support/Blender"
+    "$HOME/.config/blender"
+    "$HOME/.var/app/org.blender.Blender/config/blender"
+  )
+
+  for config_root in "${config_roots[@]}"; do
+    for manifest in "$config_root"/*/extensions/blender_org/looptools/blender_manifest.toml; do
+      [[ -f "$manifest" ]] && return 0
+    done
+  done
+  return 1
+}
+
+if looptools_is_installed; then
+  echo "Blender extension LoopTools is already installed."
+  exit 0
+fi
+
+echo "Installing and enabling Blender extension LoopTools..."
+# --online-mode: fresh Blender profiles have online access off, which blocks
+# the extension sync. A failure (e.g. offline) must not fail chezmoi apply;
+# this script runs again on the next apply.
+if ! "${blender_cmd[@]}" --online-mode --command extension install --sync --enable looptools; then
+  echo "Could not install LoopTools; will retry on the next chezmoi apply." >&2
+fi
+{{ else }}
+echo "Blender extension installation disabled for this machine."
+{{ end }}

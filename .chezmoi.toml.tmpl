@@ -1,6 +1,7 @@
 {{- $installCodex := promptBoolOnce . "installCodex" "Install OpenAI Codex CLI and desktop app on this machine?" false -}}
 {{- $installClaude := promptBoolOnce . "installClaude" "Install Claude Code CLI and desktop app on this machine?" true -}}
 {{- $installPi := promptBoolOnce . "installPi" "Install the Pi coding agent CLI on this machine?" false -}}
+{{- $installBlender := promptBoolOnce . "installBlender" "Install Blender on this machine?" false -}}
 
 {{ if stat (joinPath .chezmoi.homeDir "Development/dot.files") -}}
 sourceDir = "{{ .chezmoi.homeDir }}/Development/dot.files"
@@ -12,3 +13,4 @@ sourceDir = "{{ .chezmoi.homeDir }}/development/dot.files"
 installCodex = {{ $installCodex }}
 installClaude = {{ $installClaude }}
 installPi = {{ $installPi }}
+installBlender = {{ $installBlender }}

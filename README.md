@@ -38,21 +38,25 @@ pinned there overrides the `conf.d` version. Bob installs Neovim nightly.
 Ghostty uses a Homebrew cask on macOS, COPR/rpm-ostree on Bazzite (reboot required),
 and pacman on Arch. Arch bootstrap does not install Homebrew or an AUR helper.
 
-Claude, Codex, and Pi are optional per machine. `chezmoi init` asks once for each
-and saves `installClaude` (default true), `installCodex` (default false), and
-`installPi` (default false) in the local chezmoi config. Each setting installs the
-CLI with mise; Claude and Codex also install their desktop app with the OS package
-manager (mise does not manage desktop apps). Pi is CLI-only:
+Claude, Codex, Pi, and Blender are optional per machine. `chezmoi init` asks once
+for each and saves `installClaude` (default true), `installCodex`, `installPi`, and
+`installBlender` (default false) in the local chezmoi config. The first three
+install their CLI with mise; Claude and Codex also install their desktop app with
+the OS package manager (mise does not manage desktop apps), and Pi is CLI-only.
+Blender is a desktop app only:
 
 | Desktop app | macOS | Omarchy | Arch | Bazzite |
 |---|---|---|---|---|
 | Claude Desktop | `claude` cask | `claude-desktop` (Omarchy repo) | not installed (AUR only) | not installed (no Fedora package) |
+| Blender | `blender` cask | `blender` (pacman) | `blender` (pacman) | `org.blender.Blender` from Flathub (no reboot) |
 | ChatGPT with Codex | `chatgpt` cask | `openai-codex-desktop` (Omarchy repo) | OpenAI's signed pacman repository, key fingerprint pinned (prompts for a full system upgrade) | OpenAI's signed RPM repository via rpm-ostree (reboot required) |
 
 Omarchy's packages update with `omarchy-update`. See Claude's
 [download page](https://claude.com/download) and OpenAI's
 [desktop installation guide](https://learn.chatgpt.com/docs/linux/linux-app).
 Existing CLI installations still receive the desktop app when it is missing.
+With Blender enabled, `run_after_install-blender-extensions.sh` also keeps the
+LoopTools extension installed on every apply.
 
 On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
 then run `chezmoi apply`. `run_once_` records successful rendered script contents:

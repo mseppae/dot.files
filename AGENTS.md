@@ -10,7 +10,9 @@ without Homebrew or a required AUR helper. The OS package manager installs zsh
 and mise; mise installs CLI tools (Claude Code, gh, topgrade, bob, ...) on every
 platform. Bob manages Neovim nightly everywhere. `installClaude` and `installCodex`
 each gate a CLI (via mise) and its desktop app (via the OS package manager);
-`installPi` gates the Pi coding agent CLI (via mise; it has no desktop app).
+`installPi` gates the Pi coding agent CLI (via mise; it has no desktop app);
+`installBlender` gates Blender (OS package manager, Flatpak on Bazzite) and its
+extensions.
 
 ## Important
 

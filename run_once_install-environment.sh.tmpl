@@ -326,6 +326,34 @@ install_claude_desktop() {
   esac
 }
 
+install_blender_app() {
+  case "$PLATFORM" in
+    macos)
+      # The cask installs Blender.app only, without a blender command.
+      if [[ -d /Applications/Blender.app ]] || brew list --cask blender >/dev/null 2>&1; then
+        return
+      fi
+      echo "Installing Blender via Homebrew Cask..."
+      brew install --cask blender
+      ;;
+    arch)
+      if pacman -Q blender >/dev/null 2>&1; then
+        return
+      fi
+      echo "Installing Blender via pacman..."
+      sudo pacman -S --needed blender
+      ;;
+    bazzite)
+      # Flatpak keeps it out of the rpm-ostree base image and needs no reboot.
+      if flatpak info org.blender.Blender >/dev/null 2>&1; then
+        return
+      fi
+      echo "Installing Blender from Flathub..."
+      flatpak install -y --noninteractive flathub org.blender.Blender
+      ;;
+  esac
+}
+
 install_claude() {
 {{ if $installClaude }}
   # Claude Code is installed by mise (conf.d/cli.toml).
@@ -341,6 +369,15 @@ install_codex() {
   install_codex_desktop
 {{ else }}
   echo "OpenAI Codex installation disabled for this machine."
+{{ end }}
+}
+
+install_blender() {
+{{ if (index . "installBlender" | default false) }}
+  # Extensions are kept installed by run_after_install-blender-extensions.sh.
+  install_blender_app
+{{ else }}
+  echo "Blender installation disabled for this machine."
 {{ end }}
 }
 
@@ -361,3 +398,4 @@ install_mise_tools
 install_neovim
 install_claude
 install_codex
+install_blender
