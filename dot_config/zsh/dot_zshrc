@@ -63,8 +63,10 @@ eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
 # https://github.com/junegunn/fzf (Ctrl+T, Ctrl+R, Alt+C key bindings)
+# Key bindings only, like Omarchy's bash: fzf's `**<Tab>` completion would
+# compete with zsh-autocomplete for Tab. Without the marker, all of it loads.
 if command -v fzf >/dev/null 2>&1; then
-  eval "$(fzf --zsh)"
+  eval "$(fzf --zsh | sed '/^### end: key-bindings.zsh ###$/q')"
 fi
 
 # Shared zsh/bash config

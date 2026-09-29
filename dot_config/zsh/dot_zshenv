@@ -10,5 +10,5 @@
 # HISTFILE/HISTSIZE/SAVEHIST are set in dot_zshrc: macOS /etc/zshrc runs
 # after .zshenv and would override them.
 
-# https://wiki.archlinux.org/title/Wayland#Qt
-export QT_QPA_PLATFORM=wayland 
+# https://wiki.archlinux.org/title/Wayland#Qt (Linux only; meaningless on macOS)
+[[ $OSTYPE == linux* ]] && export QT_QPA_PLATFORM=wayland
