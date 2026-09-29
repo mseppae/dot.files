@@ -2,22 +2,23 @@
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
-# Machine-local tokens for agents and CLI tools (never committed; see
-# .chezmoiignore.tmpl). Loaded by every zsh so non-interactive agent shells
-# authenticate too. Sourcing runs it as code, so only load it when it is a
-# regular file you own that nobody else can write; warn if others can read it.
-# Checks use glob qualifiers, so no process is spawned for each shell.
+# Machine-local tokens for agents and CLI tools, shared with bash (see
+# dot_bashrc; never committed, see .chezmoiignore.tmpl). Loaded by every zsh
+# so non-interactive agent shells authenticate too. Sourcing runs it as code,
+# so only load it when it is a regular file you own that nobody else can
+# write; warn if others can read it. Checks use glob qualifiers, so no process
+# is spawned for each shell.
 () {
-  local zw="${ZDOTDIR}/.zshwork"
-  [[ -e $zw ]] || return 1
-  local -a zw_safe=( $zw(N-.Uf:go-w:) ) zw_private=( $zw(N-.f:go-rw:) )
-  if (( ! $#zw_safe )); then
-    [[ -o interactive ]] && print -u2 "zshenv: not loading $zw: must be a file you own that others cannot write"
+  local secrets="${XDG_CONFIG_HOME}/shell/secrets.sh"
+  [[ -e $secrets ]] || return 1
+  local -a secrets_safe=( $secrets(N-.Uf:go-w:) ) secrets_private=( $secrets(N-.f:go-rw:) )
+  if (( ! $#secrets_safe )); then
+    [[ -o interactive ]] && print -u2 "zshenv: not loading $secrets: must be a file you own that others cannot write"
     return 1
   fi
-  if (( ! $#zw_private )) && [[ -o interactive ]]; then
-    print -u2 "zshenv: $zw is readable by others; fix with: chmod 600 $zw"
+  if (( ! $#secrets_private )) && [[ -o interactive ]]; then
+    print -u2 "zshenv: $secrets is readable by others; fix with: chmod 600 $secrets"
   fi
   return 0
-} && source "${ZDOTDIR}/.zshwork"
+} && source "${XDG_CONFIG_HOME}/shell/secrets.sh"
 [[ -f "${ZDOTDIR}/.zshenv" ]] && source "${ZDOTDIR}/.zshenv"

@@ -4,6 +4,7 @@
 
 # Secrets and history, by source-state name, in case one bypasses
 # .chezmoiignore.tmpl (e.g. copied into the repo by hand).
+**/shell/secrets.sh
 *zshwork
 *zsh_history
 *zhistory

@@ -4,6 +4,23 @@
 # Omarchy environment (OMARCHY_PATH + PATH), needed even for non-interactive shells
 [[ -r /usr/share/omarchy/default/bash/env-bootstrap ]] && source /usr/share/omarchy/default/bash/env-bootstrap
 
+# Machine-local tokens for agents and CLI tools, shared with zsh (see
+# dot_zshenv). Loaded before the interactive check so agent shells get them.
+# Sourcing runs it as code: only load a file you own that others cannot write.
+shell_secrets="${XDG_CONFIG_HOME:-$HOME/.config}/shell/secrets.sh"
+if [[ -e $shell_secrets ]]; then
+  if [[ -f $shell_secrets && -O $shell_secrets &&
+    -z $(find -L "$shell_secrets" -maxdepth 0 \( -perm -020 -o -perm -002 \)) ]]; then
+    if [[ $- == *i* && -n $(find -L "$shell_secrets" -maxdepth 0 \( -perm -040 -o -perm -004 \)) ]]; then
+      echo "bashrc: $shell_secrets is readable by others; fix with: chmod 600 $shell_secrets" >&2
+    fi
+    source "$shell_secrets"
+  elif [[ $- == *i* ]]; then
+    echo "bashrc: not loading $shell_secrets: must be a file you own that others cannot write" >&2
+  fi
+fi
+unset shell_secrets
+
 # If not running interactively, don't do anything else (leave this above the rc source)
 [[ $- != *i* ]] && return
 
