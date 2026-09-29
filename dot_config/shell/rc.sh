@@ -19,9 +19,20 @@ if command -v vivid >/dev/null 2>&1; then
   export LS_COLORS="$(vivid generate nord)"
 fi
 
-if [ -f "${HOME}/.local/share/bob/env/env.sh" ]; then
-  . "${HOME}/.local/share/bob/env/env.sh"
+# Neovim from bob (installed by mise). bob keeps its nvim proxy in its data
+# directory, which on macOS is ~/Library/Application Support/bob regardless of
+# XDG variables, and ~/.local/share/bob on Linux.
+case "$(uname -s)" in
+  Darwin) bob_nvim_bin="${HOME}/Library/Application Support/bob/nvim-bin" ;;
+  *) bob_nvim_bin="${XDG_DATA_HOME:-${HOME}/.local/share}/bob/nvim-bin" ;;
+esac
+if [ -d "$bob_nvim_bin" ]; then
+  case ":${PATH}:" in
+    *":${bob_nvim_bin}:"*) ;;
+    *) export PATH="${bob_nvim_bin}:${PATH}" ;;
+  esac
 fi
+unset bob_nvim_bin
 
 alias ls="ls --color=always"
 alias vim="nvim"
