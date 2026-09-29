@@ -85,12 +85,17 @@ function M.gate_lsp(name)
 	local root_dir, root_markers = config.root_dir, config.root_markers
 	vim.lsp.config(name, {
 		root_dir = function(bufnr, on_dir)
+			-- Both the server's root and the buffer's own project must be
+			-- trusted: some servers (ts_ls) fall back to the cwd as root, which
+			-- may be trusted while the opened file is not.
 			local function start_if_trusted(root)
 				local check = root or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
-				if M.is_trusted(check) then
-					on_dir(root)
-				else
+				if not M.buf_trusted(bufnr) then
+					M.notify_untrusted(M.project_root(bufnr))
+				elseif not M.is_trusted(check) then
 					M.notify_untrusted(check)
+				else
+					on_dir(root)
 				end
 			end
 			if type(root_dir) == "function" then
