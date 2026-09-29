@@ -47,6 +47,10 @@ lua_ls, gopls, ruby_lsp, ts_ls, zig, odin (sorbet is commented out)
   LSP fallback except for C/C++)
 - Go formatting: goimports-reviser + gofumpt (via conform,
   not gopls)
+- Treesitter uses the nvim-treesitter `main` branch: parsers from a
+  fixed list in `lua/plugins/treesitter.lua` (compiled by the
+  tree-sitter CLI from mise), highlighting started by a FileType
+  autocmd. No automatic parser installs for new filetypes.
 
 ## Testing Changes
 
