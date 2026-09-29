@@ -56,4 +56,5 @@ lua_ls, gopls, ruby_lsp, ts_ls, zig, odin (sorbet is commented out)
 
 No test suite. To validate changes, open Neovim and verify
 behavior. Use `:checkhealth` for diagnostics. Use `:Lazy` to
-manage plugins.
+manage plugins. `lazy-lock.json` is tracked in the repo: plugin updates
+are reviewed as diffs and saved with `chezmoi re-add`.

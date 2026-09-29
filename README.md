@@ -110,7 +110,9 @@ Then restart neovim completely (`:qa!` and reopen).
 
 - Config files live under `dot_config/` in this repo (mirrors `~/.config/`)
 - `dot_zshenv` → `~/.zshenv` (XDG bootstrap for zsh)
-- `nvim/lazy-lock.json` is excluded from chezmoi tracking (machine-local)
+- `nvim/lazy-lock.json` is tracked, so every machine installs the same plugin
+  commits. After `:Lazy update`, check `chezmoi diff`, then
+  `chezmoi re-add ~/.config/nvim/lazy-lock.json` and commit
 - zsh plugins in `.chezmoiexternal.toml` are pinned to a commit and checksum;
   update both together
 - On Omarchy, Ghostty loads Omarchy's packaged defaults (theme, font) and applies personal settings on top; `xdg-terminals.list` makes it the default terminal (Super+Return)

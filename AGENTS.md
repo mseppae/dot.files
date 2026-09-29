@@ -44,7 +44,9 @@ extensions.
   splits; `Ctrl+hjkl` crosses Neovim/Ghostty splits via smart-splits.nvim.
 - `dot_config/mise/conf.d/` declares language runtimes and CLI tools. Do not
   manage `~/.config/mise/config.toml`: `mise use -g` (and Omarchy) write to it.
-- `.chezmoiignore.tmpl` gates platform configs and excludes machine-local `nvim/lazy-lock.json`.
+- `.chezmoiignore.tmpl` gates platform configs.
+- `dot_config/nvim/lazy-lock.json` pins Neovim plugins and is tracked; after
+  `:Lazy update`, review and `chezmoi re-add ~/.config/nvim/lazy-lock.json`.
 - `.chezmoiexternal.toml` pins zsh plugins to a commit and checksum.
 - No desktop/WM configs for plain Arch (Omarchy owns its Hyprland setup);
   GNOME/KDE configs target Bazzite.
