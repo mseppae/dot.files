@@ -121,7 +121,8 @@ install_brew() {
 
 install_brew_apps() {
   local app
-  local apps=(zsh mise)
+  # eza: no macOS release binaries, so not via mise (see dot_config/shell/rc.sh).
+  local apps=(zsh mise eza)
   if [[ "$PLATFORM" == "bazzite" ]]; then
     apps+=(openssl@3 readline libyaml libffi)
   fi
@@ -136,7 +137,7 @@ install_brew_apps() {
 
 install_arch_apps() {
   # Use existing sync databases; never perform a partial upgrade with pacman -Sy.
-  local apps=(ghostty)
+  local apps=(ghostty eza)
   # Omarchy keeps bash as the login shell.
   if [[ "$IS_OMARCHY" != true ]]; then
     apps+=(zsh)

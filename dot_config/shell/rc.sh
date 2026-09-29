@@ -34,7 +34,38 @@ if [ -d "$bob_nvim_bin" ]; then
 fi
 unset bob_nvim_bin
 
-alias ls="ls --color=always"
+# Same ls as Omarchy's defaults on every machine: eza, installed by the OS
+# package manager (it publishes no macOS binaries for mise to verify).
+# Note: eza's -t takes a field, so `ls -ltr` becomes `ls -l -s modified -r`.
+# Functions rather than aliases, so eza is only used at a terminal. Pipes,
+# scripts and agents get plain ls: without a terminal on stdin eza reads file
+# names from it (printing nothing), and eza's flags break e.g. `ls -lt`.
+# Drop Omarchy's aliases first, as a separate command: shells expand aliases
+# while reading, so the `if` below must not be read while `ls` is an alias.
+for name in ls lsa lt lta; do
+  unalias "$name" 2>/dev/null
+done
+unset name
+if command -v eza >/dev/null 2>&1; then
+  ls() {
+    if [ -t 0 ] && [ -t 1 ]; then
+      eza -lh --group-directories-first --icons=auto "$@"
+    else
+      command ls "$@"
+    fi
+  }
+  lsa() { ls -a "$@"; }
+  lt() {
+    if [ -t 0 ] && [ -t 1 ]; then
+      eza --tree --level=2 --long --icons --git "$@"
+    else
+      command ls -R "$@"
+    fi
+  }
+  lta() { lt -a "$@"; }
+else
+  alias ls='ls --color=auto'
+fi
 alias vim="nvim"
 alias vi="nvim"
 

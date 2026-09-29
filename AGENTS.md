@@ -6,8 +6,8 @@ This is my personal chezmoi dotfiles repository.
 
 Supported environments are macOS, Bazzite, and Arch Linux (including Omarchy).
 macOS and Bazzite use Homebrew/Linuxbrew; Arch uses official pacman packages
-without Homebrew or a required AUR helper. The OS package manager installs zsh
-and mise; mise installs CLI tools (Claude Code, gh, topgrade, bob, ...) on every
+without Homebrew or a required AUR helper. The OS package manager installs zsh,
+mise, and eza; mise installs CLI tools (Claude Code, gh, topgrade, bob, ...) on every
 platform. Bob manages Neovim nightly everywhere. `installClaude` and `installCodex`
 each gate a CLI (via mise) and its desktop app (via the OS package manager);
 `installPi` gates the Pi coding agent CLI (via mise; it has no desktop app);

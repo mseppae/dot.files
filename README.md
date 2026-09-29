@@ -27,7 +27,7 @@ chezmoi will:
 1. Use `~/development/dot.files` (or existing `~/Development/dot.files`) as its source directory
 2. Apply all config files to their destinations
 3. Clone zsh plugins via `.chezmoiexternal.toml`
-4. Install zsh and mise using Homebrew on macOS/Bazzite or official pacman packages on Arch
+4. Install zsh, mise, and eza using Homebrew on macOS/Bazzite or official pacman packages on Arch
 5. Install runtimes and CLI tools with `mise install`
 
 mise installs the same CLI tools everywhere (gh, topgrade, bob, starship,
@@ -119,4 +119,7 @@ Then restart neovim completely (`:qa!` and reopen).
 - Shell: zsh on macOS, Bazzite, and Arch; Omarchy keeps bash with its own defaults
   (aliases, fzf, mise, starship, zoxide). `dot_bashrc` (Omarchy only) layers personal
   settings on top; zsh config and plugins are not deployed there
+- Both shells share `dot_config/shell/rc.sh` (editor, fzf, eza `ls`/`lt`) and load
+  agent/CLI tokens from the machine-local, never-committed
+  `~/.config/shell/secrets.sh` (must be yours and not writable by others; `chmod 600`)
 - GNOME configs (gtk-3.0, gtk-4.0, gnome-shell) are Bazzite-only
