@@ -45,6 +45,7 @@ extensions.
 - `dot_config/mise/conf.d/` declares language runtimes and CLI tools. Do not
   manage `~/.config/mise/config.toml`: `mise use -g` (and Omarchy) write to it.
 - `.chezmoiignore.tmpl` gates platform configs and excludes machine-local `nvim/lazy-lock.json`.
+- `.chezmoiexternal.toml` pins zsh plugins to a commit and checksum.
 - No desktop/WM configs for plain Arch (Omarchy owns its Hyprland setup);
   GNOME/KDE configs target Bazzite.
 - On Omarchy, the Ghostty config layers on Omarchy's packaged defaults in

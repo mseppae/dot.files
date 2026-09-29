@@ -1,17 +1,18 @@
-[".config/zsh/plugins/zsh-autocomplete"]
-  type = "git-repo"
-  url = "https://github.com/marlonrichert/zsh-autocomplete"
-  clone.args = ["--depth", "1"]
-  pull.args = ["--ff-only"]
+# zsh plugins pinned to a commit and verified by checksum: an upstream change
+# (or compromise) cannot reach every new shell without a reviewed edit here.
+# To update: pick a commit, set url and checksum.sha256 (sha256 of the archive),
+# then `chezmoi apply`.
 
-[".config/zsh/plugins/zsh-completions"]
-  type = "git-repo"
-  url = "https://github.com/zsh-users/zsh-completions.git"
-  clone.args = ["--depth", "1"]
-  pull.args = ["--ff-only"]
+[".config/zsh/plugins/zsh-autocomplete"]
+  type = "archive"
+  url = "https://github.com/marlonrichert/zsh-autocomplete/archive/a3e4b595e799a21eb61b3cd0809fa143c104e336.tar.gz"
+  checksum.sha256 = "ca967f7f76e39c5006854311f0ff4ecd158a1229a6d1a5c8e4bc56d569662258"
+  exact = true
+  stripComponents = 1
 
 [".config/zsh/plugins/zsh-syntax-highlighting"]
-  type = "git-repo"
-  url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
-  clone.args = ["--depth", "1"]
-  pull.args = ["--ff-only"]
+  type = "archive"
+  url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/1d85c692615a25fe2293bdd44b34c217d5d2bf04.tar.gz"
+  checksum.sha256 = "e4a95feb737d78efa4052e23c4880e6936a3133ea58f390458fc80ea4033483e"
+  exact = true
+  stripComponents = 1
