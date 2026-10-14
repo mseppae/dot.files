@@ -1,0 +1,33 @@
+#!/bin/bash
+# Keep herdr's Claude Code hook installed and current after every chezmoi apply.
+
+set -euo pipefail
+
+{{ $installClaude := true -}}
+{{- if hasKey . "installClaude" }}{{ $installClaude = .installClaude }}{{ end -}}
+{{ if and (index . "installHerdr" | default false) $installClaude (index . "herdrClaudeIntegration" | default false) }}
+# herdr and Claude Code come from mise, whose shims need not be on PATH here.
+export PATH="${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}/shims:$PATH"
+if ! command -v herdr >/dev/null 2>&1; then
+  echo "herdr is not available yet; its Claude integration will install after the next chezmoi apply."
+  exit 0
+fi
+
+# herdr writes into Claude's config directory but will not create it.
+claude_dir="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+if [[ ! -d "$claude_dir" ]]; then
+  echo "$claude_dir does not exist yet; run Claude Code once, then chezmoi apply again."
+  exit 0
+fi
+
+# Reinstalling also migrates an outdated integration version.
+if herdr integration status 2>/dev/null | grep -q '^claude: current'; then
+  exit 0
+fi
+echo "Installing the herdr integration for Claude Code..."
+if ! herdr integration install claude; then
+  echo "Could not install the herdr Claude integration; will retry on the next chezmoi apply." >&2
+fi
+{{ else }}
+echo "herdr Claude integration disabled for this machine."
+{{ end }}

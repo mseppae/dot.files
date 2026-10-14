@@ -2,6 +2,11 @@
 {{- $installClaude := promptBoolOnce . "installClaude" "Install Claude Code CLI and desktop app on this machine?" true -}}
 {{- $installPi := promptBoolOnce . "installPi" "Install the Pi coding agent CLI on this machine?" false -}}
 {{- $installBlender := promptBoolOnce . "installBlender" "Install Blender on this machine?" false -}}
+{{- $installHerdr := promptBoolOnce . "installHerdr" "Install the herdr agent multiplexer on this machine?" false -}}
+{{- $herdrClaudeIntegration := false -}}
+{{- if and $installHerdr $installClaude -}}
+{{-   $herdrClaudeIntegration = promptBoolOnce . "herdrClaudeIntegration" "Install the herdr integration for Claude Code?" true -}}
+{{- end -}}
 
 {{ if stat (joinPath .chezmoi.homeDir "Development/dot.files") -}}
 sourceDir = "{{ .chezmoi.homeDir }}/Development/dot.files"
@@ -14,3 +19,7 @@ installCodex = {{ $installCodex }}
 installClaude = {{ $installClaude }}
 installPi = {{ $installPi }}
 installBlender = {{ $installBlender }}
+installHerdr = {{ $installHerdr }}
+{{- if and $installHerdr $installClaude }}
+herdrClaudeIntegration = {{ $herdrClaudeIntegration }}
+{{- end }}

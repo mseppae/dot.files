@@ -23,3 +23,6 @@ codex = "latest"
 {{- if (index . "installPi" | default false) }}
 pi = "latest"
 {{- end }}
+{{- if (index . "installHerdr" | default false) }}
+herdr = "latest"
+{{- end }}

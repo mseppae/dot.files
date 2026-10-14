@@ -31,7 +31,7 @@ chezmoi will:
 5. Install runtimes and CLI tools with `mise install`
 
 mise installs the same CLI tools everywhere (gh, topgrade, bob, starship,
-zoxide, vivid, ripgrep, plus Claude Code, Codex, and Pi when enabled), declared in
+zoxide, vivid, ripgrep, plus Claude Code, Codex, Pi, and herdr when enabled), declared in
 `dot_config/mise/conf.d/`. chezmoi does not manage `~/.config/mise/config.toml`,
 so `mise use -g` (and Omarchy's tool wrappers) can write to it freely; a tool
 pinned there overrides the `conf.d` version. Bob installs Neovim nightly.
@@ -57,6 +57,14 @@ Omarchy's packages update with `omarchy-update`. See Claude's
 Existing CLI installations still receive the desktop app when it is missing.
 With Blender enabled, `run_after_install-blender-extensions.sh` also keeps the
 LoopTools extension installed on every apply.
+
+The [herdr](https://herdr.dev/) agent multiplexer is optional too: `installHerdr`
+(default false) installs it with mise. When Claude is also enabled, `chezmoi init`
+asks for `herdrClaudeIntegration` (default true), and
+`run_after_install-herdr-claude-integration.sh` then keeps herdr's Claude Code hook
+installed and current on every apply (`herdr integration install claude`, which
+adds a `SessionStart` hook to `~/.claude/settings.json`). Turning it off later does
+not remove the hook; run `herdr integration uninstall claude` for that.
 
 On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
 then run `chezmoi apply`. `run_once_` records successful rendered script contents:

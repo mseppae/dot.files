@@ -12,7 +12,8 @@ platform. Bob manages Neovim nightly everywhere. `installClaude` and `installCod
 each gate a CLI (via mise) and its desktop app (via the OS package manager);
 `installPi` gates the Pi coding agent CLI (via mise; it has no desktop app);
 `installBlender` gates Blender (OS package manager, Flatpak on Bazzite) and its
-extensions.
+extensions; `installHerdr` gates herdr (via mise) and
+`herdrClaudeIntegration` its Claude Code hook (a `run_after_` script).
 
 ## Important
 
