@@ -12,21 +12,15 @@ return {
 				"stylua",
 				"lua-language-server",
 				"prettierd",
-				"eslint_d",
 				"typescript-language-server",
 
 				-- Go lang
 				"gopls",
 				"gofumpt",
 				"goimports-reviser",
-				"staticcheck",
-				"gomodifytags",
-				"gotests",
-				"iferr",
 
 				-- Ruby
 				"ruby-lsp",
-				"sorbet",
 
 				-- Zig
 				"zls",

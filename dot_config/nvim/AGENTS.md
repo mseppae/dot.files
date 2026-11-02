@@ -41,8 +41,8 @@ lua_ls, gopls, ruby_lsp, ts_ls, zig, odin (sorbet is commented out)
 - Window navigation uses smart-splits.nvim with Ghostty multiplexer
   integration (`<C-h/j/k/l>`)
 - Colorscheme is `vague.nvim` with custom dark palette
-- Copilot is disabled; Claude Code integration (claudecode.nvim)
-  is active
+- No AI plugins: coding agents run in herdr panes, and herdr-nvim
+  (`<leader>h`) sends code comments to them
 - Format-on-save is enabled via conform.nvim (1500ms timeout,
   LSP fallback except for C/C++)
 - Go formatting: goimports-reviser + gofumpt (via conform,

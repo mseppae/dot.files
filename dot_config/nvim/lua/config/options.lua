@@ -39,7 +39,8 @@ vim.opt.scrolloff = 999
 -- Show whitespace characters
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
--- Enable Kitty keyboard protocol for Ghostty (required for keys like <C-,>)
+-- Enable Kitty keyboard protocol for Ghostty, so Ctrl combinations such as
+-- <C-,> reach Neovim distinctly
 if vim.fn.exists('+keyprotocol') == 1 then
 	vim.opt.keyprotocol = "xterm-ghostty:kitty,ghostty:kitty"
 end
