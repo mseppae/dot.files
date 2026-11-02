@@ -26,7 +26,11 @@ for tool in herdr cargo curl tar; do
 done
 
 plugin_is_linked() {
-  herdr plugin list 2>/dev/null | grep -qF "$plugin_id"
+  # Captured first: with pipefail, grep -q exiting early can make herdr die of
+  # SIGPIPE and fail the check.
+  local plugins
+  plugins="$(herdr plugin list 2>/dev/null || true)"
+  grep -qF "$plugin_id" <<<"$plugins"
 }
 
 if [[ -x "$dest/bin/herdr-nvim" && "$(cat "$stamp" 2>/dev/null)" == "$commit" ]] && plugin_is_linked; then

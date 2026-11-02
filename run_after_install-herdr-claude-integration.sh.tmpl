@@ -21,7 +21,10 @@ if [[ ! -d "$claude_dir" ]]; then
 fi
 
 # Reinstalling also migrates an outdated integration version.
-if herdr integration status 2>/dev/null | grep -q '^claude: current'; then
+# Captured first: with pipefail, grep -q exiting early can make herdr die of
+# SIGPIPE and fail the check.
+status="$(herdr integration status 2>/dev/null || true)"
+if grep -q '^claude: current' <<<"$status"; then
   exit 0
 fi
 echo "Installing the herdr integration for Claude Code..."
