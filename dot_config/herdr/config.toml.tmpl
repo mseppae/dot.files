@@ -28,3 +28,13 @@ type = "plugin_action"
 command = "herdr-navigator.open"
 description = "jump to anything"
 {{- end }}
+{{- if (index . "herdrReviewr" | default false) }}
+
+# herdr-reviewr (built and linked by run_after_install-herdr-reviewr.sh). Its
+# README suggests cmd+r, which Linux lacks; prefix+r is herdr's resize mode.
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "review agent diff"
+{{- end }}

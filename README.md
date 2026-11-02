@@ -88,6 +88,16 @@ commit into `~/.local/share/herdr-navigator` and links it, so neither
 config sets `check_updates = false`; update by bumping `commit` and `sha256` in the
 script. `prefix+t` opens it. Run `herdr plugin unlink herdr-navigator` to remove it.
 
+`herdrReviewr` (asked with herdr enabled, default true) builds
+[herdr-reviewr](https://github.com/persiyanov/herdr-reviewr), a diff review pane whose
+line comments go to the agent's input, the same way:
+`run_after_install-herdr-reviewr.sh` builds a pinned, checksum-verified commit into
+`~/.local/share/herdr-reviewr` and links it, instead of `herdr plugin install`, whose
+build hook downloads a prebuilt binary checked only against a checksum from the same
+release. `prefix+d` toggles it; it also opens on its own in a new herdr worktree's
+workspace (`auto_open = false` in its config turns that off). Run
+`herdr plugin unlink persiyanov.reviewr` to remove it.
+
 On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
 then run `chezmoi apply`. `run_once_` records successful rendered script contents:
 a changed bootstrap (including a changed Claude or Codex choice) can run again on apply.
