@@ -155,6 +155,9 @@ Then restart neovim completely (`:qa!` and reopen).
   `chezmoi re-add ~/.config/nvim/lazy-lock.json` and commit
 - zsh plugins in `.chezmoiexternal.toml` are pinned to a commit and checksum;
   update both together
+- `cheatsheets/` has printable herdr and Neovim key cheatsheets (PDF). It is not
+  deployed; after changing keybindings, edit the tables in `cheatsheets/build.py`
+  and run `python3 cheatsheets/build.py` (needs Chrome or Chromium)
 - On Omarchy, Ghostty loads Omarchy's packaged defaults (theme, font) and applies personal settings on top; `xdg-terminals.list` makes it the default terminal (Super+Return)
 - Shell: zsh on macOS, Bazzite, and Arch; Omarchy keeps bash with its own defaults
   (aliases, fzf, mise, starship, zoxide). `dot_bashrc` (Omarchy only) layers personal
