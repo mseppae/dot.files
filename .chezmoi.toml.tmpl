@@ -11,6 +11,10 @@
 {{- if $installHerdr -}}
 {{-   $herdrNvimPlugin = promptBoolOnce . "herdrNvimPlugin" "Build and link the herdr-nvim plugin from source?" true -}}
 {{- end -}}
+{{- $herdrNavigator := false -}}
+{{- if $installHerdr -}}
+{{-   $herdrNavigator = promptBoolOnce . "herdrNavigator" "Build and link the herdr-navigator plugin from source?" true -}}
+{{- end -}}
 
 {{ if stat (joinPath .chezmoi.homeDir "Development/dot.files") -}}
 sourceDir = "{{ .chezmoi.homeDir }}/Development/dot.files"
@@ -29,4 +33,5 @@ herdrClaudeIntegration = {{ $herdrClaudeIntegration }}
 {{- end }}
 {{- if $installHerdr }}
 herdrNvimPlugin = {{ $herdrNvimPlugin }}
+herdrNavigator = {{ $herdrNavigator }}
 {{- end }}

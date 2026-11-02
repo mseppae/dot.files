@@ -1,0 +1,97 @@
+#!/bin/bash
+# Keep the herdr-navigator plugin built from a reviewed, pinned source revision
+# and linked into herdr after every chezmoi apply. Linking a pinned build keeps
+# `herdr plugin install` (and the in-app update badge) from installing whatever
+# release is newest.
+
+set -euo pipefail
+
+{{ if and (index . "installHerdr" | default false) (index . "herdrNavigator" | default false) }}
+# To update: review the new commit, then set commit and sha256 (sha256 of the
+# GitHub archive tarball for that commit).
+commit="313b753b1f98f802b7d861430a13cb95a86e8dd3"
+sha256="7149a083e76b29b16914807649486598d09b49436e76eba9cafb39a5f8541e68"
+plugin_id="herdr-navigator"
+url="https://github.com/thanhdat77/herdr-navigator/archive/${commit}.tar.gz"
+dest="${XDG_DATA_HOME:-$HOME/.local/share}/herdr-navigator"
+stamp="$dest/.chezmoi-commit"
+# herdr-plugin.toml runs the binary from here, relative to the plugin root.
+bin="target/release/herdr-navigator"
+
+# herdr and cargo come from mise, whose shims need not be on PATH here.
+export PATH="${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}/shims:$PATH"
+for tool in herdr cargo curl tar; do
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    echo "$tool is not available yet; herdr-navigator will build after the next chezmoi apply."
+    exit 0
+  fi
+done
+
+plugin_is_linked() {
+  # Captured first: with pipefail, grep -q exiting early can make herdr die of
+  # SIGPIPE and fail the check.
+  local plugins
+  plugins="$(herdr plugin list 2>/dev/null || true)"
+  grep -qF -- "- $plugin_id (" <<<"$plugins"
+}
+
+if [[ -x "$dest/$bin" && "$(cat "$stamp" 2>/dev/null)" == "$commit" ]] && plugin_is_linked; then
+  exit 0
+fi
+
+sha256_of() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | cut -d' ' -f1
+  else
+    shasum -a 256 "$1" | cut -d' ' -f1
+  fi
+}
+
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+
+build() {
+  echo "Building herdr-navigator ${commit:0:12} from source..."
+  curl -fsSL "$url" -o "$work/src.tar.gz" || return 1
+  if [[ "$(sha256_of "$work/src.tar.gz")" != "$sha256" ]]; then
+    echo "herdr-navigator archive checksum mismatch; refusing to build." >&2
+    return 1
+  fi
+  mkdir "$work/src"
+  tar -xzf "$work/src.tar.gz" -C "$work/src" --strip-components=1 || return 1
+  # --locked builds exactly the reviewed Cargo.lock; the target dir stays in
+  # the throwaway work dir so only sources and the binary are kept.
+  CARGO_TARGET_DIR="$work/target" cargo build --release --locked \
+    --manifest-path "$work/src/Cargo.toml" || return 1
+  mkdir -p "$work/src/$(dirname "$bin")"
+  cp "$work/target/release/herdr-navigator" "$work/src/$bin"
+  echo "$commit" >"$work/src/.chezmoi-commit"
+
+  # Swap the new tree in; the plugin stays linked to the same path.
+  mkdir -p "$(dirname "$dest")"
+  rm -rf "$dest.old"
+  if [[ -e "$dest" ]]; then
+    mv "$dest" "$dest.old"
+  fi
+  mv "$work/src" "$dest"
+  rm -rf "$dest.old"
+}
+
+# A failure (offline, missing C compiler, ...) must not fail chezmoi apply;
+# this script runs again on the next apply.
+if [[ ! -x "$dest/$bin" || "$(cat "$stamp" 2>/dev/null)" != "$commit" ]]; then
+  if ! build; then
+    echo "Could not build herdr-navigator; will retry on the next chezmoi apply." >&2
+    exit 0
+  fi
+fi
+
+if ! plugin_is_linked; then
+  echo "Linking herdr-navigator into herdr..."
+  if ! herdr plugin link "$dest"; then
+    echo "Could not link herdr-navigator; will retry on the next chezmoi apply." >&2
+  fi
+fi
+{{ else }}
+echo "herdr-navigator plugin disabled for this machine."
+{{ end }}

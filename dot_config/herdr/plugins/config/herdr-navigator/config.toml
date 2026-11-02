@@ -1,0 +1,10 @@
+# herdr-navigator config. Unset keys keep the plugin's defaults; see
+# examples/default-config.toml in ~/.local/share/herdr-navigator.
+[picker]
+# Updates come from bumping the pinned commit in
+# run_after_install-herdr-navigator.sh, not from the in-app update badge.
+check_updates = false
+# Start in a normal mode: j/k move, a source's letter filters to it, / searches.
+vim_mode = true
+# A filter letter goes straight to searching within that source.
+vim_filter_search = true

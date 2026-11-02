@@ -17,3 +17,14 @@ type = "plugin_action"
 command = "chmarax.herdr-nvim.pick-file"
 description = "open file from agent output"
 {{- end }}
+{{- if (index . "herdrNavigator" | default false) }}
+
+# herdr-navigator (built and linked by run_after_install-herdr-navigator.sh).
+# Its README's other keys clash with herdr defaults (prefix+l focuses the right
+# pane, prefix+shift+t renames the tab).
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump to anything"
+{{- end }}

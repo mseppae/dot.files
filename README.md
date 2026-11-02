@@ -79,6 +79,15 @@ herdr is installed) binds the sidebar to `prefix+shift+e` and the file picker to
 `prefix+f`. Turning it off later does not unlink it; run
 `herdr plugin unlink chmarax.herdr-nvim` for that.
 
+`herdrNavigator` (asked with herdr enabled, default true) does the same for
+[herdr-navigator](https://github.com/thanhdat77/herdr-navigator), a fuzzy finder for
+workspaces, agents, sessions, and directories:
+`run_after_install-herdr-navigator.sh` builds it from a pinned, checksum-verified
+commit into `~/.local/share/herdr-navigator` and links it, so neither
+`herdr plugin install` nor its update badge installs an unreviewed release. Its
+config sets `check_updates = false`; update by bumping `commit` and `sha256` in the
+script. `prefix+t` opens it. Run `herdr plugin unlink herdr-navigator` to remove it.
+
 On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
 then run `chezmoi apply`. `run_once_` records successful rendered script contents:
 a changed bootstrap (including a changed Claude or Codex choice) can run again on apply.

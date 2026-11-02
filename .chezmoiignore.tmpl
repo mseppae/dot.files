@@ -35,6 +35,9 @@ Library
 {{ if not (index . "installHerdr" | default false) }}
 .config/herdr
 {{ end }}
+{{ if not (index . "herdrNavigator" | default false) }}
+.config/herdr/plugins/config/herdr-navigator
+{{ end }}
 
 # systemd user services — Linux only
 {{ if ne .chezmoi.os "linux" }}
