@@ -31,6 +31,11 @@ BOOTSTRAP_MODERNIZATION_PLAN.md
 Library
 {{ end }}
 
+# herdr config — only where herdr is installed
+{{ if not (index . "installHerdr" | default false) }}
+.config/herdr
+{{ end }}
+
 # systemd user services — Linux only
 {{ if ne .chezmoi.os "linux" }}
 .config/systemd

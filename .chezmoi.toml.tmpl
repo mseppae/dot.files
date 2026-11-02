@@ -7,6 +7,10 @@
 {{- if and $installHerdr $installClaude -}}
 {{-   $herdrClaudeIntegration = promptBoolOnce . "herdrClaudeIntegration" "Install the herdr integration for Claude Code?" true -}}
 {{- end -}}
+{{- $herdrNvimPlugin := false -}}
+{{- if $installHerdr -}}
+{{-   $herdrNvimPlugin = promptBoolOnce . "herdrNvimPlugin" "Build and link the herdr-nvim plugin from source?" true -}}
+{{- end -}}
 
 {{ if stat (joinPath .chezmoi.homeDir "Development/dot.files") -}}
 sourceDir = "{{ .chezmoi.homeDir }}/Development/dot.files"
@@ -22,4 +26,7 @@ installBlender = {{ $installBlender }}
 installHerdr = {{ $installHerdr }}
 {{- if and $installHerdr $installClaude }}
 herdrClaudeIntegration = {{ $herdrClaudeIntegration }}
+{{- end }}
+{{- if $installHerdr }}
+herdrNvimPlugin = {{ $herdrNvimPlugin }}
 {{- end }}

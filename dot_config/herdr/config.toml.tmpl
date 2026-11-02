@@ -1,0 +1,19 @@
+# herdr config: https://herdr.dev/tui/docs/config-reference/
+onboarding = false
+{{- if (index . "herdrNvimPlugin" | default false) }}
+
+# herdr-nvim plugin actions (built and linked by
+# run_after_install-herdr-nvim-plugin.sh). Its README suggests prefix+e and
+# prefix+o, but herdr already uses those (edit scrollback, notification target).
+[[keys.command]]
+key = "prefix+shift+e"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+description = "nvim sidebar"
+
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.pick-file"
+description = "open file from agent output"
+{{- end }}

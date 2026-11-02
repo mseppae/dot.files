@@ -13,7 +13,8 @@ each gate a CLI (via mise) and its desktop app (via the OS package manager);
 `installPi` gates the Pi coding agent CLI (via mise; it has no desktop app);
 `installBlender` gates Blender (OS package manager, Flatpak on Bazzite) and its
 extensions; `installHerdr` gates herdr (via mise) and
-`herdrClaudeIntegration` its Claude Code hook (a `run_after_` script).
+`herdrClaudeIntegration` its Claude Code hook and `herdrNvimPlugin` the
+herdr-nvim plugin, built from a pinned source commit (both `run_after_` scripts).
 
 ## Important
 

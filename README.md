@@ -66,6 +66,19 @@ installed and current on every apply (`herdr integration install claude`, which
 adds a `SessionStart` hook to `~/.claude/settings.json`). Turning it off later does
 not remove the hook; run `herdr integration uninstall claude` for that.
 
+With herdr enabled, `chezmoi init` also asks for `herdrNvimPlugin` (default true).
+`run_after_install-herdr-nvim-plugin.sh` then builds the
+[herdr-nvim](https://github.com/ChmaraX/herdr-nvim) plugin from a pinned,
+checksum-verified source commit with cargo into `~/.local/share/herdr-nvim` and
+links it (`herdr plugin link`), instead of `herdr plugin install`, whose build hook
+downloads an unverified prebuilt binary. To update, review the new commit and bump
+`commit` and `sha256` in the script, and `commit` in
+`dot_config/nvim/lua/plugins/herdr.lua` (its Neovim half, loaded only inside herdr
+panes, mapped under `<leader>h`). `~/.config/herdr/config.toml` (managed only where
+herdr is installed) binds the sidebar to `prefix+shift+e` and the file picker to
+`prefix+f`. Turning it off later does not unlink it; run
+`herdr plugin unlink chmarax.herdr-nvim` for that.
+
 On existing machines, regenerate config with `chezmoi init`, review `chezmoi diff`,
 then run `chezmoi apply`. `run_once_` records successful rendered script contents:
 a changed bootstrap (including a changed Claude or Codex choice) can run again on apply.

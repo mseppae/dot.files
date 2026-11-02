@@ -1,0 +1,91 @@
+#!/bin/bash
+# Keep the herdr-nvim plugin built from a reviewed, pinned source revision and
+# linked into herdr after every chezmoi apply. Building from source avoids
+# `herdr plugin install`, whose build hook downloads an unverified prebuilt
+# binary.
+
+set -euo pipefail
+
+{{ if and (index . "installHerdr" | default false) (index . "herdrNvimPlugin" | default false) }}
+# To update: review the new commit, then set commit and sha256 (sha256 of the
+# GitHub archive tarball for that commit).
+commit="26cd43e38126be8012b59f95fd41ef33574d0d08"
+sha256="a8d162db7360141dfe1c48c27ad422e0d619e68803605fb5af1542d9f543f1df"
+plugin_id="chmarax.herdr-nvim"
+url="https://github.com/ChmaraX/herdr-nvim/archive/${commit}.tar.gz"
+dest="${XDG_DATA_HOME:-$HOME/.local/share}/herdr-nvim"
+stamp="$dest/.chezmoi-commit"
+
+# herdr and cargo come from mise, whose shims need not be on PATH here.
+export PATH="${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}/shims:$PATH"
+for tool in herdr cargo curl tar; do
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    echo "$tool is not available yet; herdr-nvim will build after the next chezmoi apply."
+    exit 0
+  fi
+done
+
+plugin_is_linked() {
+  herdr plugin list 2>/dev/null | grep -qF "$plugin_id"
+}
+
+if [[ -x "$dest/bin/herdr-nvim" && "$(cat "$stamp" 2>/dev/null)" == "$commit" ]] && plugin_is_linked; then
+  exit 0
+fi
+
+sha256_of() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | cut -d' ' -f1
+  else
+    shasum -a 256 "$1" | cut -d' ' -f1
+  fi
+}
+
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+
+build() {
+  echo "Building herdr-nvim ${commit:0:12} from source..."
+  curl -fsSL "$url" -o "$work/src.tar.gz" || return 1
+  if [[ "$(sha256_of "$work/src.tar.gz")" != "$sha256" ]]; then
+    echo "herdr-nvim archive checksum mismatch; refusing to build." >&2
+    return 1
+  fi
+  mkdir "$work/src"
+  tar -xzf "$work/src.tar.gz" -C "$work/src" --strip-components=1 || return 1
+  # --locked builds exactly the reviewed Cargo.lock; the target dir stays in
+  # the throwaway work dir so only sources and the binary are kept.
+  CARGO_TARGET_DIR="$work/target" cargo build --release --locked \
+    --manifest-path "$work/src/Cargo.toml" || return 1
+  mkdir -p "$work/src/bin"
+  cp "$work/target/release/herdr-nvim" "$work/src/bin/herdr-nvim"
+  echo "$commit" >"$work/src/.chezmoi-commit"
+
+  # Swap the new tree in; the plugin stays linked to the same path.
+  mkdir -p "$(dirname "$dest")"
+  rm -rf "$dest.old"
+  if [[ -e "$dest" ]]; then
+    mv "$dest" "$dest.old"
+  fi
+  mv "$work/src" "$dest"
+  rm -rf "$dest.old"
+}
+
+# A failure (offline, missing C compiler, ...) must not fail chezmoi apply;
+# this script runs again on the next apply.
+if [[ ! -x "$dest/bin/herdr-nvim" || "$(cat "$stamp" 2>/dev/null)" != "$commit" ]]; then
+  if ! build; then
+    echo "Could not build herdr-nvim; will retry on the next chezmoi apply." >&2
+    exit 0
+  fi
+fi
+
+if ! plugin_is_linked; then
+  echo "Linking herdr-nvim into herdr..."
+  if ! herdr plugin link "$dest"; then
+    echo "Could not link herdr-nvim; will retry on the next chezmoi apply." >&2
+  fi
+fi
+{{ else }}
+echo "herdr-nvim plugin disabled for this machine."
+{{ end }}
