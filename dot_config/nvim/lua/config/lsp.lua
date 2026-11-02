@@ -22,21 +22,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
       local opts = { noremap = true, silent = true, buffer = ev.buf }
-      -- Keymaps for LSP features (only active in buffers with LSP attached)
+      -- Neovim's defaults cover the rest: K hover, grn rename, gra code
+      -- action, grr references, gri implementation, grt type definition,
+      -- gO document symbols, and <C-s> signature help in insert mode.
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)  -- Go to definition
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)  -- Go to declaration
-      vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)  -- Go to implementation
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)  -- Hover info
-      vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)  -- Signature help
-      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)  -- Rename
-      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)  -- Code actions
-      vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)  -- Find references
 
+      -- Completion pops up as you type; <C-x><C-o> asks for it by hand.
       vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
       vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-      vim.keymap.set('i', '<esc>', function()
-        vim.lsp.completion.get()
-      end)
     end
 
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
