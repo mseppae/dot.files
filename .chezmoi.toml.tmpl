@@ -1,7 +1,6 @@
 {{- $installCodex := promptBoolOnce . "installCodex" "Install OpenAI Codex CLI and desktop app on this machine?" false -}}
 {{- $installClaude := promptBoolOnce . "installClaude" "Install Claude Code CLI and desktop app on this machine?" true -}}
 {{- $installPi := promptBoolOnce . "installPi" "Install the Pi coding agent CLI on this machine?" false -}}
-{{- $installTuios := promptBoolOnce . "installTuios" "Install the tuios terminal multiplexer on this machine?" false -}}
 {{- $installBlender := promptBoolOnce . "installBlender" "Install Blender on this machine?" false -}}
 {{- $installHerdr := promptBoolOnce . "installHerdr" "Install the herdr agent multiplexer on this machine?" false -}}
 {{- $herdrClaudeIntegration := false -}}
@@ -31,7 +30,6 @@ sourceDir = "{{ .chezmoi.homeDir }}/development/dot.files"
 installCodex = {{ $installCodex }}
 installClaude = {{ $installClaude }}
 installPi = {{ $installPi }}
-installTuios = {{ $installTuios }}
 installBlender = {{ $installBlender }}
 installHerdr = {{ $installHerdr }}
 {{- if and $installHerdr $installClaude }}

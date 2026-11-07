@@ -11,7 +11,6 @@ mise, and eza; mise installs CLI tools (Claude Code, gh, topgrade, bob, ...) on 
 platform. Bob manages Neovim nightly everywhere. `installClaude` and `installCodex`
 each gate a CLI (via mise) and its desktop app (via the OS package manager);
 `installPi` gates the Pi coding agent CLI (via mise; it has no desktop app);
-`installTuios` gates the tuios terminal multiplexer (via mise);
 `installBlender` gates Blender (OS package manager, Flatpak on Bazzite) and its
 extensions; `installHerdr` gates herdr (via mise) and
 `herdrClaudeIntegration` its Claude Code hook, and `herdrNvimPlugin`,
