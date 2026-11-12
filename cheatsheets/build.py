@@ -344,8 +344,9 @@ NVIM = page(
             "## In Diffview",
             ("Tab / Shift+Tab", "next / previous file"),
             ("-", "stage / unstage file"),
+            ("q", "close Diffview"),
             ("g?", "all keys"),
-            "Close with `:DiffviewClose`. Gitsigns shows blame at line end; hunks via `:Gitsigns preview_hunk`, `stage_hunk`, `reset_hunk`, `next_hunk`.",
+            "Gitsigns shows blame at line end; hunks via `:Gitsigns preview_hunk`, `stage_hunk`, `reset_hunk`, `next_hunk`.",
         ]),
         section("Files", [
             ("\\", "neo-tree: reveal current file / close"),
