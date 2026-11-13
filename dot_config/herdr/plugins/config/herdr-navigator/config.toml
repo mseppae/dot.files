@@ -8,3 +8,5 @@ check_updates = false
 vim_mode = true
 # A filter letter goes straight to searching within that source.
 vim_filter_search = true
+# Open without the right-side preview; Ctrl-O shows it.
+preview = false

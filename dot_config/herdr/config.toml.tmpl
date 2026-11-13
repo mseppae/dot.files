@@ -1,5 +1,31 @@
 # herdr config: https://herdr.dev/tui/docs/config-reference/
 onboarding = false
+
+# Minimal look after tuios's "Zen" (Kanagawa Dragon colours): no borders, no
+# tab bar while a workspace has one tab, sidebar hidden until toggled. Panes
+# keep Ghostty's own colours.
+[theme]
+name = "kanagawa"
+
+[theme.custom]
+accent = "#b6927b"
+text = "#c5c9c5"
+panel_bg = "#181616"
+sidebar_bg = "#0d0c0c"
+surface0 = "#282727"
+surface_dim = "#0d0c0c"
+active_row_bg = "#282727"
+selection_bg = "#282727"
+
+[ui]
+accent = "#b6927b"
+pane_borders = "off"
+pane_outer_borders = false
+pane_gaps = false
+pane_scrollbars = false
+hide_tab_bar_when_single_tab = true
+sidebar_start_collapsed = true
+sidebar_collapsed_mode = "hidden"
 {{- if (index . "herdrNvimPlugin" | default false) }}
 
 # herdr-nvim plugin actions (built and linked by

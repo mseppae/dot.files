@@ -175,7 +175,7 @@ HERDR = page(
             ("Ctrl+u", "clear text and filter"),
             ("Ctrl+x", "close the workspace matching the item"),
             ("Ctrl+b", "pin / unpin item"),
-            ("Ctrl+o", "toggle preview"),
+            ("Ctrl+o", "show / hide preview (starts hidden)"),
             ("Alt+Enter", "open a dir with the project template"),
             ("?", "all keys"),
             "## Search syntax",
