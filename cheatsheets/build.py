@@ -258,7 +258,7 @@ NVIM = page(
             ("gx", "open URL under cursor"),
             ("gX", "open every URL on the line (or selection)"),
             ("<Space>pu", "update plugins (:Lazy update)"),
-            "Arrow keys are disabled in normal, insert and visual mode.",
+            "Arrow keys are disabled in normal, insert and visual mode. `:KeyStats` lists the most used and never used keys.",
             "## Terminal mode",
             ("Ctrl+u / Ctrl+d", "scroll half page"),
             ("Ctrl+b / Ctrl+f", "page up / down"),

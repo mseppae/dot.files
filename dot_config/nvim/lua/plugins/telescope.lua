@@ -2,6 +2,8 @@ return {
 	{
 		"nvim-telescope/telescope.nvim",
 		version = "*",
+		-- :Telescope works before any Telescope key has loaded it.
+		cmd = "Telescope",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },

@@ -37,6 +37,8 @@ lua_ls, gopls, ruby_lsp, ts_ls, zig, odin (sorbet is commented out)
 ## Important Patterns
 
 - Plugin files return a lazy.nvim spec table (or array of tables)
+- `lua/config/keystats.lua` (loaded first in `init.lua`) counts mapping
+  hits by wrapping `vim.keymap.set`; `:KeyStats` shows them
 - Indentation is tabs in Lua files, 2-space width
 - Colorscheme is `vague.nvim` with custom dark palette
 - No AI plugins: coding agents run in herdr panes, and herdr-nvim
