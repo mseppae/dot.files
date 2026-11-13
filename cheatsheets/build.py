@@ -333,7 +333,7 @@ NVIM = page(
             "## In the history picker",
             ("Enter", "diff against that commit, in a new tab"),
             ("Ctrl+v / Ctrl+x", "the same diff in a vertical / horizontal split"),
-            ("$ :tabclose", "close the diff tab"),
+            ("q", "close the diff tab"),
             "Signs show everything the branch changed, from herdr-reviewr's base; on the default branch, uncommitted changes. Blame at line end; `:Gitsigns preview_hunk`, `next_hunk`.",
         ]),
         section("Files", [
