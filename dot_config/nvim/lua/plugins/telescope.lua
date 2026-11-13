@@ -14,6 +14,14 @@ return {
 		},
 		config = function()
 			local telescope = require("telescope")
+			-- File history: Enter opens a diff against that commit in a new tab
+			-- instead of the default, which checks the file out at that commit.
+			local history = {
+				mappings = {
+					i = { ["<cr>"] = require("telescope.actions").select_tab },
+					n = { ["<cr>"] = require("telescope.actions").select_tab },
+				},
+			}
 			telescope.load_extension("live_grep_args")
 			telescope.load_extension("fzf")
 			telescope.setup({
@@ -21,6 +29,8 @@ return {
 					oldfiles = {
 						cwd_only = true,
 					},
+					git_bcommits = history,
+					git_bcommits_range = history,
 				},
 				extensions = {
 					fzf = {},
@@ -52,6 +62,19 @@ return {
 			{ "<leader>sr", "<cmd>Telescope resume<cr>", desc = "Resume search" },
 			{ "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Search help" },
 			{ "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Existing buffers" },
+			{ "<leader>gh", "<cmd>Telescope git_bcommits<cr>", desc = "File history" },
+			{
+				"<leader>gh",
+				function()
+					local first, last = vim.fn.line("v"), vim.fn.line(".")
+					require("telescope.builtin").git_bcommits_range({
+						from = math.min(first, last),
+						to = math.max(first, last),
+					})
+				end,
+				desc = "Selected lines history",
+				mode = { "v" },
+			},
 		},
 	},
 }
