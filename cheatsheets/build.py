@@ -294,11 +294,9 @@ NVIM = page(
         ], "flash"),
         section("Undo history", [
             ("<Space>a", "toggle the undo tree"),
-            ("j / k", "older / newer state"),
-            ("Enter", "undo to this state"),
-            ("q", "close"),
-            ("?", "help"),
-        ], "atone"),
+            ("j / k", "move through states; the buffer follows"),
+            "Built in (`:Undotree`). Leave the tree on the state you want and close it with `<Space>a`.",
+        ], ":Undotree"),
         section("Code (LSP)", [
             ("gd / gD", "definition / declaration"),
             ("K", "hover"),

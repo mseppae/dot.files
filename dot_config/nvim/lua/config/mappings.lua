@@ -60,6 +60,11 @@ map({ "n", "i", "v" }, "<left>", "<nop>")
 map({ "n", "i", "v" }, "<right>", "<nop>")
 map({ "n", "i", "v" }, "<up>", "<nop>")
 map({ "n", "i", "v" }, "<down>", "<nop>")
+-- Undo tree (built in; moving the cursor in it changes the buffer)
+map("n", "<leader>a", function()
+	vim.cmd.packadd("nvim.undotree")
+	require("undotree").open()
+end, { desc = "Toggle undo tree" })
 -- Diagnostic keymaps
 map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 -- Package management

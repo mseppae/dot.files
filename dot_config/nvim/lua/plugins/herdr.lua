@@ -6,6 +6,6 @@ return {
 	commit = "26cd43e38126be8012b59f95fd41ef33574d0d08",
 	-- Only inside herdr panes, which (like the sidebar daemon) set HERDR_TAB_ID.
 	cond = vim.env.HERDR_TAB_ID ~= nil,
-	-- <leader>a is taken by atone.nvim.
+	-- <leader>a is taken by the undo tree.
 	opts = { prefix = "<leader>h" },
 }

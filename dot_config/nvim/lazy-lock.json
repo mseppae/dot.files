@@ -1,5 +1,4 @@
 {
-  "atone.nvim": { "branch": "main", "commit": "98afae6743f61b3d57c2de89c48237e77d3d05ba" },
   "conform.nvim": { "branch": "master", "commit": "016802de402556da54c36bd7359b441266b01cdd" },
   "fidget.nvim": { "branch": "main", "commit": "9e0201673e08e997e7cf52afca5565c70bd117f3" },
   "flash.nvim": { "branch": "main", "commit": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a" },
