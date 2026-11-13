@@ -1,0 +1,5 @@
+# herdr-nvim sidebar config. Unset keys keep the plugin's defaults; see the
+# README in ~/.local/share/herdr-nvim.
+[sidebar]
+# Open the nvim sidebar on the left; agent panes move to the right.
+position = "left"

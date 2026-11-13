@@ -114,7 +114,7 @@ HERDR = page(
             ("prefix+t", "Navigator: jump to anything"),
             ("prefix+d", "reviewr: toggle the diff review pane"),
             ("prefix+f", "herdr-nvim: open a file the agent touched"),
-            ("prefix+shift+e", "herdr-nvim: toggle the Neovim sidebar"),
+            ("prefix+shift+e", "herdr-nvim: toggle the Neovim sidebar (left)"),
             ("Ctrl {+} click", "a file path in agent output opens it in the sidebar"),
             "Navigator side pane and jump-back have no key; see CLI below.",
         ], "custom"),

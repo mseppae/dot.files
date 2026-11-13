@@ -76,7 +76,8 @@ downloads an unverified prebuilt binary. To update, review the new commit and bu
 `dot_config/nvim/lua/plugins/herdr.lua` (its Neovim half, loaded only inside herdr
 panes, mapped under `<leader>h`). `~/.config/herdr/config.toml` (managed only where
 herdr is installed) binds the sidebar to `prefix+shift+e` and the file picker to
-`prefix+f`. Turning it off later does not unlink it; run
+`prefix+f`. `~/.config/herdr-nvim/config.toml` opens the sidebar on the
+left. Turning it off later does not unlink it; run
 `herdr plugin unlink chmarax.herdr-nvim` for that.
 
 `herdrNavigator` (asked with herdr enabled, default true) does the same for
