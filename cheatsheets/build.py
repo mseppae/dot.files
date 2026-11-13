@@ -263,9 +263,6 @@ NVIM = page(
             ("Ctrl+u / Ctrl+d", "scroll half page"),
             ("Ctrl+b / Ctrl+f", "page up / down"),
         ]),
-        section("Windows", [
-            ("Ctrl+h/j/k/l", "move between splits, also across Ghostty splits"),
-        ], "smart-splits"),
         section("Comment to the agent", [
             ("<Space>hc", "comment line, or selection in visual mode"),
             ("<Space>hl", "list comments (`Enter` edit, `d` delete)"),

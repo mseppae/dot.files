@@ -44,8 +44,8 @@ scripts).
   defaults and adds personal settings; zsh files are ignored there.
 - `.chezmoiexternal.toml` clones zsh plugins during apply.
 - `dot_config/nvim/` has additional guidance in its own `AGENTS.md`.
-- Ghostty is the only terminal config (`dot_config/ghostty/`): `Ctrl+\` leader for
-  splits; `Ctrl+hjkl` crosses Neovim/Ghostty splits via smart-splits.nvim.
+- Ghostty is the only terminal config (`dot_config/ghostty/`). It only hosts
+  herdr, which handles panes and tabs, so it has no split keys.
 - `dot_config/mise/conf.d/` declares language runtimes and CLI tools. Do not
   manage `~/.config/mise/config.toml`: `mise use -g` (and Omarchy) write to it.
 - `.chezmoiignore.tmpl` gates platform configs.

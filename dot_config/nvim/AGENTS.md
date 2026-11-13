@@ -38,8 +38,6 @@ lua_ls, gopls, ruby_lsp, ts_ls, zig, odin (sorbet is commented out)
 
 - Plugin files return a lazy.nvim spec table (or array of tables)
 - Indentation is tabs in Lua files, 2-space width
-- Window navigation uses smart-splits.nvim with Ghostty multiplexer
-  integration (`<C-h/j/k/l>`)
 - Colorscheme is `vague.nvim` with custom dark palette
 - No AI plugins: coding agents run in herdr panes, and herdr-nvim
   (`<leader>h`) sends code comments to them
