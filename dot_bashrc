@@ -46,6 +46,11 @@ shopt -s histverify                # Let you edit a history expansion before run
 # session's new lines, then reload the merged file, before each prompt.
 PROMPT_COMMAND="history -a; history -c; history -r${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 
+# https://github.com/coderabbitai/git-worktree-runner: `gtr cd`, as in dot_zshrc.
+if command -v git-gtr >/dev/null 2>&1; then
+  eval "$(git gtr init bash)"
+fi
+
 if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/shell/rc.sh ]]; then
   . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/rc.sh"
 fi

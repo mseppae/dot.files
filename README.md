@@ -30,7 +30,7 @@ chezmoi will:
 4. Install zsh, mise, and eza using Homebrew on macOS/Bazzite or official pacman packages on Arch
 5. Install runtimes and CLI tools with `mise install`
 
-mise installs the same CLI tools everywhere (gh, topgrade, bob, starship,
+mise installs the same CLI tools everywhere (gh, lazydocker, topgrade, bob, starship,
 zoxide, vivid, ripgrep, plus Claude Code, Codex, Pi, and herdr when enabled), declared in
 `dot_config/mise/conf.d/`. chezmoi does not manage `~/.config/mise/config.toml`,
 so `mise use -g` (and Omarchy's tool wrappers) can write to it freely; a tool
@@ -154,8 +154,9 @@ Then restart neovim completely (`:qa!` and reopen).
 - `nvim/lazy-lock.json` is tracked, so every machine installs the same plugin
   commits. After `:Lazy update`, check `chezmoi diff`, then
   `chezmoi re-add ~/.config/nvim/lazy-lock.json` and commit
-- zsh plugins in `.chezmoiexternal.toml` are pinned to a commit and checksum;
-  update both together
+- zsh plugins and git-worktree-runner (`git gtr`; both shells set up `gtr cd`)
+  in `.chezmoiexternal.toml` are pinned to a commit and checksum; update both
+  together
 - `cheatsheets/` has printable herdr and Neovim key cheatsheets (PDF). It is not
   deployed; after changing keybindings, edit the tables in `cheatsheets/build.py`
   and run `python3 cheatsheets/build.py` (needs Chrome or Chromium)

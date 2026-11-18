@@ -1,3 +1,8 @@
+# git gtr's completions, added before zsh-autocomplete runs compinit.
+if [[ -d $HOME/.local/share/git-worktree-runner/completions ]]; then
+  fpath=($HOME/.local/share/git-worktree-runner/completions $fpath)
+fi
+
 # https://github.com/marlonrichert/zsh-autocomplete
 if [[ -f $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh ]]; then
   . $ZDOTDIR/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
@@ -67,6 +72,12 @@ eval "$(starship init zsh)"
 # compete with zsh-autocomplete for Tab. Without the marker, all of it loads.
 if command -v fzf >/dev/null 2>&1; then
   eval "$(fzf --zsh | sed '/^### end: key-bindings.zsh ###$/q')"
+fi
+
+# https://github.com/coderabbitai/git-worktree-runner: a `gtr` function that adds
+# `gtr cd <branch>` (fzf picker without one) and `gtr new <branch> --cd`.
+if command -v git-gtr >/dev/null 2>&1; then
+  eval "$(git gtr init zsh)"
 fi
 
 # Shared zsh/bash config
